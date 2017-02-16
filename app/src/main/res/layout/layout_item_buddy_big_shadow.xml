@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
+    android:gravity="center"
+    android:padding="8dp"
+    android:layout_height="wrap_content">
+
+    <com.mikhaellopez.circularimageview.CircularImageView
+        android:id="@+id/civ_photo"
+        android:layout_width="@dimen/buddy_circle_size_big"
+        android:layout_height="@dimen/buddy_circle_size_big"
+        app:civ_border_color="@android:color/white"
+        app:civ_shadow="true"
+        app:civ_shadow_color="@android:color/darker_gray"
+        app:civ_shadow_radius="10"
+        app:civ_border_width="5dp"
+        android:src="@drawable/sigap2" />
+
+    <com.mikhaellopez.circularimageview.CircularImageView
+        android:id="@+id/alert"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        app:civ_border_color="@android:color/holo_red_light"
+        android:src="@android:drawable/ic_dialog_alert" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="New Text"
+        android:textSize="17sp"
+        android:id="@+id/tv_name"
+        android:layout_gravity="center_horizontal"
+        android:textStyle="bold"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/civ_photo"
+        android:textColor="@color/colorPrimary"
+        android:layout_marginTop="5dp" />
+
+</RelativeLayout>
