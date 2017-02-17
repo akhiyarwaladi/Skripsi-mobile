@@ -65,5 +65,26 @@
             android:layout_gravity="center_horizontal"/>
 
     </LinearLayout>
-
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true">
+        <Button
+            android:id="@+id/token"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="token"
+            android:background="@color/colorPrimary"
+            android:textColor="#FFFFFF"/>
+        <Button
+            android:id="@+id/sub"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="subscribe"
+            android:background="@color/colorPrimaryDark"
+            android:textColor="#FFFFFF"/>
+    </LinearLayout>
 </RelativeLayout>

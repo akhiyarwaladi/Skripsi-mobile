@@ -28,6 +28,8 @@ import com.example.aw.sigap.model.Alat;
 import com.google.android.flexbox.FlexboxLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -40,6 +42,7 @@ import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class DashboardActivity extends BaseActivity {
 
@@ -56,6 +59,19 @@ public class DashboardActivity extends BaseActivity {
 
     ProgressDialog pDialog;
     Toolbar toolbar;
+
+    @OnClick(R.id.sub)
+    public void suub(){
+        FirebaseMessaging.getInstance().subscribeToTopic("news");
+        Toast.makeText(this, "subscribe press", Toast.LENGTH_SHORT).show();
+    }
+
+    @OnClick(R.id.token)
+    public void token(){
+        String token = FirebaseInstanceId.getInstance().getToken();
+        Toast.makeText(this, "getToken "+token, Toast.LENGTH_SHORT).show();
+        Log.d(TAG, token);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

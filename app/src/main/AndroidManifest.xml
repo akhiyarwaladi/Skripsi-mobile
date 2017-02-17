@@ -3,6 +3,9 @@
     package="com.example.aw.sigap">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
     <application
         android:name=".app.MyApplication"
         android:allowBackup="true"
@@ -18,21 +21,24 @@
             </intent-filter>
         </activity>
         <activity android:name=".activity.LoginActivity" />
-        <activity android:name=".activity.DetailActivity"></activity>
+        <activity android:name=".activity.DetailActivity" />
 
+        <!-- Firebase Notifications -->
         <service
-            android:name=".fcm.MyFirebaseMessagingService">
+            android:name=".fcm.MyFirebaseMessagingService"
+            android:enabled="true"
+            android:exported="true">
             <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-
-        <service
-            android:name=".fcm.MyFirebaseInstanceIDService">
+        <service android:name=".fcm.MyFirebaseInstanceIDService">
             <intent-filter>
-                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
+        <!-- ./Firebase Notifications -->
+        <activity android:name=".activity.DataHistoryActivity"></activity>
     </application>
 
 </manifest>

@@ -1,0 +1,50 @@
+<RelativeLayout android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"
+        android:text="Suhu"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:id="@+id/nama_sensor" />
+
+    <ProgressBar
+        android:id="@+id/progressListrik"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_below="@+id/nama_sensor"
+        android:background="@drawable/circle_shape"
+        android:indeterminate="false"
+        android:max="100"
+        android:progress="0"
+        android:progressDrawable="@drawable/circular_progress_bar" />
+
+    <TextView
+        android:paddingTop="20dp"
+        android:id="@+id/nilai_sensor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:background="@android:color/transparent"
+        android:gravity="center"
+        android:text="0%"
+        android:textColor="@color/colorPrimary"
+        android:textSize="30sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/status_sensor"
+        android:text="Loading..."
+        android:paddingTop="70dp"
+        android:textSize="10dp"
+        android:gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true" />
+
+</RelativeLayout>
