@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:focusable="true"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp"
+    android:clickable="true"
+    android:background="?android:attr/selectableItemBackground"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <ImageView
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        app:srcCompat="@drawable/note"
+        android:id="@+id/gambar"
+        android:paddingBottom="11dp"
+        android:paddingTop="11dp"
+        android:layout_alignParentLeft="true"/>
+
+    <TextView
+        android:id="@+id/no"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="15sp"
+        android:layout_alignParentLeft="true"
+        android:paddingLeft="35dp"
+        android:paddingTop="11dp"
+        android:paddingBottom="11dp"
+        android:text="haha"
+        android:gravity="center"/>
+
+    <TextView
+        android:id="@+id/nilai"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="17sp"
+        android:layout_centerInParent="true"
+        android:paddingTop="11dp"
+        android:paddingBottom="11dp"
+        android:text="haha"
+        android:gravity="center"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/waktuu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="11dp"
+        android:paddingBottom="11dp"
+        android:textSize="12sp"
+        android:text="24 januari"
+        android:layout_alignParentRight="true"/>
+
+</RelativeLayout>
