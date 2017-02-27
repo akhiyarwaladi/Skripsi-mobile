@@ -11,7 +11,7 @@ public class Config {
 
     // global topic to receive app wide push notifications
     public static final String TOPIC_GLOBAL = "global";
-    public static final String USER_AUTHORIZATION = "dfeae61f06b23ce3aded80ee701d1300";
+    public static final String USER_AUTHORIZATION = "ed7edb7931ff62ca7275630ddedfa617";
     // broadcast receiver intent filters
     public static final String SENT_TOKEN_TO_SERVER = "sentTokenToServer";
     public static final String REGISTRATION_COMPLETE = "registrationComplete";

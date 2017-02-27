@@ -7,6 +7,7 @@ import java.io.Serializable;
  */
 
 public class Alat implements Serializable {
+    private String id;
     private String nama;
     private String kode;
     private String tglProduksi;
@@ -15,10 +16,19 @@ public class Alat implements Serializable {
 
     }
 
-    public Alat(String nama, String kode, String tglProduksi) {
+    public Alat(String id, String nama, String kode, String tglProduksi) {
+        this.id = id;
         this.nama = nama;
         this.kode = kode;
         this.tglProduksi = tglProduksi;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getNama() {

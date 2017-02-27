@@ -100,10 +100,10 @@ public class DataHistoryActivity extends BaseActivity {
                         for (int i = 0; i < data.length(); i++) {
                             JSONObject dataObj = (JSONObject) data.get(i);
                             Log.i("dataDapat",""+dataObj);
-                            String ukk = dataObj.getString("suhu");
-                            String hpc = dataObj.getString("ph");
-                            String durtime = dataObj.getString("do");
-                            String hpsp = dataObj.getString("hasil");
+                            String ukk = dataObj.getString("uk");
+                            String hpc = dataObj.getString("hpc");
+                            String hpsp = dataObj.getString("hpsp");
+                            String durtime = dataObj.getString("optime");
                             String createdAt = dataObj.getString("createdAt");
                             String createdAt2 = getTimeStampOnWithoutTime(createdAt);
                             AllData dataa = new AllData(ukk,hpc,hpsp,durtime, createdAt2);

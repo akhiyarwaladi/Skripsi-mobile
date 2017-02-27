@@ -99,13 +99,12 @@ public class DetailActivity extends BaseActivity {
                         for (int i = 0; i < 1; i++) {
                             JSONObject dataObj = (JSONObject) data.get(i);
                             Log.i("dataDapat",""+dataObj);
-                            //String hpsp = dataObj.getString("status");
-                            String ukk = dataObj.getString("suhu");
-                            String hpc = dataObj.getString("ph");
-                            String durtime = dataObj.getString("do");
-                            Uk = ukk;
-                            String hpsp = dataObj.getString("hasil");
+                            String ukk = dataObj.getString("uk");
+                            String hpc = dataObj.getString("hpc");
+                            String hpsp = dataObj.getString("hpsp");
+                            String durtime = dataObj.getString("optime");
                             String createdAt = dataObj.getString("createdAt");
+                            Uk = ukk;
                             AllData dataa = new AllData(ukk,hpc,hpsp,durtime, createdAt);
                             allDatas.add(dataa);
                         }

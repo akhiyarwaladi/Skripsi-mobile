@@ -125,10 +125,11 @@ public class DashboardActivity extends BaseActivity {
                         for (int i = 0; i < data.length(); i++) {
                             JSONObject dataObj = (JSONObject) data.get(i);
                             Log.i("dataDapat",""+dataObj);
+                            String idAlat = dataObj.getString("id");
                             String namaAlat = dataObj.getString("nama");
                             String kodeAlat = dataObj.getString("id_alat");
                             String apayangPenting = dataObj.getString("id_alat");
-                            Alat alat = new Alat(namaAlat,kodeAlat,apayangPenting);
+                            Alat alat = new Alat(idAlat,namaAlat,kodeAlat,apayangPenting);
                             allAlat.add(alat);
                         }
                         renderBuddies();
@@ -173,7 +174,7 @@ public class DashboardActivity extends BaseActivity {
     private void addBuddiesView(final Alat p) {
         final View itemView = getLayoutInflater().inflate(R.layout.layout_item_buddy_big_shadow, null);
         final String name = p.getNama();
-        final String id_alat = p.getKode();
+        final String id_alat = p.getId();
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

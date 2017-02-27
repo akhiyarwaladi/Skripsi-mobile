@@ -22,9 +22,8 @@ import android.text.Html;
 import android.text.TextUtils;
 import android.util.Patterns;
 
-import com.example.aw.sigap.R;
 import com.example.aw.sigap.app.Config;
-
+import com.example.aw.sigap.R;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
