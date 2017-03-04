@@ -72,32 +72,40 @@
             android:layout_height="match_parent"
             android:id="@+id/scrollView6">
 
-            <com.google.android.flexbox.FlexboxLayout
+            <LinearLayout
                 android:layout_width="match_parent"
-                app:justifyContent="center"
                 android:layout_height="wrap_content"
-                app:flexDirection="row"
-                app:flexWrap="wrap"
-                android:id="@+id/fb_buddies">
+                android:orientation="vertical">
 
-            </com.google.android.flexbox.FlexboxLayout>
+                <com.google.android.flexbox.FlexboxLayout
+                    android:layout_width="match_parent"
+                    app:justifyContent="center"
+                    android:layout_height="wrap_content"
+                    app:flexDirection="row"
+                    app:flexWrap="wrap"
+                    android:id="@+id/fb_buddies">
+
+                </com.google.android.flexbox.FlexboxLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="15dp">
+
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/btn_history"
+                        android:text=" DATA HISTORY "
+                        android:layout_centerInParent="true"
+                        android:background="#9575CD"
+                        android:textColor="#FFFFFF"/>
+
+                </RelativeLayout>
+            </LinearLayout>
         </ScrollView>
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="15dp">
 
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/btn_history"
-                android:text="DETAIL"
-                android:layout_centerInParent="true"
-                android:background="#9575CD"
-                android:textColor="#FFFFFF"/>
-
-        </RelativeLayout>
     </LinearLayout>
 
 </RelativeLayout>

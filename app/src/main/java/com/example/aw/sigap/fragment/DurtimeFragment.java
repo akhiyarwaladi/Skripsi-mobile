@@ -126,7 +126,7 @@ public class DurtimeFragment extends Fragment {
             labelSuhu.add(String.valueOf(i+1));
         }
 
-        LineDataSet dataSetSuhu = new LineDataSet(entrySuhu, "cm");
+        LineDataSet dataSetSuhu = new LineDataSet(entrySuhu, "second");
         dataSetSuhu.setColor(Color.parseColor("#009688"));
         dataSetSuhu.setCircleColor(Color.parseColor("#ffcdd2"));
         dataSetSuhu.setCircleColorHole(Color.parseColor("#f44336"));

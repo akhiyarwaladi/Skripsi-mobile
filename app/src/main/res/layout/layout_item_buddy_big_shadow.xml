@@ -16,7 +16,7 @@
         app:civ_shadow_color="@android:color/darker_gray"
         app:civ_shadow_radius="10"
         app:civ_border_width="5dp"
-        android:src="@drawable/sigap2" />
+        android:src="@drawable/common_ic_googleplayservices" />
 
     <com.mikhaellopez.circularimageview.CircularImageView
         android:id="@+id/alert"

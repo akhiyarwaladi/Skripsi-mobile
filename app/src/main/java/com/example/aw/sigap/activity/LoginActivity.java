@@ -1,6 +1,7 @@
 package com.example.aw.sigap.activity;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
@@ -13,13 +14,26 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
 import com.example.aw.sigap.R;
+import com.example.aw.sigap.app.Config;
+import com.example.aw.sigap.app.EndPoint;
+import com.example.aw.sigap.app.MyApplication;
 import com.example.aw.sigap.utils.Keys;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -39,6 +53,7 @@ public class LoginActivity extends AppCompatActivity {
     private String TAG = LoginActivity.class.getSimpleName();
     ProgressDialog pDialog;
     Toolbar toolbar;
+    private boolean loggedIn = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,29 +70,23 @@ public class LoginActivity extends AppCompatActivity {
         pDialog = new ProgressDialog(this);
         pDialog.setMessage("Loading...");
         pDialog.setCancelable(true);
-        mAuth = FirebaseAuth.getInstance();
 
-        mAuthListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        //In onresume fetching value from sharedpreference
+        SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
 
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user != null) {
-                    // User is signed in
-                    Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
-                    mEncodedEmail = encodeEmail(user.getEmail());
+        //Fetching the boolean value form sharedpreferences
+        loggedIn = sharedPreferences.getBoolean(Config.LOGGEDIN_SHARED_PREF, false);
 
-                    Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
-                    startActivity(intent);
-                    finish();
-
-
-                } else {
-                    // User is signed out
-                    Log.d(TAG, "onAuthStateChanged:signed_out");
-                }
-            }
-        };
+        //If we will get true
+        if (loggedIn) {
+            //We will start the Profile Activity
+            Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
+            startActivity(intent);
+        }
     }
 
     @OnClick(R.id.btnLogin)
@@ -113,36 +122,74 @@ public class LoginActivity extends AppCompatActivity {
         final String email = etEmail.getText().toString();
         final String password = etPassword.getText().toString();
         //authenticate user
-        mAuth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, EndPoint.URL_LOGIN,
+                new Response.Listener<String>() {
+
                     @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (!task.isSuccessful()) {
-                            Toast.makeText(LoginActivity.this, "Login Failed"+task, Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(LoginActivity.this, "Login berhasil"+task, Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
-                            startActivity(intent);
-                            finish();
+                    public void onResponse(String response) {
+//                        Toast.makeText(MainActivity.this,response,Toast.LENGTH_LONG).show();
+
+                        try {
+                            JSONObject obj = new JSONObject(response);
+                            //boolean a = (boolean) obj.get("apiKey");
+                            boolean b = (boolean) obj.get("error");
+                            if (b){
+                                Toast.makeText(LoginActivity.this, "Invalid Username or Password", Toast.LENGTH_SHORT).show();
+                            }
+                            else {
+
+                                String username = String.valueOf(obj.get("username"));
+                                String apikey = String.valueOf(obj.get("apiKey"));
+                                SharedPreferences user = LoginActivity.this.getSharedPreferences(Config.SHARED_PREF_NAME,
+                                        Context.MODE_PRIVATE);
+                                SharedPreferences apiKey = LoginActivity.this.getSharedPreferences(Config.SHARED_PREF_API,
+                                        Context.MODE_PRIVATE);
+
+                                SharedPreferences.Editor editor1 = apiKey.edit();
+                                SharedPreferences.Editor editor = user.edit();
+                                editor.putBoolean(Config.LOGGEDIN_SHARED_PREF, true);
+                                editor1.putBoolean(Config.API_SHARED_PREF, true);
+
+                                editor1.putString(Config.APIKEY_SHARED_PREF, apikey);
+                                editor.putString(Config.USERNAME_SHARED_PREF, username);
+
+                                editor.apply();
+                                editor1.apply();
+
+                                //
+                                Intent i = new Intent(LoginActivity.this, DashboardActivity.class);
+                                startActivity(i);
+                                Toast.makeText(LoginActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
+                                hidePDialog();
+
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            Log.i("List", "data not successfull access");
                             hidePDialog();
                         }
                     }
-                });
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(LoginActivity.this, "Username or Password is empty" ,Toast.LENGTH_LONG).show();
+                        hidePDialog();
+                    }
+                }){
+            @Override
+            protected Map<String,String> getParams(){
+                Map<String,String> params = new HashMap<String, String>();
+                params.put("email", email);
+                params.put("password", password);
+                return params;
+            }
+        };
+        MyApplication.getInstance().addToRequestQueue(stringRequest);
+
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        mAuth.addAuthStateListener(mAuthListener);
-    }
 
-    @Override
-    public void onStop() {
-        super.onStop();
-        if (mAuthListener != null) {
-            mAuth.removeAuthStateListener(mAuthListener);
-        }
-    }
     private void showPDialog(){
         if(!pDialog.isShowing()){
             pDialog.show();

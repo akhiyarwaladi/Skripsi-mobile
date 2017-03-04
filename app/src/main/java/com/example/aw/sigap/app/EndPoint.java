@@ -12,10 +12,10 @@ public class EndPoint {
 //    public static final String CHAT_THREAD = BASE_URL + "/chat_rooms/_ID_";
 //    public static final String CHAT_ROOM_MESSAGE = BASE_URL + "/chat_rooms/_ID_/message";
 
-    public static final String BASE_URL = "http://192.168.1.140/SiPadat-Server/v1";
+    public static final String BASE_URL = "http://172.18.79.186/SiPadat-Server/v1";
     public static final String URL_ALAT = BASE_URL + "/getalatuser";
     public static final String URL_DATA = BASE_URL + "/databyidalat";
-
+    public static final String URL_LOGIN = BASE_URL + "/login";
     //    public static final String URL_LAST_FIELD = BASE_URL_AGNOSTHINGS + "/channel/last/feed/457/20";
     //    public static final String URL_FIELD_LIMIT = BASE_URL_AGNOSTHINGS + "/channel/limit/feed/457";
 //    public static final String URL_CHANNEL_LIMIT =  "http://agnosthings.com/de0ba8bc-2206-11e6-8001-005056805279/channel/last/feed/457/20";

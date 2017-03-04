@@ -26,4 +26,15 @@ public class Config {
     public static final int NOTIFICATION_ID_BIG_IMAGE = 101;
 
     public static final String SHARED_PREF = "ah_firebase";
+    //This would be the name of our shared preferences
+    public static final String SHARED_PREF_NAME = "user";
+    public static final String SHARED_PREF_API = "api";
+
+    //This would be used to store the username of current logged in user
+    public static final String USERNAME_SHARED_PREF = "username";
+    public static final String APIKEY_SHARED_PREF = "apiKey";
+
+    //We will use this to store the boolean in sharedpreference to track user is loggedin or not
+    public static final String LOGGEDIN_SHARED_PREF = "loggedin";
+    public static final String API_SHARED_PREF = "api";
 }

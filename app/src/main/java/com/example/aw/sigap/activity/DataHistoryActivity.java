@@ -77,10 +77,6 @@ public class DataHistoryActivity extends BaseActivity {
         Intent intent = getIntent();
         id_alat = intent.getStringExtra("id_alat");
 
-        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-//        setupViewPager(viewPager);
-//        tabLayout.setupWithViewPager(viewPager);
-
         allDatas = new ArrayList<AllData>();
         getData();
 

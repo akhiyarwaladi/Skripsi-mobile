@@ -1,7 +1,11 @@
 package com.example.aw.sigap.activity;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -88,23 +92,6 @@ public class DashboardActivity extends BaseActivity {
         pDialog.setCancelable(true);
 
         allAlat = new ArrayList<Alat>();
-        mAuth = FirebaseAuth.getInstance();
-        mAuthListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user != null) {
-                    // User is signed in
-                    Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
-                } else {
-                    // User is signed out
-                    Intent intent = new Intent(DashboardActivity.this, LoginActivity.class);
-                    startActivity(intent);
-                    finish();
-                    Log.d(TAG, "onAuthStateChanged:signed_out");
-                }
-            }
-        };
         getAlat();
     }
 
@@ -186,8 +173,7 @@ public class DashboardActivity extends BaseActivity {
         });
         TextView tv = (TextView) itemView.findViewById(R.id.tv_name);
         tv.setText(name);
-//        ImageView im = (ImageView) itemView.findViewById(R.id.civ_photo);
-//        Picasso.with(getActivity()).load(p.getPhotoUrl()).placeholder(R.drawable.user_photo).into(im);
+
         if(flexboxLayout!=null)
             flexboxLayout.addView(itemView);
     }
@@ -197,20 +183,6 @@ public class DashboardActivity extends BaseActivity {
                 flexboxLayout.removeAllViews();
         for (Alat p : allAlat) {
             addBuddiesView(p);
-        }
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        mAuth.addAuthStateListener(mAuthListener);
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        if (mAuthListener != null) {
-            mAuth.removeAuthStateListener(mAuthListener);
         }
     }
 
@@ -240,7 +212,45 @@ public class DashboardActivity extends BaseActivity {
             finish();
         }
         else if(id == R.id.action_logout){
-            FirebaseAuth.getInstance().signOut();
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+            alertDialogBuilder.setMessage("Exit Application?");
+            alertDialogBuilder.setPositiveButton("Yes",
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface arg0, int arg1) {
+
+                            //Getting out sharedpreferences
+                            SharedPreferences preferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
+                            //Getting editor
+                            SharedPreferences.Editor editor = preferences.edit();
+
+                            //Puting the value false for loggedin
+                            editor.putBoolean(Config.LOGGEDIN_SHARED_PREF, false);
+
+                            //Putting blank value to email
+                            editor.putString(Config.APIKEY_SHARED_PREF, "");
+                            editor.clear();
+
+                            //Saving the sharedpreferences
+                            editor.commit();
+
+                            //Starting login activity
+                            Intent intent = new Intent(DashboardActivity.this, LoginActivity.class);
+                            startActivity(intent);
+                        }
+                    });
+
+            alertDialogBuilder.setNegativeButton("No",
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface arg0, int arg1) {
+
+                        }
+                    });
+
+            //Showing the alert dialog
+            AlertDialog alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
             return true;
         }
         return super.onOptionsItemSelected(item);
