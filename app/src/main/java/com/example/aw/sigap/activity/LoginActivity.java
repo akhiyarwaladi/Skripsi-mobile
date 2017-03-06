@@ -91,26 +91,37 @@ public class LoginActivity extends AppCompatActivity {
 
     @OnClick(R.id.btnLogin)
     public void login() {
+
         checkLoginWithPass();
         showPDialog();
+    }
+
+    @OnClick(R.id.btnLinkToRegisterScreen)
+    public void register(){
+        Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+        startActivity(intent);
     }
 
     private void checkLoginWithPass() {
         if (TextUtils.isEmpty(etEmail.getText())) {
             etEmail.setError("Please fill in your email");
+            hidePDialog();
             return;
         } else {
             if (!isValidEmail(etEmail.getText().toString())) {
                 etEmail.setError("Invalid email");
+                hidePDialog();
                 return;
             }
         }
         if (TextUtils.isEmpty(etPassword.getText())) {
             etPassword.setError("Please fill in your password");
+            hidePDialog();
             return;
         } else {
             if (!isValidPassword(etPassword.getText().toString())) {
                 etPassword.setError("Invalid password");
+                hidePDialog();
                 return;
             }
         }

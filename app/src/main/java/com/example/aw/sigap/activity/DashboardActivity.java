@@ -85,8 +85,10 @@ public class DashboardActivity extends BaseActivity {
         setSupportActionBar(toolbar);
 
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-        ButterKnife.bind(this);
+        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        //getSupportActionBar().setDisplayShowHomeEnabled(true);
 
+        ButterKnife.bind(this);
         pDialog = new ProgressDialog(this);
         pDialog.setMessage("Loading...");
         pDialog.setCancelable(true);
@@ -215,38 +217,38 @@ public class DashboardActivity extends BaseActivity {
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
             alertDialogBuilder.setMessage("Exit Application?");
             alertDialogBuilder.setPositiveButton("Yes",
-                    new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface arg0, int arg1) {
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface arg0, int arg1) {
 
-                            //Getting out sharedpreferences
-                            SharedPreferences preferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
-                            //Getting editor
-                            SharedPreferences.Editor editor = preferences.edit();
+                        //Getting out sharedpreferences
+                        SharedPreferences preferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
+                        //Getting editor
+                        SharedPreferences.Editor editor = preferences.edit();
 
-                            //Puting the value false for loggedin
-                            editor.putBoolean(Config.LOGGEDIN_SHARED_PREF, false);
+                        //Puting the value false for loggedin
+                        editor.putBoolean(Config.LOGGEDIN_SHARED_PREF, false);
 
-                            //Putting blank value to email
-                            editor.putString(Config.APIKEY_SHARED_PREF, "");
-                            editor.clear();
+                        //Putting blank value to email
+                        editor.putString(Config.APIKEY_SHARED_PREF, "");
+                        editor.clear();
 
-                            //Saving the sharedpreferences
-                            editor.commit();
+                        //Saving the sharedpreferences
+                        editor.commit();
 
-                            //Starting login activity
-                            Intent intent = new Intent(DashboardActivity.this, LoginActivity.class);
-                            startActivity(intent);
-                        }
-                    });
+                        //Starting login activity
+                        Intent intent = new Intent(DashboardActivity.this, LoginActivity.class);
+                        startActivity(intent);
+                    }
+                });
 
             alertDialogBuilder.setNegativeButton("No",
-                    new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface arg0, int arg1) {
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface arg0, int arg1) {
 
-                        }
-                    });
+                    }
+                });
 
             //Showing the alert dialog
             AlertDialog alertDialog = alertDialogBuilder.create();
