@@ -169,7 +169,7 @@ public class LoginActivity extends AppCompatActivity {
                                 editor1.commit();
 
 
-
+                                Log.d("user", username);
                                 Log.d("api", apikey);
 
                                 Intent i = new Intent(LoginActivity.this, DashboardActivity.class);

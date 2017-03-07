@@ -93,9 +93,9 @@ public class DashboardActivity extends BaseActivity {
         pDialog.setCancelable(true);
 
         allAlat = new ArrayList<Alat>();
-        final SharedPreferences sharedPreferences1 = getSharedPreferences(Config.SHARED_PREF_API,
+        final SharedPreferences sharedPreferencesApi = getSharedPreferences(Config.SHARED_PREF_API,
                 Context.MODE_PRIVATE);
-        apiKey = sharedPreferences1.getString(Config.APIKEY_SHARED_PREF, "");
+        apiKey = sharedPreferencesApi.getString(Config.APIKEY_SHARED_PREF, "");
         Log.d("api", apiKey);
         getAlat();
 
