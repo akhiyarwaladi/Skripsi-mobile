@@ -156,18 +156,22 @@ public class LoginActivity extends AppCompatActivity {
                                 SharedPreferences apiKey = LoginActivity.this.getSharedPreferences(Config.SHARED_PREF_API,
                                         Context.MODE_PRIVATE);
 
-                                SharedPreferences.Editor editor1 = apiKey.edit();
                                 SharedPreferences.Editor editor = user.edit();
+                                SharedPreferences.Editor editor1 = apiKey.edit();
+
                                 editor.putBoolean(Config.LOGGEDIN_SHARED_PREF, true);
                                 editor1.putBoolean(Config.API_SHARED_PREF, true);
 
-                                editor1.putString(Config.APIKEY_SHARED_PREF, apikey);
                                 editor.putString(Config.USERNAME_SHARED_PREF, username);
+                                editor1.putString(Config.APIKEY_SHARED_PREF, apikey);
 
-                                editor.apply();
-                                editor1.apply();
+                                editor.commit();
+                                editor1.commit();
 
-                                //
+
+
+                                Log.d("api", apikey);
+
                                 Intent i = new Intent(LoginActivity.this, DashboardActivity.class);
                                 startActivity(i);
                                 Toast.makeText(LoginActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();

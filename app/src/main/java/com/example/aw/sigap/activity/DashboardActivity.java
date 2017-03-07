@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.preference.Preference;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -51,9 +52,7 @@ import butterknife.OnClick;
 public class DashboardActivity extends BaseActivity {
 
     private String TAG = DashboardActivity.class.getSimpleName();
-    private FirebaseAuth mAuth;
-    private FirebaseAuth.AuthStateListener mAuthListener;
-
+    private String apiKey;
     @Bind(R.id.fb_buddies)
     FlexboxLayout flexboxLayout;
     List<Alat> allAlat;
@@ -94,7 +93,13 @@ public class DashboardActivity extends BaseActivity {
         pDialog.setCancelable(true);
 
         allAlat = new ArrayList<Alat>();
+        final SharedPreferences sharedPreferences1 = getSharedPreferences(Config.SHARED_PREF_API,
+                Context.MODE_PRIVATE);
+        apiKey = sharedPreferences1.getString(Config.APIKEY_SHARED_PREF, "");
+        Log.d("api", apiKey);
         getAlat();
+
+
     }
 
     public void getAlat(){
@@ -144,7 +149,7 @@ public class DashboardActivity extends BaseActivity {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map headers = new HashMap();
-                headers.put("Authorization", Config.USER_AUTHORIZATION);
+                headers.put("Authorization", apiKey);
 
                 return headers;
             }
