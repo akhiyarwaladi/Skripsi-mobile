@@ -1,7 +1,9 @@
 package com.example.aw.sigap.activity;
 
 import android.animation.ValueAnimator;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -47,12 +49,11 @@ public class DetailActivity extends BaseActivity {
     private String TAG = DashboardActivity.class.getSimpleName();
     Button btnHistory;
     Toolbar toolbar;
-    String Uk;
+    String Uk, apiKey, id_alat;
 
     @Bind(R.id.fb_buddies)
     FlexboxLayout flexboxLayout;
     List<AllData> allDatas;
-    String id_alat;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +72,10 @@ public class DetailActivity extends BaseActivity {
         id_alat = intent.getStringExtra("id_alat");
 
         allDatas = new ArrayList<AllData>();
+        final SharedPreferences sharedPreferencesApi = getSharedPreferences(Config.SHARED_PREF_API,
+                Context.MODE_PRIVATE);
+        apiKey = sharedPreferencesApi.getString(Config.APIKEY_SHARED_PREF, "");
+        Log.d("api", apiKey);
         getData();
 
         btnHistory = (Button) findViewById(R.id.btn_history);
@@ -148,7 +153,7 @@ public class DetailActivity extends BaseActivity {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map headers = new HashMap();
-                headers.put("Authorization", Config.USER_AUTHORIZATION);
+                headers.put("Authorization", apiKey);
 
                 return headers;
             }

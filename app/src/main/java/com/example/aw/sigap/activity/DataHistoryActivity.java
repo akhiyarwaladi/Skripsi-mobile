@@ -1,6 +1,8 @@
 package com.example.aw.sigap.activity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -58,7 +60,7 @@ public class DataHistoryActivity extends BaseActivity {
 
     private ViewPagerAdapter adapter;
     public static List<AllData> allDatas;
-    String id_alat;
+    String id_alat, apiKey;
     Toolbar toolbar;
 
     @Override
@@ -78,6 +80,10 @@ public class DataHistoryActivity extends BaseActivity {
         id_alat = intent.getStringExtra("id_alat");
 
         allDatas = new ArrayList<AllData>();
+        final SharedPreferences sharedPreferencesApi = getSharedPreferences(Config.SHARED_PREF_API,
+                Context.MODE_PRIVATE);
+        apiKey = sharedPreferencesApi.getString(Config.APIKEY_SHARED_PREF, "");
+        Log.d("api", apiKey);
         getData();
 
     }
@@ -131,7 +137,7 @@ public class DataHistoryActivity extends BaseActivity {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map headers = new HashMap();
-                headers.put("Authorization", Config.USER_AUTHORIZATION);
+                headers.put("Authorization", apiKey);
 
                 return headers;
             }

@@ -12,7 +12,7 @@ public class EndPoint {
 //    public static final String CHAT_THREAD = BASE_URL + "/chat_rooms/_ID_";
 //    public static final String CHAT_ROOM_MESSAGE = BASE_URL + "/chat_rooms/_ID_/message";
 
-    public static final String BASE_URL = "http://172.18.78.71/SiPadat-Server/v1";
+    public static final String BASE_URL = "http://192.168.1.140/SiPadat-Server/v1";
     public static final String URL_ALAT = BASE_URL + "/getalatuser";
     public static final String URL_DATA = BASE_URL + "/databyidalat";
     public static final String URL_LOGIN = BASE_URL + "/login";
