@@ -13,7 +13,9 @@ import android.util.Log;
 
 import com.example.aw.sigap.MainActivity;
 import com.example.aw.sigap.R;
+import com.example.aw.sigap.activity.BatteryLowActivity;
 import com.example.aw.sigap.activity.DashboardActivity;
+import com.example.aw.sigap.activity.DeviceNotWorking;
 import com.example.aw.sigap.app.Config;
 import com.example.aw.sigap.utils.NotificationUtils;
 import com.google.firebase.messaging.FirebaseMessagingService;
@@ -28,7 +30,7 @@ import org.json.JSONObject;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
     private static final String TAG = MyFirebaseMessagingService.class.getSimpleName();
-
+    String title;
     private NotificationUtils notificationUtils;
 
     @Override
@@ -78,7 +80,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         try {
             JSONObject data = json.getJSONObject("data");
 
-            String title = data.getString("title");
+            title = data.getString("title");
             String message = data.getString("message");
             boolean isBackground = data.getBoolean("is_background");
             String imageUrl = data.getString("image");
@@ -103,16 +105,28 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 NotificationUtils notificationUtils = new NotificationUtils(getApplicationContext());
                 notificationUtils.playNotificationSound();
             } else {
-                // app is in background, show the notification in notification tray
-                Intent resultIntent = new Intent(getApplicationContext(), MainActivity.class);
-                resultIntent.putExtra("message", message);
-
-                // check for image attachment
-                if (TextUtils.isEmpty(imageUrl)) {
-                    showNotificationMessage(getApplicationContext(), title, message, timestamp, resultIntent);
-                } else {
-                    // image is present, show notification with image
-                    showNotificationMessageWithBigImage(getApplicationContext(), title, message, timestamp, resultIntent, imageUrl);
+                if(title.equalsIgnoreCase("Periksa Alat")) {
+                    // app is in background, show the notification in notification tray
+                    Intent resultIntent = new Intent(getApplicationContext(), DeviceNotWorking.class);
+                    resultIntent.putExtra("message", message);
+                    // check for image attachment
+                    if (TextUtils.isEmpty(imageUrl)) {
+                        showNotificationMessage(getApplicationContext(), title, message, timestamp, resultIntent);
+                    } else {
+                        // image is present, show notification with image
+                        showNotificationMessageWithBigImage(getApplicationContext(), title, message, timestamp, resultIntent, imageUrl);
+                    }
+                }
+                else {
+                    Intent resultIntent = new Intent(getApplicationContext(), BatteryLowActivity.class);
+                    resultIntent.putExtra("message", message);
+                    // check for image attachment
+                    if (TextUtils.isEmpty(imageUrl)) {
+                        showNotificationMessage(getApplicationContext(), title, message, timestamp, resultIntent);
+                    } else {
+                        // image is present, show notification with image
+                        showNotificationMessageWithBigImage(getApplicationContext(), title, message, timestamp, resultIntent, imageUrl);
+                    }
                 }
             }
         } catch (JSONException e) {
