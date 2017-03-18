@@ -9,10 +9,8 @@
     <application
         android:name=".app.MyApplication"
         android:allowBackup="true"
-
         android:icon="@drawable/sigap2"
         android:label="@string/app_name"
-
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".activity.DashboardActivity">
@@ -41,7 +39,9 @@
             </intent-filter>
         </service>
         <!-- ./Firebase Notifications -->
-        <activity android:name=".activity.DataHistoryActivity"></activity>
+        <activity android:name=".activity.DataHistoryActivity" />
+        <activity android:name=".activity.BatteryLowActivity" />
+        <activity android:name=".activity.DeviceNotWorking"></activity>
     </application>
 
 </manifest>
