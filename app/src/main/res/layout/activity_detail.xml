@@ -87,9 +87,10 @@
 
                 </com.google.android.flexbox.FlexboxLayout>
 
-                <RelativeLayout
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:orientation="horizontal"
                     android:paddingTop="15dp">
 
                     <Button
@@ -97,11 +98,20 @@
                         android:layout_height="wrap_content"
                         android:id="@+id/btn_history"
                         android:text=" DATA HISTORY "
-                        android:layout_centerInParent="true"
                         android:background="#9575CD"
-                        android:textColor="#FFFFFF"/>
+                        android:textColor="#FFFFFF"
+                        android:layout_weight="1"/>
 
-                </RelativeLayout>
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/btn_map"
+                        android:text=" Show Map "
+                        android:background="#D84315"
+                        android:textColor="#FFFFFF"
+                        android:layout_weight="1" />
+
+                </LinearLayout>
             </LinearLayout>
         </ScrollView>
 

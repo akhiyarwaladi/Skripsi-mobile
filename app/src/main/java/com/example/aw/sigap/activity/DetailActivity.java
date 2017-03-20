@@ -47,7 +47,7 @@ import butterknife.ButterKnife;
 public class DetailActivity extends BaseActivity {
 
     private String TAG = DashboardActivity.class.getSimpleName();
-    Button btnHistory;
+    Button btnHistory, btnMaps;
     Toolbar toolbar;
     String Uk, apiKey, id_alat;
 
@@ -68,7 +68,7 @@ public class DetailActivity extends BaseActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         ButterKnife.bind(this);
-        Intent intent = getIntent();
+        final Intent intent = getIntent();
         id_alat = intent.getStringExtra("id_alat");
 
         allDatas = new ArrayList<AllData>();
@@ -87,6 +87,19 @@ public class DetailActivity extends BaseActivity {
                 startActivity(intent);
             }
         });
+
+        btnMaps = (Button) findViewById(R.id.btn_map);
+        btnMaps.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent1 = new Intent(DetailActivity.this, MapsActivity.class);
+                intent1.putExtra("id_alat", id_alat);
+                startActivity(intent1);
+
+            }
+        });
+
+
     }
 
     public void getData(){
