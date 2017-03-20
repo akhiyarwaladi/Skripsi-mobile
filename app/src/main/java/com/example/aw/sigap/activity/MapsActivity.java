@@ -30,7 +30,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     final private int REQUEST_CODE_ASK_PERMISSIONS = 123;
     Toolbar toolbar;
     double lat, lng;
-    String id_alat;
+    String id_alat, latitude, longitude;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,9 +43,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         Intent intent = getIntent();
         id_alat = intent.getStringExtra("id_alat");
+        latitude = intent.getStringExtra("latitude");
+        longitude = intent.getStringExtra("longitude");
 
-        lat = -6.17440;
-        lng = 106.82940;
+        lat = Double.parseDouble(latitude);
+        lng = Double.parseDouble(longitude);
 
         insertDummyContactWrapper();
     }

@@ -49,7 +49,7 @@ public class DetailActivity extends BaseActivity {
     private String TAG = DashboardActivity.class.getSimpleName();
     Button btnHistory, btnMaps;
     Toolbar toolbar;
-    String Uk, apiKey, id_alat;
+    String Uk, apiKey, id_alat, latitude, longitude;
 
     @Bind(R.id.fb_buddies)
     FlexboxLayout flexboxLayout;
@@ -70,6 +70,8 @@ public class DetailActivity extends BaseActivity {
         ButterKnife.bind(this);
         final Intent intent = getIntent();
         id_alat = intent.getStringExtra("id_alat");
+        latitude = intent.getStringExtra("latitude");
+        longitude = intent.getStringExtra("longitude");
 
         allDatas = new ArrayList<AllData>();
         final SharedPreferences sharedPreferencesApi = getSharedPreferences(Config.SHARED_PREF_API,
@@ -94,6 +96,8 @@ public class DetailActivity extends BaseActivity {
             public void onClick(View view) {
                 Intent intent1 = new Intent(DetailActivity.this, MapsActivity.class);
                 intent1.putExtra("id_alat", id_alat);
+                intent1.putExtra("latitude", latitude);
+                intent1.putExtra("longitude", longitude);
                 startActivity(intent1);
 
             }

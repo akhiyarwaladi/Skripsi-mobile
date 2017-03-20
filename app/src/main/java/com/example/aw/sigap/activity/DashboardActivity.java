@@ -123,7 +123,11 @@ public class DashboardActivity extends BaseActivity {
                             String namaAlat = dataObj.getString("nama");
                             String kodeAlat = dataObj.getString("id_alat");
                             String apayangPenting = dataObj.getString("id_alat");
-                            Alat alat = new Alat(idAlat,namaAlat,kodeAlat,apayangPenting);
+                            int rssi = dataObj.getInt("rssi");
+                            int battery = dataObj.getInt("battery");
+                            String latitude = dataObj.getString("latitude");
+                            String longitude = dataObj.getString("longitude");
+                            Alat alat = new Alat(idAlat, namaAlat, kodeAlat, apayangPenting, latitude, longitude, rssi, battery );
                             allAlat.add(alat);
                         }
                         renderBuddies();
@@ -169,12 +173,16 @@ public class DashboardActivity extends BaseActivity {
         final View itemView = getLayoutInflater().inflate(R.layout.layout_item_buddy_big_shadow, null);
         final String name = p.getNama();
         final String id_alat = p.getId();
+        final String latitude = p.getLatitude();
+        final String longitude = p.getLongitude();
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(DashboardActivity.this, DetailActivity.class);
                 intent.putExtra("objectPerson", p);
                 intent.putExtra("id_alat", id_alat);
+                intent.putExtra("latitude", latitude);
+                intent.putExtra("longitude", longitude);
                 startActivity(intent);
             }
         });

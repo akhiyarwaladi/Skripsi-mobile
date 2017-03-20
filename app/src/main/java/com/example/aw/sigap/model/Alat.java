@@ -11,16 +11,23 @@ public class Alat implements Serializable {
     private String nama;
     private String kode;
     private String tglProduksi;
+    private String latitude;
+    private String longitude;
+    private int rssi, battery;
 
     public Alat() {
 
     }
 
-    public Alat(String id, String nama, String kode, String tglProduksi) {
+    public Alat(String id, String nama, String kode, String tglProduksi, String latitude, String longitude, int rssi, int battery) {
         this.id = id;
         this.nama = nama;
         this.kode = kode;
         this.tglProduksi = tglProduksi;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.rssi = rssi;
+        this.battery = battery;
     }
 
     public String getId() {
@@ -53,5 +60,37 @@ public class Alat implements Serializable {
 
     public void setTglProduksi(String tglProduksi) {
         this.tglProduksi = tglProduksi;
+    }
+
+    public String getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(String latitude) {
+        this.latitude = latitude;
+    }
+
+    public String getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(String longitude) {
+        this.longitude = longitude;
+    }
+
+    public int getRssi() {
+        return rssi;
+    }
+
+    public void setRssi(int rssi) {
+        this.rssi = rssi;
+    }
+
+    public int getBattery() {
+        return battery;
+    }
+
+    public void setBattery(int battery) {
+        this.battery = battery;
     }
 }
