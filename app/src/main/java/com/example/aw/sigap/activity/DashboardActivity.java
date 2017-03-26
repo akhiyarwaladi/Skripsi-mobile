@@ -121,8 +121,8 @@ public class DashboardActivity extends BaseActivity {
                             Log.i("dataDapat",""+dataObj);
                             String idAlat = dataObj.getString("id");
                             String namaAlat = dataObj.getString("nama");
-                            String kodeAlat = dataObj.getString("id_alat");
-                            String apayangPenting = dataObj.getString("id_alat");
+                            String kodeAlat = dataObj.getString("kode_alat");
+                            String apayangPenting = dataObj.getString("kode_alat");
                             int rssi = dataObj.getInt("rssi");
                             int battery = dataObj.getInt("battery");
                             String latitude = dataObj.getString("latitude");

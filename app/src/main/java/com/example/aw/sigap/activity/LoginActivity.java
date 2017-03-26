@@ -168,7 +168,6 @@ public class LoginActivity extends AppCompatActivity {
                                 editor.commit();
                                 editor1.commit();
 
-
                                 Log.d("user", username);
                                 Log.d("api", apikey);
 

@@ -18,6 +18,7 @@ import com.example.aw.sigap.R;
 import com.example.aw.sigap.app.Config;
 import com.example.aw.sigap.app.EndPoint;
 import com.example.aw.sigap.app.MyApplication;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -73,9 +74,10 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void Register(){
-        final String name = etEmail.getText().toString();
+        final String name = etName.getText().toString();
         final String email = etEmail.getText().toString();
         final String password = etPassword.getText().toString();
+        final String token = FirebaseInstanceId.getInstance().getToken();
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, EndPoint.URL_REGISTER,
                 new Response.Listener<String>() {
@@ -114,6 +116,7 @@ public class RegisterActivity extends AppCompatActivity {
                 params.put("name", name);
                 params.put("email", email);
                 params.put("password", password);
+                params.put("fcmregid", token);
                 return params;
             }
         };

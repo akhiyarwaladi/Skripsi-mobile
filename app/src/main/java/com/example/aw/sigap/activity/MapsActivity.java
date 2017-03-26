@@ -78,7 +78,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         googleMap.getUiSettings().setZoomControlsEnabled(true);
 
         CameraPosition cameraPosition = new CameraPosition.Builder().target(
-                new LatLng(lat, lng)).zoom(17).build();
+                new LatLng(lat, lng)).zoom(18).build();
         googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
         MarkerOptions marker = new MarkerOptions().position(new LatLng(lat, lng)).title(id_alat);
