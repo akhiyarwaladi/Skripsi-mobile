@@ -111,6 +111,14 @@
                         android:textColor="#FFFFFF"
                         android:layout_weight="1" />
 
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/btn_settings"
+                        android:text=" Settings "
+                        android:background="#27ae60"
+                        android:textColor="#FFFFFF"
+                        android:layout_weight="1" />
                 </LinearLayout>
             </LinearLayout>
         </ScrollView>

@@ -37,7 +37,6 @@ import butterknife.OnClick;
 public class RegisterActivity extends AppCompatActivity {
     ProgressDialog pDialog;
 
-
     @Bind(R.id.name)
     EditText etName;
 

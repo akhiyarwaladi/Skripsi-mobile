@@ -47,7 +47,7 @@ import butterknife.ButterKnife;
 public class DetailActivity extends BaseActivity {
 
     private String TAG = DashboardActivity.class.getSimpleName();
-    Button btnHistory, btnMaps;
+    Button btnHistory, btnMaps, btnSettings;
     Toolbar toolbar;
     String Uk, apiKey, id_alat, latitude, longitude;
 
@@ -100,6 +100,14 @@ public class DetailActivity extends BaseActivity {
                 intent1.putExtra("longitude", longitude);
                 startActivity(intent1);
 
+            }
+        });
+        btnSettings = (Button) findViewById(R.id.btn_settings);
+        btnSettings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent2 = new Intent(DetailActivity.this, SettingsActivity.class);
+                startActivity(intent2);
             }
         });
 
