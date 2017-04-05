@@ -107,6 +107,7 @@ public class DetailActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 Intent intent2 = new Intent(DetailActivity.this, SettingsActivity.class);
+                intent2.putExtra("id_alat", id_alat);
                 startActivity(intent2);
             }
         });
