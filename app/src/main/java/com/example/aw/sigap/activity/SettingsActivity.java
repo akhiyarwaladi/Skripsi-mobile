@@ -87,10 +87,10 @@ public class SettingsActivity extends AppCompatActivity {
                     JSONObject obj = new JSONObject(response);
 
                     if (obj.getBoolean("error") == false) {
-                        Toast.makeText(SettingsActivity.this, "" + response, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SettingsActivity.this, "" + obj.getString("message"), Toast.LENGTH_SHORT).show();
 
                     } else {
-                        Toast.makeText(SettingsActivity.this, "" + obj.getJSONObject("error").getString("message"), Toast.LENGTH_LONG).show();
+                        Toast.makeText(SettingsActivity.this, "" + obj.getString("message"), Toast.LENGTH_LONG).show();
                     }
                 } catch (JSONException e) {
                     Log.e(TAG, "json parsing error: " + e.getMessage());
