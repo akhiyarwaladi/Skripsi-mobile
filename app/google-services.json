@@ -1,35 +1,27 @@
 {
   "project_info": {
-    "project_number": "514102438178",
-    "firebase_url": "https://sigap-8ee0d.firebaseio.com",
-    "project_id": "sigap-8ee0d",
-    "storage_bucket": "sigap-8ee0d.appspot.com"
+    "project_number": "885942985405",
+    "firebase_url": "https://sigap-skripsi.firebaseio.com",
+    "project_id": "sigap-skripsi",
+    "storage_bucket": "sigap-skripsi.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:514102438178:android:1408df2fd72fa95e",
+        "mobilesdk_app_id": "1:885942985405:android:1408df2fd72fa95e",
         "android_client_info": {
           "package_name": "com.example.aw.sigap"
         }
       },
       "oauth_client": [
         {
-          "client_id": "514102438178-9ag3blv8f2tlud0nae726ijpcap5ori9.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.aw.sigap",
-            "certificate_hash": "9C87D8CB2C8CDEC7A6BB8884A4F9FB5A1E9AB99E"
-          }
-        },
-        {
-          "client_id": "514102438178-q4ocgl80cl72566e9hd20jgdsr9qe2mk.apps.googleusercontent.com",
+          "client_id": "885942985405-cv52b2lq0s17i7gv5mo5obs83qo54rsp.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAqqRy0Wi9Z0y2JAG_tiufD19TK7Z0S4RE"
+          "current_key": "AIzaSyCTvT04PMnWvgXpxmwBzen_JFCp9U-tGD0"
         }
       ],
       "services": {
@@ -37,13 +29,8 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 2,
-          "other_platform_oauth_client": [
-            {
-              "client_id": "514102438178-q4ocgl80cl72566e9hd20jgdsr9qe2mk.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
+          "status": 1,
+          "other_platform_oauth_client": []
         },
         "ads_service": {
           "status": 2
