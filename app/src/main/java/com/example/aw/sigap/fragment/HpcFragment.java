@@ -108,6 +108,7 @@ public class HpcFragment extends Fragment {
         ArrayList<ILineDataSet> lineDataSets = new ArrayList<>();
 
         LineDataSet dataSetSuhu = new LineDataSet(entrySuhu, "cm");
+        dataSetSuhu.setMode(LineDataSet.Mode.CUBIC_BEZIER);
         dataSetSuhu.setColor(Color.parseColor("#009688"));
         dataSetSuhu.setCircleColor(Color.parseColor("#ffcdd2"));
         dataSetSuhu.setCircleColorHole(Color.parseColor("#f44336"));
@@ -116,6 +117,7 @@ public class HpcFragment extends Fragment {
         dataSetSuhu.setDrawFilled(true);
 
         LineDataSet dataSetSuhuPred = new LineDataSet(entrySuhuPred, "cm");
+        dataSetSuhuPred.setMode(LineDataSet.Mode.CUBIC_BEZIER);
         dataSetSuhuPred.setColor(Color.parseColor("#0000FF"));
         dataSetSuhuPred.setCircleColor(Color.parseColor("#9575CD"));
         dataSetSuhuPred.setCircleColorHole(Color.parseColor("#27ae60"));

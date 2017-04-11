@@ -27,6 +27,7 @@ import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.TimeZone;
 
@@ -131,6 +132,7 @@ public class DurtimeFragment extends Fragment {
         ArrayList<ILineDataSet> lineDataSets = new ArrayList<>();
 
         LineDataSet dataSetSuhu = new LineDataSet(entrySuhu, "second");
+        dataSetSuhu.setMode(LineDataSet.Mode.CUBIC_BEZIER);
         dataSetSuhu.setColor(Color.parseColor("#009688"));
         dataSetSuhu.setCircleColor(Color.parseColor("#ffcdd2"));
         dataSetSuhu.setCircleColorHole(Color.parseColor("#f44336"));

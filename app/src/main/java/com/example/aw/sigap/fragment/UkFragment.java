@@ -131,11 +131,12 @@ public class UkFragment extends Fragment {
 
         ArrayList<ILineDataSet> lineDataSets = new ArrayList<>();
         LineDataSet dataSetSuhu = new LineDataSet(entrySuhu, "1 <= x <= -1");
+        dataSetSuhu.setMode(LineDataSet.Mode.CUBIC_BEZIER);
         dataSetSuhu.setColor(Color.parseColor("#009688"));
         dataSetSuhu.setCircleColor(Color.parseColor("#ffcdd2"));
         dataSetSuhu.setCircleColorHole(Color.parseColor("#f44336"));
         Drawable drawable = ContextCompat.getDrawable(getActivity(), R.drawable.fade_red);
-        //dataSetSuhu.setDrawFilled(true);
+        dataSetSuhu.setDrawFilled(true);
         dataSetSuhu.setFillDrawable(drawable);
 
         lineDataSets.add(dataSetSuhu);
