@@ -10,6 +10,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,6 +41,7 @@ public class UkFragment extends Fragment {
     private static final String ARG_PARAM2 = "param2";
     public static SensorAdapter mAdapter;
     private RecyclerView recyclerView;
+    private int numData;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -79,6 +81,8 @@ public class UkFragment extends Fragment {
                              Bundle savedInstanceState) {
         v = inflater.inflate(R.layout.fragment_uk, container, false);
         recyclerView = (RecyclerView) v.findViewById(R.id.recycler_view_uk);
+        numData = DataHistoryActivity.allDatas.size();
+        Log.i("jumlah Data",""+numData);
         mAdapter = new SensorAdapter(DataHistoryActivity.UK, DataHistoryActivity.allDatas);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());

@@ -30,6 +30,7 @@ import com.example.aw.sigap.fragment.DurtimeFragment;
 import com.example.aw.sigap.fragment.HpcFragment;
 import com.example.aw.sigap.fragment.UkFragment;
 import com.example.aw.sigap.model.AllData;
+import com.example.aw.sigap.model.PredictionData;
 import com.google.firebase.auth.FirebaseAuth;
 
 import org.json.JSONArray;
@@ -60,6 +61,7 @@ public class DataHistoryActivity extends BaseActivity {
 
     private ViewPagerAdapter adapter;
     public static List<AllData> allDatas;
+    public static List<PredictionData> predDatas;
     String id_alat, apiKey;
     Toolbar toolbar;
 
@@ -80,6 +82,10 @@ public class DataHistoryActivity extends BaseActivity {
         id_alat = intent.getStringExtra("id_alat");
 
         allDatas = new ArrayList<AllData>();
+        predDatas = new ArrayList<PredictionData>();
+        predDatas.add(new PredictionData(Integer.toString(7), Integer.toString(3)));
+        predDatas.add(new PredictionData(Integer.toString(4), Integer.toString(8)));
+        predDatas.add(new PredictionData(Integer.toString(10), Integer.toString(2)));
         final SharedPreferences sharedPreferencesApi = getSharedPreferences(Config.SHARED_PREF_API,
                 Context.MODE_PRIVATE);
         apiKey = sharedPreferencesApi.getString(Config.APIKEY_SHARED_PREF, "");
