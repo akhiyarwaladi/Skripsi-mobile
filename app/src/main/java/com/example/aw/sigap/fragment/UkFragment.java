@@ -2,9 +2,11 @@ package com.example.aw.sigap.fragment;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -128,13 +130,15 @@ public class UkFragment extends Fragment {
         dataSetSuhu.setColor(Color.parseColor("#009688"));
         dataSetSuhu.setCircleColor(Color.parseColor("#ffcdd2"));
         dataSetSuhu.setCircleColorHole(Color.parseColor("#f44336"));
-
-        //LineDataSet labelSetSuhu = new LineDataSet(labelSuhu, "timestamp");
+        Drawable drawable = ContextCompat.getDrawable(getActivity(), R.drawable.fade_red);
+        //dataSetSuhu.setDrawFilled(true);
+        dataSetSuhu.setFillDrawable(drawable);
 
         lineDataSets.add(dataSetSuhu);
-        //lineDataSets.add(labelSetSuhu);
         LineData dataSuhu = new LineData(lineDataSets);
         chartSuhu.setData(dataSuhu);
+        chartSuhu.setVisibleXRangeMaximum(10); //set n data only to display
+        chartSuhu.moveViewToX(entrySuhu.size() - 10); //move view to 10 last data
         chartSuhu.notifyDataSetChanged();
         chartSuhu.animateY(1000);
 
