@@ -20,6 +20,7 @@ import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -91,7 +92,7 @@ public class UkFragment extends Fragment {
     private void setupChart(){
         // Setup chart suhu
         chartSuhu = (LineChart) v.findViewById(R.id.chart_uk);
-        chartSuhu.setDescription("");
+        //chartSuhu.setDescription("");
 
         updateChart();
     }
@@ -117,24 +118,24 @@ public class UkFragment extends Fragment {
 
         for(int i = 0; i<DataHistoryActivity.allDatas.size();i++){
             AllData dat = DataHistoryActivity.allDatas.get(i);
-            float dooo = Float.parseFloat(dat.getHpc());
-            entrySuhu.add(new Entry(dooo,i));
-            labelSuhu.add(String.valueOf(i+1));
+            float ukk = Float.parseFloat(dat.getUkk());
+            entrySuhu.add(new Entry(i, ukk));
+            //labelSuhu.add(String.valueOf(i+1));
         }
 
+        ArrayList<ILineDataSet> lineDataSets = new ArrayList<>();
         LineDataSet dataSetSuhu = new LineDataSet(entrySuhu, "1 <= x <= -1");
         dataSetSuhu.setColor(Color.parseColor("#009688"));
         dataSetSuhu.setCircleColor(Color.parseColor("#ffcdd2"));
         dataSetSuhu.setCircleColorHole(Color.parseColor("#f44336"));
 
-        LineData dataSuhu = new LineData(labelSuhu, dataSetSuhu);
+        //LineDataSet labelSetSuhu = new LineDataSet(labelSuhu, "timestamp");
 
+        lineDataSets.add(dataSetSuhu);
+        //lineDataSets.add(labelSetSuhu);
+        LineData dataSuhu = new LineData(lineDataSets);
         chartSuhu.setData(dataSuhu);
-
-        // Update data
         chartSuhu.notifyDataSetChanged();
-
-        // Animate
         chartSuhu.animateY(1000);
 
     }

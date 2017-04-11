@@ -18,6 +18,7 @@ import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -61,7 +62,7 @@ public class HpcFragment extends Fragment {
     private void setupChart(){
         // Setup chart suhu
         chartSuhu = (LineChart) view.findViewById(R.id.chart_hpc);
-        chartSuhu.setDescription("");
+        //chartSuhu.setDescription("");
 
         updateChart();
     }
@@ -87,24 +88,21 @@ public class HpcFragment extends Fragment {
 
         for(int i = 0; i<DataHistoryActivity.allDatas.size();i++){
             AllData dat = DataHistoryActivity.allDatas.get(i);
-            float dooo = Float.parseFloat(dat.getHpc());
-            entrySuhu.add(new Entry(dooo,i));
-            labelSuhu.add(String.valueOf(i+1));
+            float hpc = Float.parseFloat(dat.getHpc());
+            entrySuhu.add(new Entry(i, hpc));
+            //labelSuhu.add(String.valueOf(i+1));
         }
+        ArrayList<ILineDataSet> lineDataSets = new ArrayList<>();
 
         LineDataSet dataSetSuhu = new LineDataSet(entrySuhu, "cm");
         dataSetSuhu.setColor(Color.parseColor("#009688"));
         dataSetSuhu.setCircleColor(Color.parseColor("#ffcdd2"));
         dataSetSuhu.setCircleColorHole(Color.parseColor("#f44336"));
 
-        LineData dataSuhu = new LineData(labelSuhu, dataSetSuhu);
-
+        lineDataSets.add(dataSetSuhu);
+        LineData dataSuhu = new LineData(lineDataSets);
         chartSuhu.setData(dataSuhu);
-
-        // Update data
         chartSuhu.notifyDataSetChanged();
-
-        // Animate
         chartSuhu.animateY(1000);
 
     }
