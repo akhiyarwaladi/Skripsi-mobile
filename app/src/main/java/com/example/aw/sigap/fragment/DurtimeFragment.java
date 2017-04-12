@@ -124,7 +124,7 @@ public class DurtimeFragment extends Fragment {
         // end date formater
 
         for(int i = 0; i<DataHistoryActivity.allDatas.size();i++){
-            AllData dat = DataHistoryActivity.allDatas.get(i);
+            AllData dat = DataHistoryActivity.allDatas.get((DataHistoryActivity.allDatas.size()-1) - i);
             float dur = Float.parseFloat(dat.getDurtime());
             entrySuhu.add(new Entry(i, dur));
             //labelSuhu.add(String.valueOf(i+1));

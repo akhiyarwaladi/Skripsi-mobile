@@ -24,6 +24,7 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -95,8 +96,11 @@ public class HpcFragment extends Fragment {
         // end date formater
 
         for(int i = 0; i<DataHistoryActivity.allDatas.size(); i++){
-            AllData dat = DataHistoryActivity.allDatas.get(i);
+            AllData dat = DataHistoryActivity.allDatas.get((DataHistoryActivity.allDatas.size()-1) - i);
             float hpc = Float.parseFloat(dat.getHpc());
+            String timestamp = dat.getCreatedAt();
+            Long timee = getTimeStampOnWithoutTime(timestamp);
+            Log.d("timee", Long.toString(timee));
             entrySuhu.add(new Entry(i, hpc));
             //labelSuhu.add(String.valueOf(i+1));
         }
@@ -133,5 +137,17 @@ public class HpcFragment extends Fragment {
         chartSuhu.notifyDataSetChanged();
         chartSuhu.animateY(1000);
 
+    }
+    public static long getTimeStampOnWithoutTime(String dateStr) {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        long timee = 0;
+        try {
+            Date date = format.parse(dateStr);
+            timee = date.getTime();
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return timee;
     }
 }

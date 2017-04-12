@@ -123,7 +123,7 @@ public class UkFragment extends Fragment {
         // end date formater
 
         for(int i = 0; i<DataHistoryActivity.allDatas.size();i++){
-            AllData dat = DataHistoryActivity.allDatas.get(i);
+            AllData dat = DataHistoryActivity.allDatas.get((DataHistoryActivity.allDatas.size()-1) - i);
             float ukk = Float.parseFloat(dat.getUkk());
             entrySuhu.add(new Entry(i, ukk));
             //labelSuhu.add(String.valueOf(i+1));
