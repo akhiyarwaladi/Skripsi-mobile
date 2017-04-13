@@ -12,5 +12,6 @@ public class EndPoint {
     public static final String URL_LOGIN = BASE_URL + "/login";
     public static final String URL_REGISTER = BASE_URL + "/register";
     public static final String URL_SETTINGS = BASE_URL + "/settingsalat";
+    public static final String URL_PREDICTION = "http://192.168.1.139:9000/predict";
 
 }

@@ -83,14 +83,15 @@ public class DataHistoryActivity extends BaseActivity {
 
         allDatas = new ArrayList<AllData>();
         predDatas = new ArrayList<PredictionData>();
-        predDatas.add(new PredictionData(Integer.toString(7), Integer.toString(3)));
-        predDatas.add(new PredictionData(Integer.toString(4), Integer.toString(8)));
-        predDatas.add(new PredictionData(Integer.toString(10), Integer.toString(2)));
+//        predDatas.add(new PredictionData(Integer.toString(7), Integer.toString(3)));
+//        predDatas.add(new PredictionData(Integer.toString(4), Integer.toString(8)));
+//        predDatas.add(new PredictionData(Integer.toString(10), Integer.toString(2)));
         final SharedPreferences sharedPreferencesApi = getSharedPreferences(Config.SHARED_PREF_API,
                 Context.MODE_PRIVATE);
         apiKey = sharedPreferencesApi.getString(Config.APIKEY_SHARED_PREF, "");
         Log.d("api", apiKey);
         getData();
+        predictData(id_alat);
 
     }
     public void getData(){
@@ -113,12 +114,16 @@ public class DataHistoryActivity extends BaseActivity {
                             String hpsp = dataObj.getString("hpsp");
                             String durtime = dataObj.getString("optime");
                             String createdAt = dataObj.getString("createdAt");
-                            String createdAt2 = getTimeStampOnWithoutTime(createdAt);
-                            AllData dataa = new AllData(ukk,hpc,hpsp,durtime, createdAt2);
+
+                            long dv = Long.valueOf(createdAt)*1000;// its need to be in milisecond
+                            Date df = new java.util.Date(dv);
+                            String vv = new SimpleDateFormat("MM dd, yyyy hh:mma").format(df);
+
+                            AllData dataa = new AllData(ukk, hpc, hpsp, durtime, vv);
                             allDatas.add(dataa);
+
                             setupViewPager(viewPager);
                             tabLayout.setupWithViewPager(viewPager);
-
                             tabLayout.getTabAt(0).setIcon(R.drawable.thermometer);
                             tabLayout.getTabAt(1).setIcon(R.drawable.thermometer);
                             tabLayout.getTabAt(2).setIcon(R.drawable.thermometer);
@@ -157,28 +162,63 @@ public class DataHistoryActivity extends BaseActivity {
         MyApplication.getInstance().addToRequestQueue(stringRequest);
     }
 
+    public void predictData(final String idalat){
+        //Toast.makeText(this, "HAHAHAHA", Toast.LENGTH_SHORT).show();
+        StringRequest stringRequest = new StringRequest(Request.Method.POST,
+                EndPoint.URL_PREDICTION, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.e(TAG, "onResponse: " + response);
+                try {
+                    JSONObject obj = new JSONObject(response);
+                    JSONArray data = obj.getJSONArray("tasks");
+                    for (int i = 0; i < data.length(); i++) {
+                        JSONObject dataObj = (JSONObject) data.get(i);
+                        Log.i("prediksiDapat", "" + dataObj);
+                        String senval = dataObj.getString("senVal");
+
+                        PredictionData pred = new PredictionData(senval, senval);
+                        predDatas.add(pred);
+                    }
+                } catch (JSONException e) {
+                    Log.e(TAG, "json parsing error: " + e.getMessage());
+                    Toast.makeText(DataHistoryActivity.this, "Json parse error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                NetworkResponse networkResponse = error.networkResponse;
+                Log.e(TAG, "Volley error: " + error.getMessage() + ", code: " + networkResponse);
+                Toast.makeText(DataHistoryActivity.this, "Volley errror: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map headers = new HashMap();
+                headers.put("Authorization", apiKey);
+                return headers;
+            }
+
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("idalat", idalat);
+                return params;
+            }
+        };
+        //Adding request to request queue
+        MyApplication.getInstance().addToRequestQueue(stringRequest);
+    }
+
+
     private void setupViewPager(ViewPager viewPager) {
         adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(new DurtimeFragment(), "Durtime");
         adapter.addFragment(new UkFragment(), "Uk");
         adapter.addFragment(new HpcFragment(), "Hpc");
         viewPager.setAdapter(adapter);
-    }
-
-    public static String getTimeStampOnWithoutTime(String dateStr) {
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String timestamp = "";
-        try {
-            Date date = format.parse(dateStr);
-
-            format = new SimpleDateFormat("dd LLL, yyyy | HH:mm");
-            String date1 = format.format(date);
-
-            timestamp = date1.toString();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return timestamp;
     }
 
     class ViewPagerAdapter extends FragmentPagerAdapter {

@@ -16,14 +16,18 @@ import android.view.ViewGroup;
 import com.example.aw.sigap.R;
 import com.example.aw.sigap.activity.DataHistoryActivity;
 import com.example.aw.sigap.adapter.SensorAdapter;
+import com.example.aw.sigap.helper.HourAxisValueFormatter;
 import com.example.aw.sigap.model.AllData;
 import com.example.aw.sigap.model.PredictionData;
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -53,7 +57,6 @@ public class HpcFragment extends Fragment {
 
         recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view_hpc);
         numData = DataHistoryActivity.allDatas.size();
-        Log.i("jumlah Data",""+numData);
         mAdapter = new SensorAdapter(DataHistoryActivity.HPC, DataHistoryActivity.allDatas);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
@@ -63,14 +66,10 @@ public class HpcFragment extends Fragment {
         setupChart();
 
         return view;
-        // Inflate the layout for this fragment
     }
 
     private void setupChart(){
-        // Setup chart suhu
         chartSuhu = (LineChart) view.findViewById(R.id.chart_hpc);
-        //chartSuhu.setDescription("");
-
         updateChart();
     }
 
@@ -84,23 +83,12 @@ public class HpcFragment extends Fragment {
         labelSuhu.clear();
         entrySuhuPred.clear();
 
-        // Date formater
-        SimpleDateFormat sourceFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS z");
-        Date parsed = new Date();
-
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMMM yyyy");
-        dateFormat.setTimeZone(TimeZone.getDefault());
-
-        SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
-        timeFormat.setTimeZone(TimeZone.getDefault());
-        // end date formater
 
         for(int i = 0; i<DataHistoryActivity.allDatas.size(); i++){
             AllData dat = DataHistoryActivity.allDatas.get((DataHistoryActivity.allDatas.size()-1) - i);
             float hpc = Float.parseFloat(dat.getHpc());
-            String timestamp = dat.getCreatedAt();
-            Long timee = getTimeStampOnWithoutTime(timestamp);
-            Log.d("timee", Long.toString(timee));
+            //String timestamp = dat.getCreatedAt();
+            //long timee = Long.parseLong(timestamp);
             entrySuhu.add(new Entry(i, hpc));
             //labelSuhu.add(String.valueOf(i+1));
         }
@@ -120,6 +108,7 @@ public class HpcFragment extends Fragment {
         dataSetSuhu.setFillDrawable(drawable);
         dataSetSuhu.setDrawFilled(true);
 
+
         LineDataSet dataSetSuhuPred = new LineDataSet(entrySuhuPred, "cm");
         dataSetSuhuPred.setMode(LineDataSet.Mode.CUBIC_BEZIER);
         dataSetSuhuPred.setColor(Color.parseColor("#0000FF"));
@@ -130,24 +119,31 @@ public class HpcFragment extends Fragment {
         lineDataSets.add(dataSetSuhu);
         lineDataSets.add(dataSetSuhuPred);
 
+
+
         LineData dataSuhu = new LineData(lineDataSets);
         chartSuhu.setData(dataSuhu);
         chartSuhu.setVisibleXRangeMaximum(10); //set n data only to display
         chartSuhu.moveViewToX((numData+entrySuhuPred.size()) - 10); //move view to 10 last data
+//        IAxisValueFormatter xAxisFormatter = new HourAxisValueFormatter(1451660400);
+//        XAxis xAxis = chartSuhu.getXAxis();
+//        xAxis.setValueFormatter(xAxisFormatter);
         chartSuhu.notifyDataSetChanged();
         chartSuhu.animateY(1000);
 
     }
-    public static long getTimeStampOnWithoutTime(String dateStr) {
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        long timee = 0;
-        try {
-            Date date = format.parse(dateStr);
-            timee = date.getTime();
-
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return timee;
-    }
+//    public static long getTimeStampOnWithoutTime(String dateStr) {
+//        DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//        long timee = 0;
+//        String str = "";
+//        try {
+//            Date date = (Date)formatter.parse(dateStr);
+//            timee = date.getTime()/1000L;
+//            //str=Long.toString(timee);
+//
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//        }
+//        return timee;
+//    }
 }
