@@ -97,11 +97,8 @@ public class DurtimeFragment extends Fragment {
     }
 
     private void setupChart(){
-        // Setup chart suhu
         chartSuhu = (LineChart) view.findViewById(R.id.chart_durtime);
-        //chartSuhu.setDescription("");
         updateChart();
-
     }
 
     private void updateChart(){
@@ -111,17 +108,6 @@ public class DurtimeFragment extends Fragment {
 
         entrySuhu.clear();
         labelSuhu.clear();
-
-        // Date formater
-        SimpleDateFormat sourceFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS z");
-        Date parsed = new Date();
-
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMMM yyyy");
-        dateFormat.setTimeZone(TimeZone.getDefault());
-
-        SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
-        timeFormat.setTimeZone(TimeZone.getDefault());
-        // end date formater
 
         for(int i = 0; i<DataHistoryActivity.allDatas.size();i++){
             AllData dat = DataHistoryActivity.allDatas.get((DataHistoryActivity.allDatas.size()-1) - i);
