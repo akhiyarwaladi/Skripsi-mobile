@@ -132,11 +132,13 @@ public class DetailActivity extends BaseActivity {
                             Log.i("dataDapat",""+dataObj);
                             String ukk = dataObj.getString("uk");
                             String hpc = dataObj.getString("hpc");
+                            String humidity = dataObj.getString("humid");
+                            String temperature = dataObj.getString("temp");
                             String hpsp = dataObj.getString("hpsp");
                             String durtime = dataObj.getString("optime");
                             String createdAt = dataObj.getString("createdAt");
                             Uk = ukk;
-                            AllData dataa = new AllData(ukk,hpc,hpsp,durtime, createdAt);
+                            AllData dataa = new AllData(ukk,hpc, humidity, temperature,hpsp,durtime, createdAt);
                             allDatas.add(dataa);
                         }
                         addBuddiesView(allDatas.get(allDatas.size()-(allDatas.size())));
@@ -198,7 +200,7 @@ public class DetailActivity extends BaseActivity {
             if(flexboxLayout.getChildCount()>0)
                 flexboxLayout.removeAllViews();
 
-        for(int i=0; i<3; i++) {
+        for(int i=0; i<5; i++) {
             final View itemView = getLayoutInflater().inflate(R.layout.layout_progress, null);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -254,6 +256,34 @@ public class DetailActivity extends BaseActivity {
 
                     nilai = Float.parseFloat(p.getDurtime());
                     progressBar.setMax(180);
+                    animation =  new ProgressBarAnimation(progressBar,progressBar.getProgress(),nilai);
+                    animation.setDuration(500);
+                    progressBar.setAnimation(animation);
+                    startCountAnimation(nilaiSensor,1500,0, (int) nilai);
+
+                    break;
+
+                case 3:
+                    nilaiSensor.setText(p.getHumidity());
+                    namaSensor.setText("Humidity");
+                    statusSensor.setText("ON");
+
+                    nilai = Float.parseFloat(p.getHumidity());
+                    progressBar.setMax(100);
+                    animation =  new ProgressBarAnimation(progressBar,progressBar.getProgress(),nilai);
+                    animation.setDuration(500);
+                    progressBar.setAnimation(animation);
+                    startCountAnimation(nilaiSensor,1500,0, (int) nilai);
+
+                    break;
+
+                case 4:
+                    nilaiSensor.setText(p.getTemperature());
+                    namaSensor.setText("Temperature");
+                    statusSensor.setText("ON");
+
+                    nilai = Float.parseFloat(p.getTemperature());
+                    progressBar.setMax(50);
                     animation =  new ProgressBarAnimation(progressBar,progressBar.getProgress(),nilai);
                     animation.setDuration(500);
                     progressBar.setAnimation(animation);

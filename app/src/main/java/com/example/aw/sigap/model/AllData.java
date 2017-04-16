@@ -11,6 +11,8 @@ import java.io.Serializable;
 public class AllData implements Serializable {
     String Ukk;
     String Hpc;
+    String Humidity;
+    String Temperature;
     String Hpsp;
     String Durtime;
     String CreatedAt;
@@ -19,6 +21,8 @@ public class AllData implements Serializable {
         Ukk = in.readString();
         Hpc = in.readString();
         Hpsp = in.readString();
+        Humidity = in.readString();
+        Temperature = in.readString();
         Durtime = in.readString();
         CreatedAt = in.readString();
     }
@@ -38,9 +42,11 @@ public class AllData implements Serializable {
 
     }
 
-    public AllData(String ukk, String hpc, String hpsp, String durtime, String createdAt) {
+    public AllData(String ukk, String hpc, String humidity, String temperature , String hpsp, String durtime, String createdAt) {
         Ukk = ukk;
         Hpc = hpc;
+        Humidity = humidity;
+        Temperature = temperature;
         Hpsp = hpsp;
         Durtime = durtime;
         CreatedAt = createdAt;
@@ -61,6 +67,22 @@ public class AllData implements Serializable {
 
     public void setHpc(String hpc) {
         Hpc = hpc;
+    }
+
+    public String getHumidity() {
+        return Humidity;
+    }
+
+    public void setHumidity(String humidity) {
+        Humidity = humidity;
+    }
+
+    public String getTemperature() {
+        return Temperature;
+    }
+
+    public void setTemperature(String temperature) {
+        Temperature = temperature;
     }
 
     public String getHpsp() {

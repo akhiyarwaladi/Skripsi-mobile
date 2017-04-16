@@ -111,6 +111,8 @@ public class DataHistoryActivity extends BaseActivity {
                             Log.i("dataDapat",""+dataObj);
                             String ukk = dataObj.getString("uk");
                             String hpc = dataObj.getString("hpc");
+                            String humidity = dataObj.getString("humid");
+                            String temperature = dataObj.getString("temp");
                             String hpsp = dataObj.getString("hpsp");
                             String durtime = dataObj.getString("optime");
                             String createdAt = dataObj.getString("createdAt");
@@ -119,7 +121,7 @@ public class DataHistoryActivity extends BaseActivity {
                             Date df = new java.util.Date(dv);
                             String vv = new SimpleDateFormat("MM dd, yyyy hh:mma").format(df);
 
-                            AllData dataa = new AllData(ukk, hpc, hpsp, durtime, vv);
+                            AllData dataa = new AllData(ukk, hpc, humidity, temperature, hpsp, durtime, vv);
                             allDatas.add(dataa);
 
                             setupViewPager(viewPager);
@@ -194,6 +196,11 @@ public class DataHistoryActivity extends BaseActivity {
                 Toast.makeText(DataHistoryActivity.this, "Volley errror: " + error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         }){
+            @Override
+            public String getBodyContentType() {
+                return "application/x-www-form-urlencoded; charset=UTF-8";
+            }
+
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map headers = new HashMap();
