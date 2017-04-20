@@ -38,8 +38,7 @@ public class SensorAdapter extends RecyclerView.Adapter<SensorAdapter.ViewHolder
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.sensor_data_list, parent, false);
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.sensor_data_list, parent, false);
 
         return new ViewHolder(itemView);
     }
@@ -52,6 +51,8 @@ public class SensorAdapter extends RecyclerView.Adapter<SensorAdapter.ViewHolder
         else if (stat == MainActivity.DURTIME) holder.nilai.setText(allData.getDurtime());
         else if (stat == MainActivity.UK) holder.nilai.setText(allData.getUkk());
         else if (stat == MainActivity.HPSP) holder.nilai.setText(allData.getHpsp());
+        else if (stat == MainActivity.HUMIDITY) holder.nilai.setText(allData.getHumidity());
+        else if (stat == MainActivity.TEMPERATURE) holder.nilai.setText(allData.getTemperature());
         else holder.nilai.setText("");
         holder.waktu.setText(allData.getCreatedAt());
     }

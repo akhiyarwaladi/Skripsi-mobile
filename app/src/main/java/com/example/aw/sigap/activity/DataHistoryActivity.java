@@ -3,6 +3,7 @@ package com.example.aw.sigap.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -28,6 +29,8 @@ import com.example.aw.sigap.app.EndPoint;
 import com.example.aw.sigap.app.MyApplication;
 import com.example.aw.sigap.fragment.DurtimeFragment;
 import com.example.aw.sigap.fragment.HpcFragment;
+import com.example.aw.sigap.fragment.HumidityFragment;
+import com.example.aw.sigap.fragment.TemperatureFragment;
 import com.example.aw.sigap.fragment.UkFragment;
 import com.example.aw.sigap.model.AllData;
 import com.example.aw.sigap.model.PredictionData;
@@ -48,11 +51,14 @@ import java.util.Map;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class DataHistoryActivity extends BaseActivity {
+public class DataHistoryActivity extends BaseActivity implements HumidityFragment.OnFragmentInteractionListener, TemperatureFragment.OnFragmentInteractionListener{
     private String TAG = DashboardActivity.class.getSimpleName();
     public static int UK = 1;
     public static int HPC = 2;
     public static int DURTIME = 3;
+    public static int HPSP = 6;
+    public static int HUMIDITY = 4;
+    public static int TEMPERATURE = 5;
 
     @Bind(R.id.tl_buddy_add)
     TabLayout tabLayout;
@@ -129,6 +135,8 @@ public class DataHistoryActivity extends BaseActivity {
                             tabLayout.getTabAt(0).setIcon(R.drawable.thermometer);
                             tabLayout.getTabAt(1).setIcon(R.drawable.thermometer);
                             tabLayout.getTabAt(2).setIcon(R.drawable.thermometer);
+                            tabLayout.getTabAt(3).setIcon(R.drawable.thermometer);
+                            tabLayout.getTabAt(4).setIcon(R.drawable.thermometer);
                         }
                     } else {
                         Toast.makeText(DataHistoryActivity.this, "" + obj.getJSONObject("error").getString("message"), Toast.LENGTH_LONG).show();
@@ -219,12 +227,17 @@ public class DataHistoryActivity extends BaseActivity {
         MyApplication.getInstance().addToRequestQueue(stringRequest);
     }
 
-
+    @Override
+    public void onFragmentInteraction(Uri uri){
+        //you can leave it empty
+    }
     private void setupViewPager(ViewPager viewPager) {
         adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(new DurtimeFragment(), "Durtime");
         adapter.addFragment(new UkFragment(), "Uk");
         adapter.addFragment(new HpcFragment(), "Hpc");
+        adapter.addFragment(new HumidityFragment(), "Humid");
+        adapter.addFragment(new TemperatureFragment(), "Temp");
         viewPager.setAdapter(adapter);
     }
 

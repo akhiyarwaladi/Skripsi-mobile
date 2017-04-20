@@ -92,11 +92,11 @@ public class HpcFragment extends Fragment {
             entrySuhu.add(new Entry(i, hpc));
             //labelSuhu.add(String.valueOf(i+1));
         }
-        for(int i = 0; i<DataHistoryActivity.predDatas.size(); i++){
-            PredictionData pred = DataHistoryActivity.predDatas.get(i);
-            float suhu = Float.parseFloat(pred.getSuhu());
-            entrySuhuPred.add(new Entry((i+numData), suhu));
-        }
+//        for(int i = 0; i<DataHistoryActivity.predDatas.size(); i++){
+//            PredictionData pred = DataHistoryActivity.predDatas.get(i);
+//            float suhu = Float.parseFloat(pred.getKelembaban());
+//            entrySuhuPred.add(new Entry((i+numData), suhu));
+//        }
         ArrayList<ILineDataSet> lineDataSets = new ArrayList<>();
 
         LineDataSet dataSetSuhu = new LineDataSet(entrySuhu, "cm");
@@ -109,15 +109,15 @@ public class HpcFragment extends Fragment {
         dataSetSuhu.setDrawFilled(true);
 
 
-        LineDataSet dataSetSuhuPred = new LineDataSet(entrySuhuPred, "cm");
-        dataSetSuhuPred.setMode(LineDataSet.Mode.CUBIC_BEZIER);
-        dataSetSuhuPred.setColor(Color.parseColor("#0000FF"));
-        dataSetSuhuPred.setCircleColor(Color.parseColor("#9575CD"));
-        dataSetSuhuPred.setCircleColorHole(Color.parseColor("#27ae60"));
-        dataSetSuhuPred.setDrawFilled(true);
+//        LineDataSet dataSetSuhuPred = new LineDataSet(entrySuhuPred, "cm");
+//        dataSetSuhuPred.setMode(LineDataSet.Mode.CUBIC_BEZIER);
+//        dataSetSuhuPred.setColor(Color.parseColor("#0000FF"));
+//        dataSetSuhuPred.setCircleColor(Color.parseColor("#9575CD"));
+//        dataSetSuhuPred.setCircleColorHole(Color.parseColor("#27ae60"));
+//        dataSetSuhuPred.setDrawFilled(true);
 
         lineDataSets.add(dataSetSuhu);
-        lineDataSets.add(dataSetSuhuPred);
+//        lineDataSets.add(dataSetSuhuPred);
 
 
 

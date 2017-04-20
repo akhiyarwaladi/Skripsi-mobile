@@ -12,8 +12,11 @@ public class MainActivity extends AppCompatActivity {
     public static int UK = 1;
     public static int HPC = 2;
     public static int DURTIME = 3;
-    public static int HPSP = 4;
+    public static int HPSP = 6;
+    public static int HUMIDITY = 4;
+    public static int TEMPERATURE = 5;
     public static List<SensorModel> allDataArrayList = new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
