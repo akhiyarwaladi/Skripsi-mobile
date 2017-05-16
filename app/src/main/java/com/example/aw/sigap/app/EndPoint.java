@@ -6,7 +6,7 @@ package com.example.aw.sigap.app;
 
 public class EndPoint {
 
-    public static final String BASE_URL = "http://192.168.43.98/Sigap-Server/v1";
+    public static final String BASE_URL = "http://192.168.2.176/Sigap-Server/v1";
     public static final String URL_ALAT = BASE_URL + "/getalatuser";
     public static final String URL_DATA = BASE_URL + "/databyidalat";
     public static final String URL_LOGIN = BASE_URL + "/login";

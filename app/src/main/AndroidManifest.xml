@@ -54,7 +54,8 @@
         <activity android:name=".activity.BatteryLowActivity" />
         <activity android:name=".activity.DeviceNotWorking" />
         <activity android:name=".activity.MapsActivity" />
-        <activity android:name=".activity.SettingsActivity"></activity>
+        <activity android:name=".activity.SettingsActivity" />
+        <activity android:name=".activity.SensorNodes"></activity>
     </application>
 
 </manifest>

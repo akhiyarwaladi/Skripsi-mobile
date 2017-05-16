@@ -178,7 +178,7 @@ public class DashboardActivity extends BaseActivity {
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(DashboardActivity.this, DetailActivity.class);
+                Intent intent = new Intent(DashboardActivity.this, SensorNodes.class);
                 intent.putExtra("objectPerson", p);
                 intent.putExtra("id_alat", id_alat);
                 intent.putExtra("latitude", latitude);

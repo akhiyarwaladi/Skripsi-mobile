@@ -6,4 +6,10 @@
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="appbar_padding_top">64dp</dimen>
     <dimen name="buddy_circle_size_big">100dp</dimen>
+
+
+    <dimen name="margin_normal">5dp</dimen>
+    <dimen name="margin_large">8dp</dimen>
+    <dimen name="text_size_large">16sp</dimen>
+    <dimen name="margin_small">0dp</dimen>
 </resources>
