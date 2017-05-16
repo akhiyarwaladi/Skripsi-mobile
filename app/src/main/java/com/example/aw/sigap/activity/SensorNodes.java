@@ -6,10 +6,13 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import com.example.aw.sigap.R;
 import com.example.aw.sigap.adapter.SensorNodeAdapter;
 import com.example.aw.sigap.model.SensorNode;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +37,6 @@ public class SensorNodes extends AppCompatActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-
 
         final Intent intent = getIntent();
         id_alat = intent.getStringExtra("id_alat");
@@ -62,5 +64,25 @@ public class SensorNodes extends AppCompatActivity {
 
         adapter.notifyDataSetChanged();
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.dashboard, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == android.R.id.home) {
+            finish();
+        }
+        else if(id == R.id.action_logout){
+            FirebaseAuth.getInstance().signOut();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
