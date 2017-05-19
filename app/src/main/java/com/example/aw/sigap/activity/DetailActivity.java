@@ -69,9 +69,8 @@ public class DetailActivity extends BaseActivity {
 
         ButterKnife.bind(this);
         final Intent intent = getIntent();
-        id_alat = intent.getStringExtra("id_alat");
-        latitude = intent.getStringExtra("latitude");
-        longitude = intent.getStringExtra("longitude");
+        id_alat = intent.getStringExtra("id_node");
+
 
         allDatas = new ArrayList<AllData>();
         final SharedPreferences sharedPreferencesApi = getSharedPreferences(Config.SHARED_PREF_API,
@@ -126,21 +125,22 @@ public class DetailActivity extends BaseActivity {
 
                     if (obj.getBoolean("error") == false) {
 //                        Toast.makeText(DetailActivity.this, "Data dapat"+response, Toast.LENGTH_SHORT).show();
-                        JSONArray data = obj.getJSONArray("tasks");
-                        for (int i = 0; i < 1; i++) {
-                            JSONObject dataObj = (JSONObject) data.get(i);
-                            Log.i("dataDapat",""+dataObj);
-                            String ukk = dataObj.getString("uk");
-                            String hpc = dataObj.getString("hpc");
-                            String humidity = dataObj.getString("humid");
-                            String temperature = dataObj.getString("temp");
-                            String hpsp = dataObj.getString("hpsp");
-                            String durtime = dataObj.getString("optime");
-                            String createdAt = dataObj.getString("createdAt");
-                            Uk = ukk;
-                            AllData dataa = new AllData(ukk,hpc, humidity, temperature,hpsp,durtime, createdAt);
-                            allDatas.add(dataa);
-                        }
+                        JSONArray data = obj.getJSONArray("dataset");
+
+                        JSONObject dataObj = (JSONObject) data.get(1);
+                        JSONObject setObj = new JSONObject(dataObj.getString("data"));
+                        Log.i("dataDapat",""+dataObj);
+                        String ukk = setObj.getString("humidity");
+                        String hpc = setObj.getString("humidity");
+                        String humidity = setObj.getString("humidity");
+                        String temperature = setObj.getString("humidity");
+                        String hpsp = setObj.getString("humidity");
+                        String durtime = setObj.getString("humidity");
+                        String createdAt = dataObj.getString("created_at");
+                        Uk = ukk;
+                        AllData dataa = new AllData(ukk,hpc, humidity, temperature,hpsp,durtime, createdAt);
+                        allDatas.add(dataa);
+
                         addBuddiesView(allDatas.get(allDatas.size()-(allDatas.size())));
                         TextView header = (TextView) findViewById(R.id.tv_status);
                         if(Float.parseFloat(Uk) > 0){
@@ -182,6 +182,7 @@ public class DetailActivity extends BaseActivity {
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map headers = new HashMap();
                 headers.put("Authorization", apiKey);
+                headers.put("x-snow-token", "SECRET_API_KEY");
 
                 return headers;
             }

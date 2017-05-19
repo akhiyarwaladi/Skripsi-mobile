@@ -97,7 +97,7 @@ public class DataHistoryActivity extends BaseActivity implements HumidityFragmen
         apiKey = sharedPreferencesApi.getString(Config.APIKEY_SHARED_PREF, "");
         Log.d("api", apiKey);
         getData();
-        predictData(id_alat);
+        //predictData(id_alat);
 
     }
     public void getData(){
@@ -111,23 +111,24 @@ public class DataHistoryActivity extends BaseActivity implements HumidityFragmen
 
                     if (obj.getBoolean("error") == false) {
 //                        Toast.makeText(DataHistoryActivity.this, "Data dapat"+response, Toast.LENGTH_SHORT).show();
-                        JSONArray data = obj.getJSONArray("tasks");
+                        JSONArray data = obj.getJSONArray("dataset");
                         for (int i = 0; i < data.length(); i++) {
                             JSONObject dataObj = (JSONObject) data.get(i);
+                            JSONObject setObj = new JSONObject(dataObj.getString("data"));
                             Log.i("dataDapat",""+dataObj);
-                            String ukk = dataObj.getString("uk");
-                            String hpc = dataObj.getString("hpc");
-                            String humidity = dataObj.getString("humid");
-                            String temperature = dataObj.getString("temp");
-                            String hpsp = dataObj.getString("hpsp");
-                            String durtime = dataObj.getString("optime");
-                            String createdAt = dataObj.getString("createdAt");
+                            String ukk = setObj.getString("humidity");
+                            String hpc = setObj.getString("humidity");
+                            String humidity = setObj.getString("humidity");
+                            String temperature = setObj.getString("humidity");
+                            String hpsp = setObj.getString("humidity");
+                            String durtime = setObj.getString("humidity");
+                            String createdAt = dataObj.getString("created_at");
 
-                            long dv = Long.valueOf(createdAt)*1000;// its need to be in milisecond
-                            Date df = new java.util.Date(dv);
-                            String vv = new SimpleDateFormat("MM dd, yyyy hh:mma").format(df);
+//                            long dv = Long.valueOf(createdAt)*1000;// its need to be in milisecond
+//                            Date df = new java.util.Date(dv);
+//                            String vv = new SimpleDateFormat("MM dd, yyyy hh:mma").format(df);
 
-                            AllData dataa = new AllData(ukk, hpc, humidity, temperature, hpsp, durtime, vv);
+                            AllData dataa = new AllData(ukk, hpc, humidity, temperature, hpsp, durtime, createdAt);
                             allDatas.add(dataa);
 
                             setupViewPager(viewPager);
@@ -159,6 +160,7 @@ public class DataHistoryActivity extends BaseActivity implements HumidityFragmen
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map headers = new HashMap();
                 headers.put("Authorization", apiKey);
+                headers.put("x-snow-token", "SECRET_API_KEY");
 
                 return headers;
             }

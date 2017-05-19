@@ -114,20 +114,20 @@ public class DashboardActivity extends BaseActivity {
 
                     if (obj.getBoolean("error") == false) {
 //                        Toast.makeText(DashboardActivity.this, "Data dapat"+response, Toast.LENGTH_SHORT).show();
-                        JSONArray data = obj.getJSONArray("tasks");
+                        JSONArray data = obj.getJSONArray("devices");
                         nonConnection.setVisibility(View.GONE);
                         for (int i = 0; i < data.length(); i++) {
                             JSONObject dataObj = (JSONObject) data.get(i);
                             Log.i("dataDapat",""+dataObj);
-                            String idAlat = dataObj.getString("id");
-                            String namaAlat = dataObj.getString("nama");
-                            String kodeAlat = dataObj.getString("kode_alat");
-                            String apayangPenting = dataObj.getString("kode_alat");
-                            int rssi = dataObj.getInt("rssi");
-                            int battery = dataObj.getInt("battery");
-                            String latitude = dataObj.getString("latitude");
-                            String longitude = dataObj.getString("longitude");
-                            Alat alat = new Alat(idAlat, namaAlat, kodeAlat, apayangPenting, latitude, longitude, rssi, battery );
+                            String idAlat = dataObj.getString("_id");
+                            String namaAlat = dataObj.getString("name");
+                            String kodeAlat = dataObj.getString("name");
+                            String apayangPenting = dataObj.getString("created_at");
+                            //int rssi = dataObj.getInt("rssi");
+                            //int battery = dataObj.getInt("battery");
+                            String latitude = dataObj.getString("name");
+                            String longitude = dataObj.getString("name");
+                            Alat alat = new Alat( idAlat, namaAlat, kodeAlat, apayangPenting, latitude, longitude, 14, 14 );
                             allAlat.add(alat);
                         }
                         renderBuddies();
@@ -154,6 +154,7 @@ public class DashboardActivity extends BaseActivity {
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map headers = new HashMap();
                 headers.put("Authorization", apiKey);
+                headers.put("x-snow-token", "SECRET_API_KEY");
 
                 return headers;
             }
