@@ -9,14 +9,18 @@ import java.io.Serializable;
 public class SensorNode implements Serializable{
     private String id;
     private String nama;
+    private String device;
+    private String tipe;
 
     public SensorNode(){
 
     }
 
-    public SensorNode(String id, String nama) {
+    public SensorNode(String id, String nama, String device, String tipe) {
         this.id = id;
         this.nama = nama;
+        this.device = device;
+        this.tipe = tipe;
     }
 
     public String getId() {
@@ -33,5 +37,22 @@ public class SensorNode implements Serializable{
 
     public void setNama(String nama) {
         this.nama = nama;
+    }
+
+
+    public String getDevice() {
+        return device;
+    }
+
+    public void setDevice(String device) {
+        this.device = device;
+    }
+
+    public String getTipe() {
+        return tipe;
+    }
+
+    public void setTipe(String tipe) {
+        this.tipe = tipe;
     }
 }

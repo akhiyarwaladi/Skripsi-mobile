@@ -29,7 +29,7 @@ public class SensorNodeAdapter extends RecyclerView.Adapter<SensorNodeAdapter.My
     private List<SensorNode> sensorNodeList;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView title, count;
+        public TextView title, type, count;
         public ImageView thumbnail;
         public Button bDetail;
         public CardView cv;
@@ -37,6 +37,7 @@ public class SensorNodeAdapter extends RecyclerView.Adapter<SensorNodeAdapter.My
         public MyViewHolder(View view) {
             super(view);
             title = (TextView) view.findViewById(R.id.title);
+            type = (TextView) view.findViewById(R.id.type);
             count = (TextView) view.findViewById(R.id.count);
             thumbnail = (ImageView) view.findViewById(R.id.thumbnail);
             bDetail = (Button) view.findViewById(R.id.bDetail);
@@ -61,7 +62,9 @@ public class SensorNodeAdapter extends RecyclerView.Adapter<SensorNodeAdapter.My
     public void onBindViewHolder(final MyViewHolder holder, int position) {
         final SensorNode sensorNode = sensorNodeList.get(position);
         holder.title.setText(sensorNode.getNama());
+        holder.type.setText(sensorNode.getTipe());
         holder.count.setText(sensorNode.getNama() + " songs");
+
         //Glide.with(mContext).load(SensorNode.getUrlImage()).into(holder.thumbnail);
 
         holder.cv.setOnClickListener(new View.OnClickListener() {
@@ -70,7 +73,7 @@ public class SensorNodeAdapter extends RecyclerView.Adapter<SensorNodeAdapter.My
                 Toast.makeText(mContext, "pilih "+sensorNode.getNama(), Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(mContext, DetailActivity.class);
                 intent.putExtra("id_node", sensorNode.getId());
-                intent.putExtra("nama", sensorNode.getNama());
+                intent.putExtra("device", sensorNode.getDevice());
 
                 mContext.startActivity(intent);
             }

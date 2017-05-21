@@ -26,12 +26,12 @@
         android:src="@android:drawable/ic_dialog_alert" />
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="80dp"
         android:layout_height="wrap_content"
         android:text="New Text"
         android:textSize="17sp"
         android:id="@+id/tv_name"
-        android:layout_gravity="center_horizontal"
+        android:gravity="center"
         android:textStyle="bold"
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/civ_photo"

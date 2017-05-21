@@ -32,15 +32,24 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/title"
                 android:layout_toRightOf="@+id/thumbnail"
-                android:layout_centerInParent="true"
-                android:textSize="15sp"/>
+                android:textSize="18sp"
+                android:text="name" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/type"
+                android:layout_toRightOf="@+id/thumbnail"
+                android:layout_below="@+id/title"
+                android:textSize="15sp"
+                android:text="type"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/count"
                 android:layout_toRightOf="@+id/thumbnail"
-                android:layout_below="@+id/title"
+                android:layout_below="@+id/type"
                 android:visibility="gone"
                 android:paddingBottom="0dp"/>
 

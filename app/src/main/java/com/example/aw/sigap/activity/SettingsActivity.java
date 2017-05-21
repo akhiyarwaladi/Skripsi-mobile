@@ -42,7 +42,7 @@ public class SettingsActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private EditText hpsp, optime;
     private Button changeSettings;
-    private String apiKey, id_alat;
+    private String apiKey, id_alat, device;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,6 +57,7 @@ public class SettingsActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         id_alat = intent.getStringExtra("id_alat");
+        device = intent.getStringExtra("device");
 
         final SharedPreferences sharedPreferencesApi = getSharedPreferences(Config.SHARED_PREF_API,
                 Context.MODE_PRIVATE);
@@ -80,7 +81,7 @@ public class SettingsActivity extends AppCompatActivity {
     public void updateSettings(final String hpsp, final String optime, final String idalat){
         //Toast.makeText(this, "HAHAHAHA", Toast.LENGTH_SHORT).show();
         StringRequest stringRequest = new StringRequest(Request.Method.PUT,
-                EndPoint.URL_SETTINGS, new Response.Listener<String>() {
+                EndPoint.URL_SETTINGS+"/"+id_alat+"/update", new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 Log.e(TAG, "onResponse: " + response);
@@ -111,6 +112,7 @@ public class SettingsActivity extends AppCompatActivity {
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map headers = new HashMap();
                 headers.put("Authorization", apiKey);
+                headers.put("x-snow-token", "SECRET_API_KEY");
 
                 return headers;
             }
@@ -118,9 +120,10 @@ public class SettingsActivity extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("hpsp", hpsp);
-                params.put("optime", optime);
-                params.put("idalat", idalat);
+                params.put("setPoint", hpsp);
+                params.put("opTime", optime);
+                params.put("device", device);
+
                 return params;
             }
         };

@@ -97,8 +97,10 @@ public class SensorNodes extends AppCompatActivity {
                             Log.i("dataDapat",""+dataObj);
                             String idNodes = dataObj.getString("_id");
                             String namaNodes = dataObj.getString("name");
+                            String device = dataObj.getString("device");
+                            String tipeNodes = dataObj.getString("miconType");
 
-                            SensorNode sensorNode = new SensorNode( idNodes, namaNodes );
+                            SensorNode sensorNode = new SensorNode( idNodes, namaNodes, device, tipeNodes );
                             sensorNodeList.add(sensorNode);
                         }
 
