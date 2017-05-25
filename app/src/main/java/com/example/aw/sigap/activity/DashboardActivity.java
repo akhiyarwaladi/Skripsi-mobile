@@ -99,7 +99,6 @@ public class DashboardActivity extends BaseActivity {
         Log.d("api", apiKey);
         getAlat();
 
-
     }
 
     public void getAlat(){
@@ -111,7 +110,6 @@ public class DashboardActivity extends BaseActivity {
                 Log.e(TAG, "onResponse: " + response);
                 try {
                     JSONObject obj = new JSONObject(response);
-
                     if (obj.getBoolean("error") == false) {
 //                        Toast.makeText(DashboardActivity.this, "Data dapat"+response, Toast.LENGTH_SHORT).show();
                         JSONArray data = obj.getJSONArray("devices");
@@ -158,7 +156,6 @@ public class DashboardActivity extends BaseActivity {
 
                 return headers;
             }
-
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 return super.getParams();
@@ -249,6 +246,22 @@ public class DashboardActivity extends BaseActivity {
 
                         //Saving the sharedpreferences
                         editor.commit();
+//                        SharedPreferences user = DashboardActivity.this.getSharedPreferences(Config.SHARED_PREF_NAME,
+//                                Context.MODE_PRIVATE);
+//                        SharedPreferences apiKey = DashboardActivity.this.getSharedPreferences(Config.SHARED_PREF_API,
+//                                Context.MODE_PRIVATE);
+//
+//                        SharedPreferences.Editor editor = user.edit();
+//                        SharedPreferences.Editor editor1 = apiKey.edit();
+//
+//                        editor.putBoolean(Config.LOGGEDIN_SHARED_PREF, false);
+//                        editor1.putBoolean(Config.API_SHARED_PREF, false);
+//
+//                        editor.putString(Config.USERNAME_SHARED_PREF, "");
+//                        editor1.putString(Config.APIKEY_SHARED_PREF, "");
+//
+//                        editor.commit();
+//                        editor1.commit();
 
                         //Starting login activity
                         Intent intent = new Intent(DashboardActivity.this, LoginActivity.class);

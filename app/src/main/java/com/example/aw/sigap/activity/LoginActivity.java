@@ -67,9 +67,9 @@ public class LoginActivity extends AppCompatActivity {
         //getSupportActionBar().setTitle("Sigap");
         ButterKnife.bind(this);
 
-        pDialog = new ProgressDialog(this);
-        pDialog.setMessage("Loading...");
-        pDialog.setCancelable(true);
+//        pDialog = new ProgressDialog(this);
+//        pDialog.setMessage("Loading...");
+//        pDialog.setCancelable(true);
 
     }
     @Override
@@ -195,6 +195,7 @@ public class LoginActivity extends AppCompatActivity {
             protected Map<String,String> getParams(){
                 Map<String,String> params = new HashMap<String, String>();
                 params.put("username", email);
+                //params.put("email", email);
                 params.put("password", password);
                 return params;
             }
