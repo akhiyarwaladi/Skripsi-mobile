@@ -97,7 +97,7 @@ public class DataHistoryActivity extends BaseActivity implements HumidityFragmen
         apiKey = sharedPreferencesApi.getString(Config.APIKEY_SHARED_PREF, "");
         Log.d("api", apiKey);
         getData();
-        //predictData(id_alat);
+        predictData(id_alat);
 
     }
     public void getData(){
@@ -183,7 +183,7 @@ public class DataHistoryActivity extends BaseActivity implements HumidityFragmen
                 Log.e(TAG, "onResponse: " + response);
                 try {
                     JSONObject obj = new JSONObject(response);
-                    JSONArray data = obj.getJSONArray("tasks");
+                    JSONArray data = obj.getJSONArray("prediction");
                     for (int i = 0; i < data.length(); i++) {
                         JSONObject dataObj = (JSONObject) data.get(i);
                         Log.i("prediksiDapat", "" + dataObj);
@@ -215,13 +215,14 @@ public class DataHistoryActivity extends BaseActivity implements HumidityFragmen
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map headers = new HashMap();
                 headers.put("Authorization", apiKey);
+                headers.put("x-snow-token", "SECRET_API_KEY");
                 return headers;
             }
 
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("idalat", idalat);
+                params.put("idnode", idalat);
                 return params;
             }
         };
