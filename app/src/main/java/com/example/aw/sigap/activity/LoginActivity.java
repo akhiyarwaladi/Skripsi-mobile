@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -59,17 +60,11 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
-        //toolbar = (Toolbar)findViewById(R.id.tool_bar);
-        //setSupportActionBar(toolbar);
-        //toolbar.setVisibility(View.GONE);
-
-        //getSupportActionBar().setTitle("Sigap");
         ButterKnife.bind(this);
 
-//        pDialog = new ProgressDialog(this);
-//        pDialog.setMessage("Loading...");
-//        pDialog.setCancelable(true);
+        pDialog = new ProgressDialog(this);
+        pDialog.setMessage("Loading...");
+        pDialog.setCancelable(true);
 
     }
     @Override
@@ -138,7 +133,7 @@ public class LoginActivity extends AppCompatActivity {
 
                     @Override
                     public void onResponse(String response) {
-//                        Toast.makeText(MainActivity.this,response,Toast.LENGTH_LONG).show();
+                        Toast.makeText(LoginActivity.this,response,Toast.LENGTH_LONG).show();
 
                         try {
                             JSONObject obj = new JSONObject(response);
@@ -198,6 +193,13 @@ public class LoginActivity extends AppCompatActivity {
                 //params.put("email", email);
                 params.put("password", password);
                 return params;
+            }
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map headers = new HashMap();
+                headers.put("x-snow-token", "SECRET_API_KEY");
+
+                return headers;
             }
         };
         MyApplication.getInstance().addToRequestQueue(stringRequest);
