@@ -115,6 +115,7 @@ public class HumidityFragment extends Fragment {
 
 
         for(int i = 0; i<DataHistoryActivity.allDatas.size(); i++){
+            //get last data first because api sort by date
             AllData dat = DataHistoryActivity.allDatas.get((DataHistoryActivity.allDatas.size()-1) - i);
             float humid = Float.parseFloat(dat.getHumidity());
             //String timestamp = dat.getCreatedAt();
@@ -122,10 +123,18 @@ public class HumidityFragment extends Fragment {
             entrySuhu.add(new Entry(i, humid));
             //labelSuhu.add(String.valueOf(i+1));
         }
+
         for(int i = 0; i<DataHistoryActivity.predDatas.size(); i++){
-            PredictionData pred = DataHistoryActivity.predDatas.get(i);
-            float kelembaban = Float.parseFloat(pred.getKelembaban());
-            entrySuhuPred.add(new Entry((i+numData), kelembaban));
+            if (i == 0){
+                AllData dat = DataHistoryActivity.allDatas.get(i);
+                float humid = Float.parseFloat(dat.getHumidity());
+                entrySuhuPred.add(new Entry((i - 1 + numData), humid));
+            }
+            else {
+                PredictionData pred = DataHistoryActivity.predDatas.get(i);
+                float kelembaban = Float.parseFloat(pred.getKelembaban());
+                entrySuhuPred.add(new Entry((i - 1 + numData), kelembaban));
+            }
         }
         ArrayList<ILineDataSet> lineDataSets = new ArrayList<>();
 
