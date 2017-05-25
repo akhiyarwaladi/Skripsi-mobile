@@ -234,6 +234,7 @@ public class DashboardActivity extends BaseActivity {
 
                         //Getting out sharedpreferences
                         SharedPreferences preferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
+
                         //Getting editor
                         SharedPreferences.Editor editor = preferences.edit();
 
