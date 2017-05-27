@@ -52,7 +52,7 @@ import butterknife.OnClick;
 public class DashboardActivity extends BaseActivity {
 
     private String TAG = DashboardActivity.class.getSimpleName();
-    private String apiKey;
+    private String userId, apiKey;
     @Bind(R.id.fb_buddies)
     FlexboxLayout flexboxLayout;
     List<Alat> allAlat;
@@ -93,9 +93,14 @@ public class DashboardActivity extends BaseActivity {
         pDialog.setCancelable(true);
 
         allAlat = new ArrayList<Alat>();
+        final SharedPreferences sharedPreferencesUid= getSharedPreferences(Config.SHARED_PREF_NAME,
+                Context.MODE_PRIVATE);
         final SharedPreferences sharedPreferencesApi = getSharedPreferences(Config.SHARED_PREF_API,
                 Context.MODE_PRIVATE);
+        userId = sharedPreferencesUid.getString(Config.USERNAME_SHARED_PREF, "");
         apiKey = sharedPreferencesApi.getString(Config.APIKEY_SHARED_PREF, "");
+
+        Log.d("uid", userId);
         Log.d("api", apiKey);
         getAlat();
 

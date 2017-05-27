@@ -144,7 +144,7 @@ public class LoginActivity extends AppCompatActivity {
                             }
                             else {
 
-                                String username = String.valueOf(obj.get("username"));
+                                String username = String.valueOf(obj.get("userId"));
                                 String apikey = String.valueOf(obj.get("apiKey"));
                                 SharedPreferences user = LoginActivity.this.getSharedPreferences(Config.SHARED_PREF_NAME,
                                         Context.MODE_PRIVATE);

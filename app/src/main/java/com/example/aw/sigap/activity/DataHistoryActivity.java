@@ -89,9 +89,11 @@ public class DataHistoryActivity extends BaseActivity implements HumidityFragmen
 
         allDatas = new ArrayList<AllData>();
         predDatas = new ArrayList<PredictionData>();
+
 //        predDatas.add(new PredictionData(Integer.toString(7), Integer.toString(3)));
 //        predDatas.add(new PredictionData(Integer.toString(4), Integer.toString(8)));
 //        predDatas.add(new PredictionData(Integer.toString(10), Integer.toString(2)));
+
         final SharedPreferences sharedPreferencesApi = getSharedPreferences(Config.SHARED_PREF_API,
                 Context.MODE_PRIVATE);
         apiKey = sharedPreferencesApi.getString(Config.APIKEY_SHARED_PREF, "");
@@ -234,6 +236,7 @@ public class DataHistoryActivity extends BaseActivity implements HumidityFragmen
     public void onFragmentInteraction(Uri uri){
         //you can leave it empty
     }
+
     private void setupViewPager(ViewPager viewPager) {
         adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(new DurtimeFragment(), "Durtime");
