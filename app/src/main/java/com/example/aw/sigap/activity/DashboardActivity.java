@@ -109,7 +109,7 @@ public class DashboardActivity extends BaseActivity {
     public void getAlat(){
         showPDialog();
         StringRequest stringRequest = new StringRequest(Request.Method.GET,
-                EndPoint.URL_ALAT, new Response.Listener<String>() {
+                EndPoint.URL_ALAT+"/"+userId, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 Log.e(TAG, "onResponse: " + response);
@@ -117,7 +117,7 @@ public class DashboardActivity extends BaseActivity {
                     JSONObject obj = new JSONObject(response);
                     if (obj.getBoolean("error") == false) {
 //                        Toast.makeText(DashboardActivity.this, "Data dapat"+response, Toast.LENGTH_SHORT).show();
-                        JSONArray data = obj.getJSONArray("devices");
+                        JSONArray data = obj.getJSONArray("device");
                         nonConnection.setVisibility(View.GONE);
                         for (int i = 0; i < data.length(); i++) {
                             JSONObject dataObj = (JSONObject) data.get(i);
