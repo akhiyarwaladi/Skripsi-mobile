@@ -153,7 +153,7 @@ public class SensorNodes extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.dashboard, menu);
+        getMenuInflater().inflate(R.menu.node, menu);
         return true;
     }
 
@@ -167,6 +167,11 @@ public class SensorNodes extends AppCompatActivity {
         else if(id == R.id.action_logout){
             FirebaseAuth.getInstance().signOut();
             return true;
+        }
+        else if(id == R.id.create_node){
+            Intent intent2 = new Intent(SensorNodes.this, CreateSensorNode.class);
+
+            startActivity(intent2);
         }
         return super.onOptionsItemSelected(item);
     }

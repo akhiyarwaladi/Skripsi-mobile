@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -53,6 +54,7 @@ public class DashboardActivity extends BaseActivity {
 
     private String TAG = DashboardActivity.class.getSimpleName();
     private String userId, apiKey;
+    private Button btnCreate;
     @Bind(R.id.fb_buddies)
     FlexboxLayout flexboxLayout;
     List<Alat> allAlat;
@@ -75,6 +77,8 @@ public class DashboardActivity extends BaseActivity {
         Toast.makeText(this, "getToken "+token, Toast.LENGTH_SHORT).show();
         Log.d(TAG, token);
     }
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,6 +107,16 @@ public class DashboardActivity extends BaseActivity {
         Log.d("uid", userId);
         Log.d("api", apiKey);
         getAlat();
+
+        btnCreate = (Button) findViewById(R.id.create);
+        btnCreate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent2 = new Intent(DashboardActivity.this, CreateDevice.class);
+
+                startActivity(intent2);
+            }
+        });
 
     }
 

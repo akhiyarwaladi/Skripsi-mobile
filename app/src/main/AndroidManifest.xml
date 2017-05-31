@@ -55,7 +55,9 @@
         <activity android:name=".activity.DeviceNotWorking" />
         <activity android:name=".activity.MapsActivity" />
         <activity android:name=".activity.SettingsActivity" />
-        <activity android:name=".activity.SensorNodes"></activity>
+        <activity android:name=".activity.SensorNodes" />
+        <activity android:name=".activity.CreateDevice" />
+        <activity android:name=".activity.CreateSensorNode"></activity>
     </application>
 
 </manifest>
