@@ -109,7 +109,7 @@ public class SensorNodeAdapter extends RecyclerView.Adapter<SensorNodeAdapter.My
     public void deleteSensorNode(final String idnode, final String iddevice){
         //Toast.makeText(this, "HAHAHAHA", Toast.LENGTH_SHORT).show();
         StringRequest stringRequest = new StringRequest(Request.Method.DELETE,
-                EndPoint.URL_SETTINGS+"/"+idnode+"/remove", new Response.Listener<String>() {
+                EndPoint.URL_DELETE_NODE+"/"+idnode+"/remove", new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
 

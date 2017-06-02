@@ -11,6 +11,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -43,10 +45,10 @@ public class SensorNodes extends AppCompatActivity {
     private RecyclerView recyclerView;
     private SensorNodeAdapter adapter;
     private List<SensorNode> sensorNodeList;
-
+    private TextView tvdevDetail;
+    private Button bdelDevice;
     private String TAG = DashboardActivity.class.getSimpleName();
-
-    String Uk, apiKey, id_alat, latitude, longitude;
+    String Uk, apiKey, id_alat, name , latitude, longitude;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,10 +63,14 @@ public class SensorNodes extends AppCompatActivity {
 
         final Intent intent = getIntent();
         id_alat = intent.getStringExtra("id_alat");
+        name = intent.getStringExtra("name");
         latitude = intent.getStringExtra("latitude");
         longitude = intent.getStringExtra("longitude");
         ButterKnife.bind(this);
         Log.d("id_alat", id_alat);
+
+        tvdevDetail = (TextView)findViewById(R.id.tv_devdetail);
+        tvdevDetail.setText(name);
 
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         sensorNodeList = new ArrayList<>();
@@ -76,6 +82,14 @@ public class SensorNodes extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
 
         prepareNodes();
+        bdelDevice = (Button)findViewById(R.id.bDeleteDevice);
+        bdelDevice.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(SensorNodes.this, "delete this", Toast.LENGTH_SHORT).show();
+                deleteDevice(id_alat);
+            }
+        });
     }
 
     private void prepareNodes() {
@@ -148,6 +162,59 @@ public class SensorNodes extends AppCompatActivity {
 //
 //        adapter.notifyDataSetChanged();
 
+    }
+
+    private void deleteDevice(final String idalat){
+        StringRequest stringRequest = new StringRequest(Request.Method.DELETE,
+                EndPoint.URL_DELETE_ALAT+"/"+idalat+"/remove", new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.e(TAG, "onResponse: " + response);
+                try {
+                    JSONObject obj = new JSONObject(response);
+
+                    if (obj.getBoolean("error") == false) {
+                        Toast.makeText(SensorNodes.this, "" + obj.getString("message"), Toast.LENGTH_SHORT).show();
+                        Intent intent2 = new Intent(SensorNodes.this, DashboardActivity.class);
+
+                        startActivity(intent2);
+
+                    } else {
+                        Toast.makeText(SensorNodes.this, "" + obj.getString("message"), Toast.LENGTH_LONG).show();
+                    }
+                } catch (JSONException e) {
+                    Log.e(TAG, "json parsing error: " + e.getMessage());
+                    Toast.makeText(SensorNodes.this, "Json parse error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                NetworkResponse networkResponse = error.networkResponse;
+                Log.e(TAG, "Volley error: " + error.getMessage() + ", code: " + networkResponse);
+                Toast.makeText(SensorNodes.this, "Volley errror: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map headers = new HashMap();
+                headers.put("Authorization", apiKey);
+                headers.put("x-snow-token", "SECRET_API_KEY");
+
+                return headers;
+            }
+
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+
+
+                return params;
+            }
+        };
+        //Adding request to request queue
+        MyApplication.getInstance().addToRequestQueue(stringRequest);
     }
 
 

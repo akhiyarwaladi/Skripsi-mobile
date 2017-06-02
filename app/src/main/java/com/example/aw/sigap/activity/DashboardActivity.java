@@ -192,17 +192,20 @@ public class DashboardActivity extends BaseActivity {
         final String id_alat = p.getId();
         final String latitude = p.getLatitude();
         final String longitude = p.getLongitude();
+
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(DashboardActivity.this, SensorNodes.class);
                 intent.putExtra("objectPerson", p);
                 intent.putExtra("id_alat", id_alat);
+                intent.putExtra("name", name);
                 intent.putExtra("latitude", latitude);
                 intent.putExtra("longitude", longitude);
                 startActivity(intent);
             }
         });
+
         TextView tv = (TextView) itemView.findViewById(R.id.tv_name);
         tv.setText(name);
 
