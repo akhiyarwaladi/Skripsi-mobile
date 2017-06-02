@@ -10,8 +10,11 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -37,8 +40,14 @@ public class CreateSensorNode extends AppCompatActivity {
     private String TAG = DashboardActivity.class.getSimpleName();
     private Toolbar toolbar;
     private EditText nama;
+    private Spinner spMiconType;
+    private TextView deviceName;
     private Button createNode;
     private String userId, apiKey, id_alat, device;
+
+
+    String miconType[] = { "Arduino Uno", "Arduino Leonardo" , "Arduino Mega" };
+    ArrayAdapter<String> adapterMiconType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +61,9 @@ public class CreateSensorNode extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
+        final Intent intent = getIntent();
+        id_alat = intent.getStringExtra("id_alat");
+
         final SharedPreferences sharedPreferencesUid= getSharedPreferences(Config.SHARED_PREF_NAME,
                 Context.MODE_PRIVATE);
         final SharedPreferences sharedPreferencesApi = getSharedPreferences(Config.SHARED_PREF_API,
@@ -59,17 +71,30 @@ public class CreateSensorNode extends AppCompatActivity {
         userId = sharedPreferencesUid.getString(Config.USERNAME_SHARED_PREF, "");
         apiKey = sharedPreferencesApi.getString(Config.APIKEY_SHARED_PREF, "");
 
+        nama = (EditText)findViewById(R.id.sname);
+        deviceName = (TextView)findViewById(R.id.deviceName);
+        deviceName.setText(id_alat);
+        //////////////////////////////////////////////////////////////////////////
+        //initiate spinner
+        spMiconType = (Spinner) findViewById(R.id.spinnerMiconType);
+        // Initialize and set Adapter
+        adapterMiconType = new ArrayAdapter<String>(this,
+                android.R.layout.simple_spinner_item, miconType);
+        adapterMiconType.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spMiconType.setAdapter(adapterMiconType);
+        ///////////////////////////////////////////////////////////////////////////
+
         createNode = (Button)findViewById(R.id.createNode);
         createNode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String newnama = nama.getText().toString();
-
-                createSensorNode(newnama);
+                String newtype = spMiconType.getSelectedItem().toString();
+                createSensorNode(newnama, newtype);
             }
         });
     }
-    public void createSensorNode(final String nama){
+    public void createSensorNode(final String nama, final String type){
         //Toast.makeText(this, "HAHAHAHA", Toast.LENGTH_SHORT).show();
         StringRequest stringRequest = new StringRequest(Request.Method.POST,
                 EndPoint.URL_CREATE_NODE, new Response.Listener<String>() {
@@ -82,7 +107,7 @@ public class CreateSensorNode extends AppCompatActivity {
                     if (obj.getBoolean("error") == false) {
                         Toast.makeText(CreateSensorNode.this, "" + obj.getString("message"), Toast.LENGTH_SHORT).show();
                         Intent intent2 = new Intent(CreateSensorNode.this, SensorNodes.class);
-
+                        intent2.putExtra("id_alat", id_alat);
                         startActivity(intent2);
 
                     } else {
@@ -115,6 +140,8 @@ public class CreateSensorNode extends AppCompatActivity {
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("name", nama);
+                params.put("miconType", type);
+                params.put("device", id_alat);
 
                 return params;
             }

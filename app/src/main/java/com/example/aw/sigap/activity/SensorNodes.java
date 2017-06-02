@@ -170,8 +170,13 @@ public class SensorNodes extends AppCompatActivity {
         }
         else if(id == R.id.create_node){
             Intent intent2 = new Intent(SensorNodes.this, CreateSensorNode.class);
-
+            intent2.putExtra("id_alat", id_alat);
             startActivity(intent2);
+        }
+        else if(id == R.id.action_refresh){
+            Intent intent3 = new Intent(SensorNodes.this, SensorNodes.class);
+            intent3.putExtra("id_alat", id_alat);
+            startActivity(intent3);
         }
         return super.onOptionsItemSelected(item);
     }

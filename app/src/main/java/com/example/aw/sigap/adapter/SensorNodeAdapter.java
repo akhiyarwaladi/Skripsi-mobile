@@ -72,7 +72,7 @@ public class SensorNodeAdapter extends RecyclerView.Adapter<SensorNodeAdapter.My
             public void onClick( View v) {
                 Toast.makeText(mContext, "pilih "+sensorNode.getNama(), Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(mContext, DetailActivity.class);
-                intent.putExtra("id_node", sensorNode.getId());
+                intent.putExtra("id_alat", sensorNode.getId());
                 intent.putExtra("device", sensorNode.getDevice());
 
                 mContext.startActivity(intent);

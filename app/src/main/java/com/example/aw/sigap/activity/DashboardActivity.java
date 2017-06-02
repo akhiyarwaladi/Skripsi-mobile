@@ -302,6 +302,10 @@ public class DashboardActivity extends BaseActivity {
             alertDialog.show();
             return true;
         }
+        else if(id == R.id.action_refresh){
+            Intent intent = new Intent(DashboardActivity.this, DashboardActivity.class);
+            startActivity(intent);
+        }
         return super.onOptionsItemSelected(item);
     }
 }

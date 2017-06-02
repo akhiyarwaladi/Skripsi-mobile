@@ -69,7 +69,7 @@ public class DetailActivity extends BaseActivity {
 
         ButterKnife.bind(this);
         final Intent intent = getIntent();
-        id_alat = intent.getStringExtra("id_node");
+        id_alat = intent.getStringExtra("id_alat");
         device = intent.getStringExtra("device");
 
 
@@ -113,7 +113,6 @@ public class DetailActivity extends BaseActivity {
             }
         });
 
-
     }
 
     public void getData(){
@@ -126,21 +125,21 @@ public class DetailActivity extends BaseActivity {
                     JSONObject obj = new JSONObject(response);
 
                     if (obj.getBoolean("error") == false) {
-//                        Toast.makeText(DetailActivity.this, "Data dapat"+response, Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(DetailActivity.this, "Data dapat"+response, Toast.LENGTH_SHORT).show();
                         JSONArray data = obj.getJSONArray("dataset");
 
                         JSONObject dataObj = (JSONObject) data.get(1);
                         JSONObject setObj = new JSONObject(dataObj.getString("data"));
                         Log.i("dataDapat",""+dataObj);
                         String ukk = setObj.getString("humidity");
-                        String hpc = setObj.getString("humidity");
+                        String hpc = setObj.getString("waterlevel");
                         String humidity = setObj.getString("humidity");
-                        String temperature = setObj.getString("humidity");
+                        String temperature = setObj.getString("temperature");
                         String hpsp = setObj.getString("humidity");
                         String durtime = setObj.getString("humidity");
                         String createdAt = dataObj.getString("created_at");
                         Uk = ukk;
-                        AllData dataa = new AllData(ukk,hpc, humidity, temperature,hpsp,durtime, createdAt);
+                        AllData dataa = new AllData("1", hpc, humidity, temperature, "5", "60", createdAt);
                         allDatas.add(dataa);
 
                         addBuddiesView(allDatas.get(allDatas.size()-(allDatas.size())));
@@ -168,7 +167,12 @@ public class DetailActivity extends BaseActivity {
                     }
                 } catch (JSONException e) {
                     Log.e(TAG, "json parsing error: " + e.getMessage());
-                    Toast.makeText(DetailActivity.this, "Json parse error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                    //Toast.makeText(DetailActivity.this, "Json parse error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                    Intent intent3 = new Intent(DetailActivity.this, EmptyData.class);
+                    intent3.putExtra("id_alat", id_alat);
+                    intent3.putExtra("device", device);
+                    startActivity(intent3);
+
                 }
 
             }
