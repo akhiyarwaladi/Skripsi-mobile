@@ -12,6 +12,7 @@
         android:background="#FFFFFF"
         android:elevation="7dp"
         android:theme="@style/ThemeOverlay.AppCompat.Light">
+
         <ImageView
             android:layout_width="100dp"
             android:layout_height="40dp"
