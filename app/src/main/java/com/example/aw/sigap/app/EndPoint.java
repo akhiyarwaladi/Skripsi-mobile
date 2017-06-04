@@ -30,5 +30,6 @@ public class EndPoint {
 
 
     public static final String URL_PREDICTION = BASE_URL + "/prediction/get";
+    public static final String URL_CONTROL = BASE_URL + "/control";
 
 }

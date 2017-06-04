@@ -47,7 +47,7 @@ import butterknife.ButterKnife;
 public class DetailActivity extends BaseActivity {
 
     private String TAG = DashboardActivity.class.getSimpleName();
-    Button btnHistory, btnMaps, btnSettings;
+    Button btnHistory, btnMaps, btnSettings, btnON, btnOFF;
     Toolbar toolbar;
     String Uk, apiKey, id_alat, device, latitude, longitude;
 
@@ -113,6 +113,20 @@ public class DetailActivity extends BaseActivity {
             }
         });
 
+        btnON = (Button) findViewById(R.id.bON);
+        btnON.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                controlNode(id_alat, "1");
+            }
+        });
+        btnOFF = (Button) findViewById(R.id.bOFF);
+        btnOFF.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                controlNode(id_alat, "0");
+            }
+        });
     }
 
     public void getData(){
@@ -200,6 +214,58 @@ public class DetailActivity extends BaseActivity {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 return super.getParams();
+            }
+        };
+        //Adding request to request queue
+        MyApplication.getInstance().addToRequestQueue(stringRequest);
+    }
+
+    private void controlNode(final String idalat, final String status){
+        StringRequest stringRequest = new StringRequest(Request.Method.POST,
+                EndPoint.URL_CONTROL, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.e(TAG, "onResponse: " + response);
+                try {
+                    JSONObject obj = new JSONObject(response);
+
+                    if (obj.getBoolean("error") == false) {
+                        Toast.makeText(DetailActivity.this, "" + obj.getString("message"), Toast.LENGTH_SHORT).show();
+
+
+                    } else {
+                        Toast.makeText(DetailActivity.this, "" + obj.getString("message"), Toast.LENGTH_LONG).show();
+                    }
+                } catch (JSONException e) {
+                    Log.e(TAG, "json parsing error: " + e.getMessage());
+                    Toast.makeText(DetailActivity.this, "Json parse error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                NetworkResponse networkResponse = error.networkResponse;
+                Log.e(TAG, "Volley error: " + error.getMessage() + ", code: " + networkResponse);
+                Toast.makeText(DetailActivity.this, "Volley errror: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map headers = new HashMap();
+                headers.put("Authorization", apiKey);
+                headers.put("x-snow-token", "SECRET_API_KEY");
+
+                return headers;
+            }
+
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("idnode", idalat);
+                params.put("status", status);
+
+                return params;
             }
         };
         //Adding request to request queue
