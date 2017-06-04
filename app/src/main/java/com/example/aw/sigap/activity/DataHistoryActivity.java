@@ -118,12 +118,15 @@ public class DataHistoryActivity extends BaseActivity implements HumidityFragmen
                             JSONObject dataObj = (JSONObject) data.get(i);
                             JSONObject setObj = new JSONObject(dataObj.getString("data"));
                             Log.i("dataDapat",""+dataObj);
-                            String ukk = setObj.getString("humidity");
-                            String hpc = setObj.getString("humidity");
+
+
+                            String hpc = setObj.getString("waterlevel");
                             String humidity = setObj.getString("humidity");
-                            String temperature = setObj.getString("humidity");
-                            String hpsp = setObj.getString("humidity");
-                            String durtime = setObj.getString("humidity");
+                            String temperature = setObj.getString("temperature");
+
+                            String ukk = dataObj.getString("uk");
+                            String hpsp = dataObj.getString("setPoint");
+                            String durtime = dataObj.getString("opTime");
                             String createdAt = dataObj.getString("created_at");
 
 //                            long dv = Long.valueOf(createdAt)*1000;// its need to be in milisecond

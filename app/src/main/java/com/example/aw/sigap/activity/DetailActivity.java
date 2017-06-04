@@ -131,15 +131,19 @@ public class DetailActivity extends BaseActivity {
                         JSONObject dataObj = (JSONObject) data.get(1);
                         JSONObject setObj = new JSONObject(dataObj.getString("data"));
                         Log.i("dataDapat",""+dataObj);
-                        String ukk = setObj.getString("humidity");
+
+
                         String hpc = setObj.getString("waterlevel");
                         String humidity = setObj.getString("humidity");
                         String temperature = setObj.getString("temperature");
-                        String hpsp = setObj.getString("humidity");
-                        String durtime = setObj.getString("humidity");
+
+                        String ukk = dataObj.getString("uk");
+                        String hpsp = dataObj.getString("setPoint");
+                        String durtime = dataObj.getString("opTime");
                         String createdAt = dataObj.getString("created_at");
+
                         Uk = ukk;
-                        AllData dataa = new AllData("1", hpc, humidity, temperature, "5", "60", createdAt);
+                        AllData dataa = new AllData(ukk, hpc, humidity, temperature, hpsp , durtime, createdAt);
                         allDatas.add(dataa);
 
                         addBuddiesView(allDatas.get(allDatas.size()-(allDatas.size())));
