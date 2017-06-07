@@ -37,10 +37,18 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.messaging.FirebaseMessaging;
 
+import org.eclipse.paho.android.service.MqttAndroidClient;
+import org.eclipse.paho.client.mqttv3.IMqttActionListener;
+import org.eclipse.paho.client.mqttv3.IMqttToken;
+import org.eclipse.paho.client.mqttv3.MqttClient;
+import org.eclipse.paho.client.mqttv3.MqttException;
+import org.eclipse.paho.client.mqttv3.MqttMessage;
+import org.eclipse.paho.client.mqttv3.MqttPersistenceException;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -49,6 +57,8 @@ import java.util.Map;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+import static com.example.aw.sigap.R.drawable.payload;
 
 public class DashboardActivity extends BaseActivity {
 
@@ -107,6 +117,7 @@ public class DashboardActivity extends BaseActivity {
         Log.d("uid", userId);
         Log.d("api", apiKey);
         getAlat();
+        getAlatMQTT();
 
         btnCreate = (Button) findViewById(R.id.create);
         btnCreate.setOnClickListener(new View.OnClickListener() {
@@ -183,6 +194,56 @@ public class DashboardActivity extends BaseActivity {
         //Adding request to request queue
         MyApplication.getInstance().addToRequestQueue(stringRequest);
         hidePDialog();
+    }
+
+    public void getAlatMQTT(){
+
+        String clientId = MqttClient.generateClientId();
+        final MqttAndroidClient client = new MqttAndroidClient(this.getApplicationContext(), "tcp://192.168.0.113:1883", clientId);
+
+        try {
+            IMqttToken token = client.connect();
+            token.setActionCallback(new IMqttActionListener() {
+                @Override
+                public void onSuccess(IMqttToken asyncActionToken) {
+                    // We are connected
+                    Log.d(TAG, "onSuccess");
+                    //PUBLISH THE MESSAGE
+                    MqttMessage message = new MqttMessage("Hello, I am an Android Mqtt Client.".getBytes());
+                    message.setQos(2);
+                    message.setRetained(false);
+
+                    String topic = "test";
+
+                    try {
+                        client.publish(topic, message);
+                        Log.i("mqtt", "Message published");
+                        Toast.makeText(DashboardActivity.this, "success publish", Toast.LENGTH_SHORT).show();
+
+                        // client.disconnect();
+                        //Log.i("mqtt", "client disconnected");
+
+                    } catch (MqttPersistenceException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+
+                    } catch (MqttException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+
+                }
+
+                @Override
+                public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
+                    // Something went wrong e.g. connection timeout or firewall problems
+                    Log.d(TAG, "onFailure");
+
+                }
+            });
+        } catch (MqttException e) {
+            e.printStackTrace();
+        }
     }
 
 
