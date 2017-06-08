@@ -32,10 +32,14 @@ import com.example.aw.sigap.model.AllData;
 import com.google.android.flexbox.FlexboxLayout;
 import com.google.firebase.auth.FirebaseAuth;
 
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -156,10 +160,14 @@ public class DetailActivity extends BaseActivity {
                         String durtime = dataObj.getString("opTime");
                         String createdAt = dataObj.getString("created_at");
 
-                        Uk = ukk;
-                        AllData dataa = new AllData(ukk, hpc, humidity, temperature, hpsp , durtime, createdAt);
+                        DateTime dateTime = DateTime.parse(createdAt);
+                        DateTimeFormatter fmt = DateTimeFormat.forPattern("hh:mm:ss a");
+                        String strDateOnly = fmt.print(dateTime);
+                        long secondsSinceEpoch = dateTime.getMillis() / 1000;
+                        Log.d("haha", Long.toString(secondsSinceEpoch));
+                        AllData dataa = new AllData(ukk, hpc, humidity, temperature, hpsp, durtime, strDateOnly, Long.toString(secondsSinceEpoch));
                         allDatas.add(dataa);
-
+                        Uk = ukk;
                         addBuddiesView(allDatas.get(allDatas.size()-(allDatas.size())));
                         TextView header = (TextView) findViewById(R.id.tv_status);
                         if(Float.parseFloat(Uk) > 0){

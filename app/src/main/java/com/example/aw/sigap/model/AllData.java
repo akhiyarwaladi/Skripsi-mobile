@@ -16,6 +16,7 @@ public class AllData implements Serializable {
     String Hpsp;
     String Durtime;
     String CreatedAt;
+    String TimeStamp;
 
     protected AllData(Parcel in) {
         Ukk = in.readString();
@@ -25,6 +26,7 @@ public class AllData implements Serializable {
         Temperature = in.readString();
         Durtime = in.readString();
         CreatedAt = in.readString();
+        TimeStamp = in.readString();
     }
 
     public String getId() {
@@ -42,7 +44,7 @@ public class AllData implements Serializable {
 
     }
 
-    public AllData(String ukk, String hpc, String humidity, String temperature , String hpsp, String durtime, String createdAt) {
+    public AllData(String ukk, String hpc, String humidity, String temperature , String hpsp, String durtime, String createdAt, String timeStamp) {
         Ukk = ukk;
         Hpc = hpc;
         Humidity = humidity;
@@ -50,6 +52,7 @@ public class AllData implements Serializable {
         Hpsp = hpsp;
         Durtime = durtime;
         CreatedAt = createdAt;
+        TimeStamp = timeStamp;
     }
 
 
@@ -107,5 +110,13 @@ public class AllData implements Serializable {
 
     public void setCreatedAt(String createdAt) {
         CreatedAt = createdAt;
+    }
+
+    public String getTimeStamp() {
+        return TimeStamp;
+    }
+
+    public void setTimeStamp(String timeStamp) {
+        TimeStamp = timeStamp;
     }
 }

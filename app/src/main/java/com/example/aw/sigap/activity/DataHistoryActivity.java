@@ -43,6 +43,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -140,8 +141,9 @@ public class DataHistoryActivity extends BaseActivity implements HumidityFragmen
                             DateTime dateTime = DateTime.parse(createdAt);
                             DateTimeFormatter fmt = DateTimeFormat.forPattern("hh:mm:ss a");
                             String strDateOnly = fmt.print(dateTime);
-
-                            AllData dataa = new AllData(ukk, hpc, humidity, temperature, hpsp, durtime, strDateOnly);
+                            long secondsSinceEpoch = dateTime.getMillis() / 1000;
+                            Log.d("haha", Long.toString(secondsSinceEpoch));
+                            AllData dataa = new AllData(ukk, hpc, humidity, temperature, hpsp, durtime, strDateOnly, Long.toString(secondsSinceEpoch));
                             allDatas.add(dataa);
 
                             setupViewPager(viewPager);

@@ -112,6 +112,9 @@ public class DurtimeFragment extends Fragment {
         for(int i = 0; i<DataHistoryActivity.allDatas.size();i++){
             AllData dat = DataHistoryActivity.allDatas.get((DataHistoryActivity.allDatas.size()-1) - i);
             float dur = Float.parseFloat(dat.getDurtime());
+            String timestamp = dat.getTimeStamp();
+            long timee = Long.parseLong(timestamp);
+            Log.d("timee", Long.toString(timee));
             entrySuhu.add(new Entry(i, dur));
             //labelSuhu.add(String.valueOf(i+1));
         }

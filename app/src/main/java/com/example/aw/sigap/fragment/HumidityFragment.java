@@ -118,6 +118,7 @@ public class HumidityFragment extends Fragment {
             //get last data first because api sort by date
             AllData dat = DataHistoryActivity.allDatas.get((DataHistoryActivity.allDatas.size()-1) - i);
             float humid = Float.parseFloat(dat.getHumidity());
+
             //String timestamp = dat.getCreatedAt();
             //long timee = Long.parseLong(timestamp);
             entrySuhu.add(new Entry(i, humid));
