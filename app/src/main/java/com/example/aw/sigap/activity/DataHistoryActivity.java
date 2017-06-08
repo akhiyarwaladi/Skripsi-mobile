@@ -36,10 +36,14 @@ import com.example.aw.sigap.model.AllData;
 import com.example.aw.sigap.model.PredictionData;
 import com.google.firebase.auth.FirebaseAuth;
 
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -47,6 +51,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -132,8 +137,11 @@ public class DataHistoryActivity extends BaseActivity implements HumidityFragmen
 //                            long dv = Long.valueOf(createdAt)*1000;// its need to be in milisecond
 //                            Date df = new java.util.Date(dv);
 //                            String vv = new SimpleDateFormat("MM dd, yyyy hh:mma").format(df);
+                            DateTime dateTime = DateTime.parse(createdAt);
+                            DateTimeFormatter fmt = DateTimeFormat.forPattern("h:mm:ss a");
+                            String strDateOnly = fmt.print(dateTime);
 
-                            AllData dataa = new AllData(ukk, hpc, humidity, temperature, hpsp, durtime, createdAt);
+                            AllData dataa = new AllData(ukk, hpc, humidity, temperature, hpsp, durtime, strDateOnly);
                             allDatas.add(dataa);
 
                             setupViewPager(viewPager);
@@ -233,6 +241,21 @@ public class DataHistoryActivity extends BaseActivity implements HumidityFragmen
         };
         //Adding request to request queue
         MyApplication.getInstance().addToRequestQueue(stringRequest);
+    }
+    public static String getTimeStampOnWithoutTime(String dateStr) {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        String timestamp = "";
+        try {
+            Date date = format.parse(dateStr);
+
+            format = new SimpleDateFormat("dd LLL, yyyy | HH:mm");
+            String date1 = format.format(date);
+
+            timestamp = date1.toString();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return timestamp;
     }
 
     @Override
