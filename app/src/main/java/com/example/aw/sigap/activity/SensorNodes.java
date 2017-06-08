@@ -82,14 +82,14 @@ public class SensorNodes extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
 
         prepareNodes();
-        bdelDevice = (Button)findViewById(R.id.bDeleteDevice);
-        bdelDevice.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(SensorNodes.this, "delete this", Toast.LENGTH_SHORT).show();
-                deleteDevice(id_alat);
-            }
-        });
+//        bdelDevice = (Button)findViewById(R.id.bDeleteDevice);
+//        bdelDevice.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Toast.makeText(SensorNodes.this, "delete this", Toast.LENGTH_SHORT).show();
+//                deleteDevice(id_alat);
+//            }
+//        });
     }
 
     private void prepareNodes() {
