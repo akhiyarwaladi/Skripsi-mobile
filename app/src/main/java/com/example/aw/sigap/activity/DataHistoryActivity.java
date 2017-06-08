@@ -138,7 +138,7 @@ public class DataHistoryActivity extends BaseActivity implements HumidityFragmen
 //                            Date df = new java.util.Date(dv);
 //                            String vv = new SimpleDateFormat("MM dd, yyyy hh:mma").format(df);
                             DateTime dateTime = DateTime.parse(createdAt);
-                            DateTimeFormatter fmt = DateTimeFormat.forPattern("h:mm:ss a");
+                            DateTimeFormatter fmt = DateTimeFormat.forPattern("hh:mm:ss a");
                             String strDateOnly = fmt.print(dateTime);
 
                             AllData dataa = new AllData(ukk, hpc, humidity, temperature, hpsp, durtime, strDateOnly);
