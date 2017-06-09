@@ -117,7 +117,7 @@ public class DashboardActivity extends BaseActivity {
         Log.d("uid", userId);
         Log.d("api", apiKey);
         getAlat();
-        getAlatMQTT();
+        //getAlatMQTT();
 
         btnCreate = (Button) findViewById(R.id.create);
         btnCreate.setOnClickListener(new View.OnClickListener() {

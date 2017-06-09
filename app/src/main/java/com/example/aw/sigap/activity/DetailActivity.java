@@ -121,6 +121,10 @@ public class DetailActivity extends BaseActivity {
         btnON.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                TextView header = (TextView) findViewById(R.id.tv_status);
+                header.setText(" IRIGASI ON ");
+                header.setTextColor(Color.WHITE);
+                header.setBackgroundColor(Color.parseColor("#1BBC9B"));
                 controlNode(id_alat, "1");
             }
         });
@@ -128,6 +132,10 @@ public class DetailActivity extends BaseActivity {
         btnOFF.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                TextView header = (TextView) findViewById(R.id.tv_status);
+                header.setText(" IRIGASI OFF ");
+                header.setTextColor(Color.WHITE);
+                header.setBackgroundColor(Color.RED);
                 controlNode(id_alat, "0");
             }
         });
@@ -148,12 +156,14 @@ public class DetailActivity extends BaseActivity {
 
                         JSONObject dataObj = (JSONObject) data.get(1);
                         JSONObject setObj = new JSONObject(dataObj.getString("data"));
+                        JSONObject setObj2 = new JSONObject(dataObj.getString("sensornode"));
                         Log.i("dataDapat",""+dataObj);
 
 
                         String hpc = setObj.getString("waterlevel");
                         String humidity = setObj.getString("humidity");
                         String temperature = setObj.getString("temperature");
+                        String status = setObj2.getString("status");
 
                         String ukk = dataObj.getString("uk");
                         String hpsp = dataObj.getString("setPoint");
@@ -165,27 +175,38 @@ public class DetailActivity extends BaseActivity {
                         String strDateOnly = fmt.print(dateTime);
                         long secondsSinceEpoch = dateTime.getMillis() / 1000;
                         Log.d("haha", Long.toString(secondsSinceEpoch));
-                        AllData dataa = new AllData(ukk, hpc, humidity, temperature, hpsp, durtime, strDateOnly, Long.toString(secondsSinceEpoch));
+                        AllData dataa = new AllData(ukk, hpc, humidity, temperature, hpsp, durtime, strDateOnly,
+                                Long.toString(secondsSinceEpoch), status);
                         allDatas.add(dataa);
                         Uk = ukk;
                         addBuddiesView(allDatas.get(allDatas.size()-(allDatas.size())));
                         TextView header = (TextView) findViewById(R.id.tv_status);
-                        if(Float.parseFloat(Uk) > 0){
+//                        if(Float.parseFloat(Uk) > 0){
+//                            header.setText(" IRIGASI ON ");
+//                            header.setTextColor(Color.WHITE);
+//                            header.setBackgroundColor(Color.parseColor("#1BBC9B"));
+//                        }
+//                        else if(Float.parseFloat(Uk) == 0){
+//                            header.setText(" IRIGASI OFF ");
+//                            header.setTextColor(Color.WHITE);
+//                            header.setBackgroundColor(Color.RED);
+//                        }
+//                        else{
+//                            Uk = "-1";
+//                            Log.i("data",""+Uk);
+//                            header.setText(" DRAINASE ");
+//                            header.setTextColor(Color.WHITE);
+//                            header.setBackgroundColor(Color.BLUE);
+//                        }
+                        if(status.equals("1")){
                             header.setText(" IRIGASI ON ");
                             header.setTextColor(Color.WHITE);
                             header.setBackgroundColor(Color.parseColor("#1BBC9B"));
                         }
-                        else if(Float.parseFloat(Uk) == 0){
+                        else {
                             header.setText(" IRIGASI OFF ");
                             header.setTextColor(Color.WHITE);
                             header.setBackgroundColor(Color.RED);
-                        }
-                        else{
-                            Uk = "-1";
-                            Log.i("data",""+Uk);
-                            header.setText(" DRAINASE ");
-                            header.setTextColor(Color.WHITE);
-                            header.setBackgroundColor(Color.BLUE);
                         }
                     } else {
                         // error in fetching data

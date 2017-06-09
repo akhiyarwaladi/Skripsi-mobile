@@ -123,12 +123,14 @@ public class DataHistoryActivity extends BaseActivity implements HumidityFragmen
                         for (int i = 0; i < data.length(); i++) {
                             JSONObject dataObj = (JSONObject) data.get(i);
                             JSONObject setObj = new JSONObject(dataObj.getString("data"));
+                            JSONObject setObj2 = new JSONObject(dataObj.getString("sensornode"));
                             Log.i("dataDapat",""+dataObj);
 
 
                             String hpc = setObj.getString("waterlevel");
                             String humidity = setObj.getString("humidity");
                             String temperature = setObj.getString("temperature");
+                            String status = setObj2.getString("status");
 
                             String ukk = dataObj.getString("uk");
                             String hpsp = dataObj.getString("setPoint");
@@ -143,7 +145,8 @@ public class DataHistoryActivity extends BaseActivity implements HumidityFragmen
                             String strDateOnly = fmt.print(dateTime);
                             long secondsSinceEpoch = dateTime.getMillis() / 1000;
                             Log.d("haha", Long.toString(secondsSinceEpoch));
-                            AllData dataa = new AllData(ukk, hpc, humidity, temperature, hpsp, durtime, strDateOnly, Long.toString(secondsSinceEpoch));
+                            AllData dataa = new AllData(ukk, hpc, humidity, temperature, hpsp, durtime, strDateOnly,
+                                    Long.toString(secondsSinceEpoch), status);
                             allDatas.add(dataa);
 
                             setupViewPager(viewPager);
