@@ -1,5 +1,6 @@
 package com.example.aw.sigap.fragment;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -13,6 +14,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.example.aw.sigap.R;
 import com.example.aw.sigap.activity.DataHistoryActivity;
@@ -48,6 +50,8 @@ public class HumidityFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
     public static SensorAdapter mAdapter;
     private RecyclerView recyclerView;
+    private Button bpredict;
+    ProgressDialog pDialog;
     private int numData;
     View view;
     LineChart chartSuhu;
@@ -95,12 +99,33 @@ public class HumidityFragment extends Fragment {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(mAdapter);
         setupChart();
+
+        pDialog = new ProgressDialog(getActivity());
+        pDialog.setMessage("Loading...");
+        pDialog.setCancelable(true);
+
+        bpredict = (Button)view.findViewById(R.id.bpredict);
+        bpredict.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                setupPredict();
+
+            }
+        });
+
         return view;
 
     }
-    private void setupChart(){
+    private void setupPredict(){
+        showPDialog();
         chartSuhu = (LineChart) view.findViewById(R.id.chart_humidity);
-        //updatePredict();
+        updatePredict();
+    }
+
+    private void setupChart(){
+
+        chartSuhu = (LineChart) view.findViewById(R.id.chart_humidity);
         updateChart();
     }
 
@@ -212,6 +237,7 @@ public class HumidityFragment extends Fragment {
         chartSuhu.notifyDataSetChanged();
         chartSuhu.animateY(1000);
 
+        hidePDialog();
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -251,5 +277,17 @@ public class HumidityFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+    private void showPDialog(){
+        if(!pDialog.isShowing()){
+            pDialog.show();
+        }
+    }
+
+    private void hidePDialog(){
+        if(pDialog.isShowing()){
+            pDialog.dismiss();
+        }
     }
 }

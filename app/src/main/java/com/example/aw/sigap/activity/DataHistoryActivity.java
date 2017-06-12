@@ -1,5 +1,6 @@
 package com.example.aw.sigap.activity;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -76,6 +77,7 @@ public class DataHistoryActivity extends BaseActivity implements HumidityFragmen
     public static List<PredictionData> predDatas;
     String id_alat, apiKey;
     Toolbar toolbar;
+    ProgressDialog pDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,11 +106,20 @@ public class DataHistoryActivity extends BaseActivity implements HumidityFragmen
                 Context.MODE_PRIVATE);
         apiKey = sharedPreferencesApi.getString(Config.APIKEY_SHARED_PREF, "");
         Log.d("api", apiKey);
+
+        pDialog = new ProgressDialog(this);
+        pDialog.setMessage("Loading...");
+        pDialog.setCancelable(true);
+
+
         getData();
         predictData(id_alat);
 
+
     }
     public void getData(){
+        showPDialog();
+
         StringRequest stringRequest = new StringRequest(Request.Method.GET,
                 EndPoint.URL_DATA+"/"+id_alat, new Response.Listener<String>() {
             @Override
@@ -246,6 +257,8 @@ public class DataHistoryActivity extends BaseActivity implements HumidityFragmen
         };
         //Adding request to request queue
         MyApplication.getInstance().addToRequestQueue(stringRequest);
+
+        hidePDialog();
     }
     public static String getTimeStampOnWithoutTime(String dateStr) {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
@@ -324,5 +337,16 @@ public class DataHistoryActivity extends BaseActivity implements HumidityFragmen
         }
 
         return super.onOptionsItemSelected(item);
+    }
+    private void showPDialog(){
+        if(!pDialog.isShowing()){
+            pDialog.show();
+        }
+    }
+
+    private void hidePDialog(){
+        if(pDialog.isShowing()){
+            pDialog.dismiss();
+        }
     }
 }
