@@ -1,5 +1,6 @@
 package com.example.aw.sigap.fragment;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -14,18 +15,40 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkResponse;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
 import com.example.aw.sigap.R;
+import com.example.aw.sigap.activity.DashboardActivity;
 import com.example.aw.sigap.activity.DataHistoryActivity;
 import com.example.aw.sigap.adapter.SensorAdapter;
+import com.example.aw.sigap.app.EndPoint;
+import com.example.aw.sigap.app.MyApplication;
 import com.example.aw.sigap.model.AllData;
+import com.example.aw.sigap.model.PredictionData;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import static com.example.aw.sigap.R.id.bpredict;
+import static com.example.aw.sigap.R.id.bpredictTemp;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -36,6 +59,7 @@ import java.util.ArrayList;
  * create an instance of this fragment.
  */
 public class TemperatureFragment extends Fragment {
+    private String TAG = DashboardActivity.class.getSimpleName();
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -44,11 +68,16 @@ public class TemperatureFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private String idnode;
 
     private OnFragmentInteractionListener mListener;
     public static SensorAdapter mAdapter;
     private RecyclerView recyclerView;
     private int numData;
+
+    ProgressDialog pDialog;
+    private Button btnpredictTemp;
+    public static List<PredictionData> predDatas;
     View view;
     LineChart chartSuhu;
     public TemperatureFragment() {
@@ -90,17 +119,108 @@ public class TemperatureFragment extends Fragment {
 
         recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view_temperature);
         numData = DataHistoryActivity.allDatas.size();
-        Log.i("jumlah Data",""+numData);
-        mAdapter = new SensorAdapter(DataHistoryActivity.TEMPERATURE, DataHistoryActivity.allDatas);
+        idnode = DataHistoryActivity.idnode;
 
+        mAdapter = new SensorAdapter(DataHistoryActivity.TEMPERATURE, DataHistoryActivity.allDatas);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(mAdapter);
 
         setupChart();
+
+        pDialog = new ProgressDialog(getActivity());
+        pDialog.setMessage("Loading...");
+        pDialog.setCancelable(true);
+
+        predDatas = new ArrayList<PredictionData>();
+        btnpredictTemp = (Button)view.findViewById(bpredictTemp);
+        btnpredictTemp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                setupPredict();
+
+            }
+        });
+
         return view;
     }
+
+    private void setupPredict(){
+        showPDialog();
+        predictData(idnode);
+
+
+    }
+    public void predictData(final String idalat){
+
+        //Toast.makeText(this, "HAHAHAHA", Toast.LENGTH_SHORT).show();
+        StringRequest stringRequest = new StringRequest(Request.Method.POST,
+                EndPoint.URL_PREDICTION, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.e(TAG, "onResponse: " + response);
+                try {
+
+                    JSONObject obj = new JSONObject(response);
+                    if (obj.getBoolean("error") == false) {
+                        JSONArray data = obj.getJSONArray("prediction");
+                        for (int i = 0; i < data.length(); i++) {
+                            JSONObject dataObj = (JSONObject) data.get(i);
+                            Log.i("prediksiDapat", "" + dataObj);
+                            String senval = dataObj.getString("senVal");
+
+                            PredictionData pred = new PredictionData(senval, senval);
+                            predDatas.add(pred);
+                        }
+                        chartSuhu = (LineChart) view.findViewById(R.id.chart_temperature);
+                        updatePredict();
+                        hidePDialog();
+                    }
+                    else {
+                        Toast.makeText(getActivity(), "" + obj.getJSONObject("error").getString("message"), Toast.LENGTH_LONG).show();
+                    }
+                } catch (JSONException e) {
+                    Log.e(TAG, "json parsing error: " + e.getMessage());
+                    Toast.makeText(getActivity(), "Json parse error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                NetworkResponse networkResponse = error.networkResponse;
+                Log.e(TAG, "Volley error: " + error.getMessage() + ", code: " + networkResponse);
+                Toast.makeText(getActivity(), "Volley errror: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        }){
+            @Override
+            public String getBodyContentType() {
+                return "application/x-www-form-urlencoded; charset=UTF-8";
+            }
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map headers = new HashMap();
+
+                headers.put("x-snow-token", "SECRET_API_KEY");
+                return headers;
+            }
+
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("idnode", idalat);
+                params.put("tipe", "temperature");
+                return params;
+            }
+        };
+        //Adding request to request queue
+        MyApplication.getInstance().addToRequestQueue(stringRequest);
+
+    }
+
 
     private void setupChart(){
         chartSuhu = (LineChart) view.findViewById(R.id.chart_temperature);
@@ -142,6 +262,73 @@ public class TemperatureFragment extends Fragment {
 
     }
 
+    private void updatePredict(){
+
+        ArrayList<Entry> entrySuhu = new ArrayList<>();
+        ArrayList<String> labelSuhu = new ArrayList<>();
+        ArrayList<Entry> entrySuhuPred = new ArrayList<>();
+
+        entrySuhu.clear();
+        labelSuhu.clear();
+        entrySuhuPred.clear();
+
+
+        for(int i = 0; i<DataHistoryActivity.allDatas.size(); i++){
+            //get last data first because api sort by date
+            AllData dat = DataHistoryActivity.allDatas.get((DataHistoryActivity.allDatas.size()-1) - i);
+            float temp = Float.parseFloat(dat.getTemperature());
+
+            //String timestamp = dat.getCreatedAt();
+            //long timee = Long.parseLong(timestamp);
+            entrySuhu.add(new Entry(i, temp));
+            //labelSuhu.add(String.valueOf(i+1));
+        }
+
+        for(int i = 0; i<predDatas.size(); i++){
+            if (i == 0){
+                AllData dat = DataHistoryActivity.allDatas.get(i);
+                float humid = Float.parseFloat(dat.getTemperature());
+                entrySuhuPred.add(new Entry((i - 1 + numData), humid));
+            }
+            else {
+                PredictionData pred = predDatas.get(i);
+                float suhuu = Float.parseFloat(pred.getSuhu());
+                entrySuhuPred.add(new Entry((i - 1 + numData), suhuu));
+            }
+        }
+        ArrayList<ILineDataSet> lineDataSets = new ArrayList<>();
+
+        LineDataSet dataSetSuhu = new LineDataSet(entrySuhu, "%now");
+        dataSetSuhu.setMode(LineDataSet.Mode.CUBIC_BEZIER);
+        dataSetSuhu.setColor(Color.parseColor("#009688"));
+        dataSetSuhu.setCircleColor(Color.parseColor("#ffcdd2"));
+        dataSetSuhu.setCircleColorHole(Color.parseColor("#f44336"));
+        Drawable drawable = ContextCompat.getDrawable(getActivity(), R.drawable.fade_red);
+        dataSetSuhu.setFillDrawable(drawable);
+        dataSetSuhu.setDrawFilled(true);
+
+
+        LineDataSet dataSetSuhuPred = new LineDataSet(entrySuhuPred, "%prediction");
+        dataSetSuhuPred.setMode(LineDataSet.Mode.CUBIC_BEZIER);
+        dataSetSuhuPred.setColor(Color.parseColor("#0000FF"));
+        dataSetSuhuPred.setCircleColor(Color.parseColor("#9575CD"));
+        dataSetSuhuPred.setCircleColorHole(Color.parseColor("#27ae60"));
+        dataSetSuhuPred.setDrawFilled(true);
+
+        lineDataSets.add(dataSetSuhu);
+        lineDataSets.add(dataSetSuhuPred);
+
+
+        LineData dataSuhu = new LineData(lineDataSets);
+        chartSuhu.setData(dataSuhu);
+        chartSuhu.setVisibleXRangeMaximum(10); //set n data only to display
+        chartSuhu.moveViewToX((numData+entrySuhuPred.size()) - 10); //move view to 10 last data
+        chartSuhu.notifyDataSetChanged();
+        chartSuhu.animateY(1000);
+
+
+    }
+
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
@@ -179,5 +366,17 @@ public class TemperatureFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+    private void showPDialog(){
+        if(!pDialog.isShowing()){
+            pDialog.show();
+        }
+    }
+
+    private void hidePDialog(){
+        if(pDialog.isShowing()){
+            pDialog.dismiss();
+        }
     }
 }

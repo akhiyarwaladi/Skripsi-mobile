@@ -66,6 +66,7 @@ public class DataHistoryActivity extends BaseActivity implements HumidityFragmen
     public static int HPSP = 6;
     public static int HUMIDITY = 4;
     public static int TEMPERATURE = 5;
+    public static String idnode;
 
     @Bind(R.id.tl_buddy_add)
     TabLayout tabLayout;
@@ -94,7 +95,7 @@ public class DataHistoryActivity extends BaseActivity implements HumidityFragmen
 
         Intent intent = getIntent();
         id_alat = intent.getStringExtra("id_alat");
-
+        idnode = id_alat;
         allDatas = new ArrayList<AllData>();
         predDatas = new ArrayList<PredictionData>();
 
@@ -113,7 +114,7 @@ public class DataHistoryActivity extends BaseActivity implements HumidityFragmen
 
 
         getData();
-        predictData(id_alat);
+        //predictData(id_alat);
 
 
     }
@@ -201,9 +202,11 @@ public class DataHistoryActivity extends BaseActivity implements HumidityFragmen
         };
         //Adding request to request queue
         MyApplication.getInstance().addToRequestQueue(stringRequest);
+        hidePDialog();
     }
 
     public void predictData(final String idalat){
+        showPDialog();
         //Toast.makeText(this, "HAHAHAHA", Toast.LENGTH_SHORT).show();
         StringRequest stringRequest = new StringRequest(Request.Method.POST,
                 EndPoint.URL_PREDICTION, new Response.Listener<String>() {

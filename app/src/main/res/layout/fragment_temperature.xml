@@ -21,13 +21,19 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginBottom="18dp"
-            android:layout_weight="2.5"/>
+            android:layout_weight="2.3"/>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:orientation="vertical"
-            android:layout_weight="1.5">
+            android:layout_weight="1.7">
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="predict data"
+                android:id="@+id/bpredictTemp"/>
 
             <RelativeLayout
                 android:layout_width="match_parent"

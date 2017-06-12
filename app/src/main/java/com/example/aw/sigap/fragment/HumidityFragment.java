@@ -11,14 +11,26 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkResponse;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
 import com.example.aw.sigap.R;
+import com.example.aw.sigap.activity.DashboardActivity;
 import com.example.aw.sigap.activity.DataHistoryActivity;
+import com.example.aw.sigap.activity.DetailActivity;
 import com.example.aw.sigap.adapter.SensorAdapter;
+import com.example.aw.sigap.app.EndPoint;
+import com.example.aw.sigap.app.MyApplication;
 import com.example.aw.sigap.model.AllData;
 import com.example.aw.sigap.model.PredictionData;
 import com.github.mikephil.charting.charts.LineChart;
@@ -27,7 +39,14 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -38,6 +57,7 @@ import java.util.ArrayList;
  * create an instance of this fragment.
  */
 public class HumidityFragment extends Fragment {
+    private String TAG = DashboardActivity.class.getSimpleName();
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -46,11 +66,14 @@ public class HumidityFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private String idnode;
 
     private OnFragmentInteractionListener mListener;
     public static SensorAdapter mAdapter;
     private RecyclerView recyclerView;
-    private Button bpredict;
+
+    private Button btnpredict;
+    public static List<PredictionData> predDatas;
     ProgressDialog pDialog;
     private int numData;
     View view;
@@ -92,8 +115,10 @@ public class HumidityFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_humidity, container, false);
         recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view_humidity);
         numData = DataHistoryActivity.allDatas.size();
-        mAdapter = new SensorAdapter(DataHistoryActivity.HUMIDITY, DataHistoryActivity.allDatas);
+        idnode = DataHistoryActivity.idnode;
+        Log.d("idfragment", idnode);
 
+        mAdapter = new SensorAdapter(DataHistoryActivity.HUMIDITY, DataHistoryActivity.allDatas);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -104,8 +129,9 @@ public class HumidityFragment extends Fragment {
         pDialog.setMessage("Loading...");
         pDialog.setCancelable(true);
 
-        bpredict = (Button)view.findViewById(R.id.bpredict);
-        bpredict.setOnClickListener(new View.OnClickListener() {
+        predDatas = new ArrayList<PredictionData>();
+        btnpredict = (Button)view.findViewById(R.id.bpredict);
+        btnpredict.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
@@ -119,8 +145,75 @@ public class HumidityFragment extends Fragment {
     }
     private void setupPredict(){
         showPDialog();
-        chartSuhu = (LineChart) view.findViewById(R.id.chart_humidity);
-        updatePredict();
+        predictData(idnode);
+
+
+    }
+    public void predictData(final String idalat){
+
+        //Toast.makeText(this, "HAHAHAHA", Toast.LENGTH_SHORT).show();
+        StringRequest stringRequest = new StringRequest(Request.Method.POST,
+                EndPoint.URL_PREDICTION, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.e(TAG, "onResponse: " + response);
+                try {
+                    JSONObject obj = new JSONObject(response);
+                    if (obj.getBoolean("error") == false) {
+                        JSONArray data = obj.getJSONArray("prediction");
+                        for (int i = 0; i < data.length(); i++) {
+                            JSONObject dataObj = (JSONObject) data.get(i);
+                            Log.i("prediksiDapat", "" + dataObj);
+                            String senval = dataObj.getString("senVal");
+
+                            PredictionData pred = new PredictionData(senval, senval);
+                            predDatas.add(pred);
+                        }
+                        chartSuhu = (LineChart) view.findViewById(R.id.chart_humidity);
+                        updatePredict();
+                        hidePDialog();
+                    }
+                    else{
+                        Toast.makeText(getActivity(), "" + obj.getJSONObject("error").getString("message"), Toast.LENGTH_LONG).show();
+                    }
+                } catch (JSONException e) {
+                    Log.e(TAG, "json parsing error: " + e.getMessage());
+                    Toast.makeText(getActivity(), "Json parse error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                NetworkResponse networkResponse = error.networkResponse;
+                Log.e(TAG, "Volley error: " + error.getMessage() + ", code: " + networkResponse);
+                Toast.makeText(getActivity(), "Volley errror: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        }){
+            @Override
+            public String getBodyContentType() {
+                return "application/x-www-form-urlencoded; charset=UTF-8";
+            }
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map headers = new HashMap();
+
+                headers.put("x-snow-token", "SECRET_API_KEY");
+                return headers;
+            }
+
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("idnode", idalat);
+                params.put("tipe", "humidity");
+                return params;
+            }
+        };
+        //Adding request to request queue
+        MyApplication.getInstance().addToRequestQueue(stringRequest);
+
     }
 
     private void setupChart(){
@@ -160,10 +253,7 @@ public class HumidityFragment extends Fragment {
         dataSetSuhu.setFillDrawable(drawable);
         dataSetSuhu.setDrawFilled(true);
 
-
         lineDataSets.add(dataSetSuhu);
-
-
 
         LineData dataSuhu = new LineData(lineDataSets);
         chartSuhu.setData(dataSuhu);
@@ -195,14 +285,14 @@ public class HumidityFragment extends Fragment {
             //labelSuhu.add(String.valueOf(i+1));
         }
 
-        for(int i = 0; i<DataHistoryActivity.predDatas.size(); i++){
+        for(int i = 0; i<predDatas.size(); i++){
             if (i == 0){
                 AllData dat = DataHistoryActivity.allDatas.get(i);
                 float humid = Float.parseFloat(dat.getHumidity());
                 entrySuhuPred.add(new Entry((i - 1 + numData), humid));
             }
             else {
-                PredictionData pred = DataHistoryActivity.predDatas.get(i);
+                PredictionData pred = predDatas.get(i);
                 float kelembaban = Float.parseFloat(pred.getKelembaban());
                 entrySuhuPred.add(new Entry((i - 1 + numData), kelembaban));
             }
@@ -237,7 +327,7 @@ public class HumidityFragment extends Fragment {
         chartSuhu.notifyDataSetChanged();
         chartSuhu.animateY(1000);
 
-        hidePDialog();
+
     }
 
     // TODO: Rename method, update argument and hook method into UI event
