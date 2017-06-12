@@ -100,10 +100,55 @@ public class HumidityFragment extends Fragment {
     }
     private void setupChart(){
         chartSuhu = (LineChart) view.findViewById(R.id.chart_humidity);
+        //updatePredict();
         updateChart();
     }
 
     private void updateChart(){
+        ArrayList<Entry> entrySuhu = new ArrayList<>();
+        ArrayList<String> labelSuhu = new ArrayList<>();
+
+
+        entrySuhu.clear();
+        labelSuhu.clear();
+
+        for(int i = 0; i<DataHistoryActivity.allDatas.size(); i++){
+            //get last data first because api sort by date
+            AllData dat = DataHistoryActivity.allDatas.get((DataHistoryActivity.allDatas.size()-1) - i);
+            float humid = Float.parseFloat(dat.getHumidity());
+
+            //String timestamp = dat.getCreatedAt();
+            //long timee = Long.parseLong(timestamp);
+            entrySuhu.add(new Entry(i, humid));
+            //labelSuhu.add(String.valueOf(i+1));
+        }
+
+
+        ArrayList<ILineDataSet> lineDataSets = new ArrayList<>();
+
+        LineDataSet dataSetSuhu = new LineDataSet(entrySuhu, "%now");
+        dataSetSuhu.setMode(LineDataSet.Mode.CUBIC_BEZIER);
+        dataSetSuhu.setColor(Color.parseColor("#009688"));
+        dataSetSuhu.setCircleColor(Color.parseColor("#ffcdd2"));
+        dataSetSuhu.setCircleColorHole(Color.parseColor("#f44336"));
+        Drawable drawable = ContextCompat.getDrawable(getActivity(), R.drawable.fade_red);
+        dataSetSuhu.setFillDrawable(drawable);
+        dataSetSuhu.setDrawFilled(true);
+
+
+        lineDataSets.add(dataSetSuhu);
+
+
+
+        LineData dataSuhu = new LineData(lineDataSets);
+        chartSuhu.setData(dataSuhu);
+        chartSuhu.setVisibleXRangeMaximum(10); //set n data only to display
+        chartSuhu.moveViewToX((numData) - 10); //move view to 10 last data
+        chartSuhu.notifyDataSetChanged();
+        chartSuhu.animateY(1000);
+    }
+
+    private void updatePredict(){
 
         ArrayList<Entry> entrySuhu = new ArrayList<>();
         ArrayList<String> labelSuhu = new ArrayList<>();

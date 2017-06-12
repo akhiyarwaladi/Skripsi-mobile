@@ -105,7 +105,7 @@ public class DataHistoryActivity extends BaseActivity implements HumidityFragmen
         apiKey = sharedPreferencesApi.getString(Config.APIKEY_SHARED_PREF, "");
         Log.d("api", apiKey);
         getData();
-        //predictData(id_alat);
+        predictData(id_alat);
 
     }
     public void getData(){
