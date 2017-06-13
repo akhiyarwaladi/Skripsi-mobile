@@ -33,7 +33,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="predict data"
-                android:id="@+id/bpredict"/>
+                android:background="@color/colorPrimaryDark"
+                android:textColor="#FFFFFF"
+                android:id="@+id/bpredict"
+                android:layout_margin="3dp"/>
 
             <RelativeLayout
                 android:layout_width="match_parent"

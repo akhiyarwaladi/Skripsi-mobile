@@ -33,7 +33,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="predict data"
-                android:id="@+id/bpredictTemp"/>
+                android:id="@+id/bpredictTemp"
+                android:background="@color/colorPrimaryDark"
+                android:textColor="#FFFFFF"
+                android:layout_margin="3dp"/>
 
             <RelativeLayout
                 android:layout_width="match_parent"
