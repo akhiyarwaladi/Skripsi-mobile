@@ -330,7 +330,7 @@ public class DetailActivity extends BaseActivity {
             switch (i) {
                 case 0:
                     nilaiSensor.setText(p.getHpc());
-                    namaSensor.setText("HPc");
+                    namaSensor.setText("HPc (WaterLevel)");
                     statusSensor.setText("ON");
 
                     nilai = Float.parseFloat(p.getHpc());
@@ -344,7 +344,7 @@ public class DetailActivity extends BaseActivity {
 
                 case 1:
                     nilaiSensor.setText(p.getUkk());
-                    namaSensor.setText("Uk");
+                    namaSensor.setText("Uk (Membership)");
                     statusSensor.setText("ON");
 
                     nilai = Float.parseFloat(p.getUkk());
@@ -358,7 +358,7 @@ public class DetailActivity extends BaseActivity {
 
                 case 2:
                     nilaiSensor.setText(p.getDurtime());
-                    namaSensor.setText("OpTime");
+                    namaSensor.setText("Operation Time");
                     statusSensor.setText("ON");
 
                     nilai = Float.parseFloat(p.getDurtime());
