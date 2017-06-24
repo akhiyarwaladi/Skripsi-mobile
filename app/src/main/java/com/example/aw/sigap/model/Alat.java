@@ -9,6 +9,7 @@ import java.io.Serializable;
 public class Alat implements Serializable {
     private String id;
     private String nama;
+    private String webaddr;
     private String kode;
     private String tglProduksi;
     private String latitude;
@@ -19,9 +20,10 @@ public class Alat implements Serializable {
 
     }
 
-    public Alat(String id, String nama, String kode, String tglProduksi, String latitude, String longitude, int rssi, int battery) {
+    public Alat(String id, String nama, String webaddr, String kode, String tglProduksi, String latitude, String longitude, int rssi, int battery) {
         this.id = id;
         this.nama = nama;
+        this.webaddr = webaddr;
         this.kode = kode;
         this.tglProduksi = tglProduksi;
         this.latitude = latitude;
@@ -44,6 +46,14 @@ public class Alat implements Serializable {
 
     public void setNama(String nama) {
         this.nama = nama;
+    }
+
+    public String getWebaddr() {
+        return webaddr;
+    }
+
+    public void setWebaddr(String webaddr) {
+        this.webaddr = webaddr;
     }
 
     public String getKode() {

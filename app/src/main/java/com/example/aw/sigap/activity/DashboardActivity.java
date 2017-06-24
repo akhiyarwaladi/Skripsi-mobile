@@ -88,8 +88,6 @@ public class DashboardActivity extends BaseActivity {
         Log.d(TAG, token);
     }
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -149,16 +147,18 @@ public class DashboardActivity extends BaseActivity {
                             Log.i("dataDapat",""+dataObj);
                             String idAlat = dataObj.getString("_id");
                             String namaAlat = dataObj.getString("name");
-                            String kodeAlat = dataObj.getString("name");
+                            String webAddr = dataObj.getString("webaddr");
+                            String kodeAlat = dataObj.getString("_id");
                             String apayangPenting = dataObj.getString("created_at");
                             //int rssi = dataObj.getInt("rssi");
                             //int battery = dataObj.getInt("battery");
-                            String latitude = dataObj.getString("name");
-                            String longitude = dataObj.getString("name");
-                            Alat alat = new Alat( idAlat, namaAlat, kodeAlat, apayangPenting, latitude, longitude, 14, 14 );
+                            String latitude = dataObj.isNull("latitude") ? null : dataObj.getString("latitude");
+                            String longitude = dataObj.isNull("longitude") ? null : dataObj.getString("longitude");
+                            Alat alat = new Alat( idAlat, namaAlat, webAddr, kodeAlat, apayangPenting, latitude, longitude, 14, 14 );
                             allAlat.add(alat);
                         }
                         renderBuddies();
+
                     } else {
                         // error in fetching data
                         Toast.makeText(DashboardActivity.this, "" + obj.getJSONObject("error").getString("message"), Toast.LENGTH_LONG).show();
@@ -250,6 +250,7 @@ public class DashboardActivity extends BaseActivity {
     private void addBuddiesView(final Alat p) {
         final View itemView = getLayoutInflater().inflate(R.layout.layout_item_buddy_big_shadow, null);
         final String name = p.getNama();
+        final String webaddr = p.getWebaddr();
         final String id_alat = p.getId();
         final String latitude = p.getLatitude();
         final String longitude = p.getLongitude();
@@ -261,6 +262,7 @@ public class DashboardActivity extends BaseActivity {
                 intent.putExtra("objectPerson", p);
                 intent.putExtra("id_alat", id_alat);
                 intent.putExtra("name", name);
+                intent.putExtra("webaddr", webaddr);
                 intent.putExtra("latitude", latitude);
                 intent.putExtra("longitude", longitude);
                 startActivity(intent);

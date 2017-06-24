@@ -36,7 +36,7 @@ public class CreateDevice extends AppCompatActivity {
 
     private String TAG = DashboardActivity.class.getSimpleName();
     private Toolbar toolbar;
-    private EditText nama;
+    private EditText nama, webaddr;
     private Button createDevice;
     private String userId, apiKey, id_alat, device;
 
@@ -60,19 +60,20 @@ public class CreateDevice extends AppCompatActivity {
         apiKey = sharedPreferencesApi.getString(Config.APIKEY_SHARED_PREF, "");
 
         nama = (EditText)findViewById(R.id.dname);
+        webaddr = (EditText)findViewById(R.id.etwebaddr);
 
         createDevice = (Button)findViewById(R.id.createDevice);
         createDevice.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String newnama = nama.getText().toString();
-
-                updateSettings(newnama, userId);
+                String newaddr = webaddr.getText().toString();
+                updateSettings(newnama, newaddr, userId);
             }
         });
     }
 
-    public void updateSettings(final String nama, final String user){
+    public void updateSettings(final String nama, final String webaddr,final String user){
         //Toast.makeText(this, "HAHAHAHA", Toast.LENGTH_SHORT).show();
         StringRequest stringRequest = new StringRequest(Request.Method.POST,
                 EndPoint.URL_CREATE_ALAT, new Response.Listener<String>() {
@@ -118,6 +119,7 @@ public class CreateDevice extends AppCompatActivity {
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("name", nama);
+                params.put("webaddr", webaddr);
                 params.put("user", userId);
 
                 return params;

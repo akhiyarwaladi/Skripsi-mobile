@@ -45,10 +45,10 @@ public class SensorNodes extends AppCompatActivity {
     private RecyclerView recyclerView;
     private SensorNodeAdapter adapter;
     private List<SensorNode> sensorNodeList;
-    private TextView tvdevDetail;
-    private Button bdelDevice;
+    private TextView tvdevDetail, tvWebAddr;
+    private Button bdelDevice, bshowmap;
     private String TAG = DashboardActivity.class.getSimpleName();
-    String Uk, apiKey, id_alat, name , latitude, longitude;
+    String Uk, apiKey, id_alat, name , webaddr, latitude, longitude;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,6 +64,7 @@ public class SensorNodes extends AppCompatActivity {
         final Intent intent = getIntent();
         id_alat = intent.getStringExtra("id_alat");
         name = intent.getStringExtra("name");
+        webaddr = intent.getStringExtra("webaddr");
         latitude = intent.getStringExtra("latitude");
         longitude = intent.getStringExtra("longitude");
         ButterKnife.bind(this);
@@ -71,6 +72,21 @@ public class SensorNodes extends AppCompatActivity {
 
         tvdevDetail = (TextView)findViewById(R.id.tv_devdetail);
         tvdevDetail.setText(name);
+        tvWebAddr = (TextView)findViewById(R.id.webaddr);
+        tvWebAddr.setText(webaddr);
+
+        bshowmap = (Button)findViewById(R.id.btnshowmap);
+        bshowmap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent1 = new Intent(SensorNodes.this, MapsActivity.class);
+                intent1.putExtra("id_alat", id_alat);
+                intent1.putExtra("latitude", latitude);
+                intent1.putExtra("longitude", longitude);
+                startActivity(intent1);
+            }
+        });
+
 
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         sensorNodeList = new ArrayList<>();

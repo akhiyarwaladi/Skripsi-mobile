@@ -28,14 +28,35 @@
         android:id="@+id/cv1"
         style="@style/AppTheme.Card.Margins">
 
-        <TextView
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Status"
-            android:id="@+id/tv_devdetail"
-            android:layout_gravity="center_horizontal" />
+            android:orientation="vertical"
+            android:layout_gravity="center">
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Status"
+                android:id="@+id/tv_devdetail"
+                android:layout_gravity="center"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Address"
+                android:id="@+id/webaddr"
+                android:layout_gravity="center"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="map"
+                android:id="@+id/btnshowmap"
+                android:layout_gravity="center"/>
+
+        </LinearLayout>
         <!--<Button-->
             <!--android:layout_width="wrap_content"-->
             <!--android:layout_height="wrap_content"-->
