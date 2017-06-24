@@ -94,18 +94,18 @@ public class DetailActivity extends BaseActivity {
             }
         });
 
-        btnMaps = (Button) findViewById(R.id.btn_map);
-        btnMaps.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent1 = new Intent(DetailActivity.this, MapsActivity.class);
-                intent1.putExtra("id_alat", id_alat);
-                intent1.putExtra("latitude", latitude);
-                intent1.putExtra("longitude", longitude);
-                startActivity(intent1);
-
-            }
-        });
+//        btnMaps = (Button) findViewById(R.id.btn_map);
+//        btnMaps.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent intent1 = new Intent(DetailActivity.this, MapsActivity.class);
+//                intent1.putExtra("id_alat", id_alat);
+//                intent1.putExtra("latitude", latitude);
+//                intent1.putExtra("longitude", longitude);
+//                startActivity(intent1);
+//
+//            }
+//        });
         btnSettings = (Button) findViewById(R.id.btn_settings);
         btnSettings.setOnClickListener(new View.OnClickListener() {
             @Override
