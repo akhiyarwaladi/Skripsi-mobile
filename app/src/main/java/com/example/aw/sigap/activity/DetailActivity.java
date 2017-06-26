@@ -28,6 +28,7 @@ import com.example.aw.sigap.app.Config;
 import com.example.aw.sigap.app.EndPoint;
 import com.example.aw.sigap.app.MyApplication;
 import com.example.aw.sigap.helper.ProgressBarAnimation;
+import com.example.aw.sigap.model.Alat;
 import com.example.aw.sigap.model.AllData;
 import com.google.android.flexbox.FlexboxLayout;
 import com.google.firebase.auth.FirebaseAuth;
@@ -106,6 +107,7 @@ public class DetailActivity extends BaseActivity {
 //
 //            }
 //        });
+
         btnSettings = (Button) findViewById(R.id.btn_settings);
         btnSettings.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -125,6 +127,7 @@ public class DetailActivity extends BaseActivity {
                 header.setText(" IRIGASI ON ");
                 header.setTextColor(Color.WHITE);
                 header.setBackgroundColor(Color.parseColor("#1BBC9B"));
+
                 controlNode(id_alat, "1");
             }
         });
