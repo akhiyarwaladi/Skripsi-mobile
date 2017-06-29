@@ -2,6 +2,7 @@ package com.example.aw.sigap.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -46,7 +47,7 @@ public class SensorNodeAdapter extends RecyclerView.Adapter<SensorNodeAdapter.My
     private List<SensorNode> sensorNodeList;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView title, type, count;
+        public TextView title, type, count, notification;
         public ImageView thumbnail;
         public Button bDelete;
         public CardView cv;
@@ -55,6 +56,7 @@ public class SensorNodeAdapter extends RecyclerView.Adapter<SensorNodeAdapter.My
             super(view);
             title = (TextView) view.findViewById(R.id.title);
             type = (TextView) view.findViewById(R.id.type);
+            notification = (TextView) view.findViewById(R.id.notification);
             thumbnail = (ImageView) view.findViewById(R.id.thumbnail);
             bDelete = (Button) view.findViewById(R.id.bDelete);
             cv = (CardView) view.findViewById(R.id.cv);
@@ -79,6 +81,14 @@ public class SensorNodeAdapter extends RecyclerView.Adapter<SensorNodeAdapter.My
         final SensorNode sensorNode = sensorNodeList.get(position);
         holder.title.setText(sensorNode.getNama());
         holder.type.setText(sensorNode.getTipe());
+        if(sensorNode.getNotification() == 1) {
+            holder.notification.setText("warning");
+            holder.notification.setBackgroundColor(Color.parseColor("#9575CD"));
+        }
+        else {
+            holder.notification.setText("working");
+            holder.notification.setBackgroundColor(Color.parseColor("#27ae60"));
+        }
         //Glide.with(mContext).load(SensorNode.getUrlImage()).into(holder.thumbnail);
 
         holder.cv.setOnClickListener(new View.OnClickListener() {

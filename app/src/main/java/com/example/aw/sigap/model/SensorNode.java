@@ -11,16 +11,18 @@ public class SensorNode implements Serializable{
     private String nama;
     private String device;
     private String tipe;
+    private int notification;
 
     public SensorNode(){
 
     }
 
-    public SensorNode(String id, String nama, String device, String tipe) {
+    public SensorNode(String id, String nama, String device, String tipe, int notification) {
         this.id = id;
         this.nama = nama;
         this.device = device;
         this.tipe = tipe;
+        this.notification = notification;
     }
 
     public String getId() {
@@ -54,5 +56,13 @@ public class SensorNode implements Serializable{
 
     public void setTipe(String tipe) {
         this.tipe = tipe;
+    }
+
+    public int getNotification() {
+        return notification;
+    }
+
+    public void setNotification(int notification) {
+        this.notification = notification;
     }
 }

@@ -44,6 +44,17 @@
                 android:textSize="15sp"
                 android:text="type"/>
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/notification"
+                android:layout_toRightOf="@+id/thumbnail"
+                android:layout_below="@+id/type"
+                android:textSize="15sp"
+                android:text="notification"
+                android:textColor="#FFFFFF"
+                android:background="@color/colorPrimary"/>
+
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
