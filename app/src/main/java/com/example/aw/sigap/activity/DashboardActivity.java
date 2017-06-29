@@ -139,7 +139,7 @@ public class DashboardActivity extends BaseActivity {
                 try {
                     JSONObject obj = new JSONObject(response);
                     if (obj.getBoolean("error") == false) {
-//                        Toast.makeText(DashboardActivity.this, "Data dapat"+response, Toast.LENGTH_SHORT).show();
+                       //Toast.makeText(DashboardActivity.this, "Data dapat"+response, Toast.LENGTH_SHORT).show();
                         JSONArray data = obj.getJSONArray("device");
                         nonConnection.setVisibility(View.GONE);
                         for (int i = 0; i < data.length(); i++) {

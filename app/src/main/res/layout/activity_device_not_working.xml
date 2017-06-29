@@ -27,13 +27,35 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="Periksa Alat"
+            android:layout_marginTop="20dp"
+            android:textColor="@android:color/white"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            android:id="@+id/tvNotWorkingDevice"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:paddingLeft="40dp"
             android:paddingRight="40dp"
             android:text="Alat tidak berfungsi, silakan cek lahan"
             android:textAlignment="center"
             android:textColor="@android:color/white"
-            android:textSize="16dp" />
+            android:textSize="16dp"
+
+            android:id="@+id/tvMessage"/>
+
+        <Button
+            android:layout_marginTop="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=" Back to dashboard "
+            android:background="#FFFFFF"
+            android:id="@+id/bBackDashboard"/>
+
+
 
     </LinearLayout>
 </RelativeLayout>

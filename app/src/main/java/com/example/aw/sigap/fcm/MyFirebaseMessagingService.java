@@ -80,22 +80,23 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     private void handleDataMessage(JSONObject json) {
         Log.e(TAG, "push json: " + json.toString());
-        //Toast.makeText(this, "haha"+ json.toString(), Toast.LENGTH_SHORT).show();
+
         try {
 
             //JSONObject data = json.getJSONObject("data");
             JSONArray dataObj = json.getJSONArray("data");
-            JSONObject data = (JSONObject) dataObj.get(1);
-            //Log.e(TAG, "push data: " + data.toString());
+            JSONObject data = (JSONObject) dataObj.get(0);
+            Log.e(TAG, "push data: " + data.toString());
             title = data.getString("title");
+            String notworkingdevice = data.getString("device");
             String message = data.getString("message");
             boolean isBackground = data.getBoolean("is_background");
             String imageUrl = data.getString("image");
             String timestamp = data.getString("timestamp");
             //JSONObject payload = data.getJSONObject("payload");
 
-            Log.e(TAG, "title: " + title);
-            Log.e(TAG, "message: " + message);
+            Log.e(TAG, "push title: " + title);
+            Log.e(TAG, "push message: " + message);
             //Log.e(TAG, "isBackground: " + isBackground);
             //Log.e(TAG, "payload: " + payload.toString());
             //Log.e(TAG, "imageUrl: " + imageUrl);
@@ -103,19 +104,28 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
 
             if (!NotificationUtils.isAppIsInBackground(getApplicationContext())) {
+                Log.e("push masuk sini", "tidak di background");
                 // app is in foreground, broadcast the push message
-                Intent pushNotification = new Intent(Config.PUSH_NOTIFICATION);
-                pushNotification.putExtra("message", message);
-                LocalBroadcastManager.getInstance(this).sendBroadcast(pushNotification);
+                //Intent pushNotification = new Intent(Config.PUSH_NOTIFICATION);
+                //pushNotification.putExtra("message", message);
+                Intent resultIntent = new Intent(getApplicationContext(), DeviceNotWorking.class);
+                resultIntent.putExtra("notworkingdevice", notworkingdevice);
+                resultIntent.putExtra("message", message);
+
+                //LocalBroadcastManager.getInstance(this).sendBroadcast(pushNotification);
 
                 // play notification sound
                 NotificationUtils notificationUtils = new NotificationUtils(getApplicationContext());
                 notificationUtils.playNotificationSound();
+                startActivity(resultIntent);
             } else {
+                Log.e("push masuk sini", "di background");
                 if(title.equalsIgnoreCase("Periksa Alat")) {
+                    Log.e("push masuk sini", "periksa");
                     // app is in background, show the notification in notification tray
                     Intent resultIntent = new Intent(getApplicationContext(), DeviceNotWorking.class);
                     resultIntent.putExtra("message", message);
+
                     // check for image attachment
                     if (TextUtils.isEmpty(imageUrl)) {
                         showNotificationMessage(getApplicationContext(), title, message, timestamp, resultIntent);
@@ -123,8 +133,10 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                         // image is present, show notification with image
                         showNotificationMessageWithBigImage(getApplicationContext(), title, message, timestamp, resultIntent, imageUrl);
                     }
+                    startActivity(resultIntent);
                 }
                 else {
+                    Log.e("push masuk sini", "bukan periksa");
                     Intent resultIntent = new Intent(getApplicationContext(), BatteryLowActivity.class);
                     resultIntent.putExtra("message", message);
                     // check for image attachment
@@ -134,6 +146,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                         // image is present, show notification with image
                         showNotificationMessageWithBigImage(getApplicationContext(), title, message, timestamp, resultIntent, imageUrl);
                     }
+                    startActivity(resultIntent);
                 }
             }
         } catch (JSONException e) {
