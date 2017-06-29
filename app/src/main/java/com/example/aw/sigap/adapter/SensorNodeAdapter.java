@@ -22,6 +22,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.bumptech.glide.Glide;
 import com.example.aw.sigap.R;
 import com.example.aw.sigap.activity.CreateSensorNode;
+import com.example.aw.sigap.activity.DashboardActivity;
 import com.example.aw.sigap.activity.DetailActivity;
 import com.example.aw.sigap.activity.SensorNodes;
 import com.example.aw.sigap.app.EndPoint;
@@ -118,7 +119,7 @@ public class SensorNodeAdapter extends RecyclerView.Adapter<SensorNodeAdapter.My
 
                     if (obj.getBoolean("error") == false) {
                         Toast.makeText(mContext, "" + obj.getString("message"), Toast.LENGTH_SHORT).show();
-                        Intent intent2 = new Intent(mContext, SensorNodes.class);
+                        Intent intent2 = new Intent(mContext, DashboardActivity.class);
                         intent2.putExtra("id_alat", iddevice);
                         mContext.startActivity(intent2);
 

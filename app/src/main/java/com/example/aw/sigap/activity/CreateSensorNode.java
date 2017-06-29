@@ -106,7 +106,7 @@ public class CreateSensorNode extends AppCompatActivity {
 
                     if (obj.getBoolean("error") == false) {
                         Toast.makeText(CreateSensorNode.this, "" + obj.getString("message"), Toast.LENGTH_SHORT).show();
-                        Intent intent2 = new Intent(CreateSensorNode.this, SensorNodes.class);
+                        Intent intent2 = new Intent(CreateSensorNode.this, DashboardActivity.class);
                         intent2.putExtra("id_alat", id_alat);
                         startActivity(intent2);
 

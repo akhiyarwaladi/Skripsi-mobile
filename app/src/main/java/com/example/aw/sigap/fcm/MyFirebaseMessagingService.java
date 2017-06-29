@@ -10,6 +10,7 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.example.aw.sigap.MainActivity;
 import com.example.aw.sigap.R;
@@ -21,6 +22,7 @@ import com.example.aw.sigap.utils.NotificationUtils;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -69,6 +71,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             // play notification sound
             NotificationUtils notificationUtils = new NotificationUtils(getApplicationContext());
             notificationUtils.playNotificationSound();
+
+
         }else{
             // If the app is in background, firebase itself handles the notification
         }
@@ -76,23 +80,26 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     private void handleDataMessage(JSONObject json) {
         Log.e(TAG, "push json: " + json.toString());
-
+        //Toast.makeText(this, "haha"+ json.toString(), Toast.LENGTH_SHORT).show();
         try {
-            JSONObject data = json.getJSONObject("data");
 
+            //JSONObject data = json.getJSONObject("data");
+            JSONArray dataObj = json.getJSONArray("data");
+            JSONObject data = (JSONObject) dataObj.get(1);
+            //Log.e(TAG, "push data: " + data.toString());
             title = data.getString("title");
             String message = data.getString("message");
             boolean isBackground = data.getBoolean("is_background");
             String imageUrl = data.getString("image");
             String timestamp = data.getString("timestamp");
-            JSONObject payload = data.getJSONObject("payload");
+            //JSONObject payload = data.getJSONObject("payload");
 
             Log.e(TAG, "title: " + title);
             Log.e(TAG, "message: " + message);
-            Log.e(TAG, "isBackground: " + isBackground);
-            Log.e(TAG, "payload: " + payload.toString());
-            Log.e(TAG, "imageUrl: " + imageUrl);
-            Log.e(TAG, "timestamp: " + timestamp);
+            //Log.e(TAG, "isBackground: " + isBackground);
+            //Log.e(TAG, "payload: " + payload.toString());
+            //Log.e(TAG, "imageUrl: " + imageUrl);
+            //Log.e(TAG, "timestamp: " + timestamp);
 
 
             if (!NotificationUtils.isAppIsInBackground(getApplicationContext())) {
