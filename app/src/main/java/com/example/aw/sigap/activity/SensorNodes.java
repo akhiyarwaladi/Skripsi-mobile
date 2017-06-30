@@ -49,6 +49,7 @@ public class SensorNodes extends AppCompatActivity {
     private Button bdelDevice, bshowmap;
     private String TAG = DashboardActivity.class.getSimpleName();
     String Uk, apiKey, id_alat, name , webaddr, latitude, longitude;
+    int notification;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,6 +82,7 @@ public class SensorNodes extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent1 = new Intent(SensorNodes.this, MapsActivity.class);
                 intent1.putExtra("id_alat", id_alat);
+                intent1.putExtra("name", name);
                 intent1.putExtra("latitude", latitude);
                 intent1.putExtra("longitude", longitude);
                 startActivity(intent1);
@@ -129,7 +131,12 @@ public class SensorNodes extends AppCompatActivity {
                             String namaNodes = dataObj.getString("name");
                             String device = dataObj.getString("device");
                             String tipeNodes = dataObj.getString("miconType");
-                            int notification = dataObj.getInt("notification");
+                            if (dataObj.has("notification")) {
+                                notification = dataObj.getInt("notification");
+                            }
+                            else {
+                                notification = 0;
+                            }
 
                             SensorNode sensorNode = new SensorNode( idNodes, namaNodes, device, tipeNodes, notification );
                             sensorNodeList.add(sensorNode);

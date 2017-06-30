@@ -27,7 +27,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Periksa Alat"
+            android:text="Nama device"
             android:layout_marginTop="20dp"
             android:textColor="@android:color/white"
             android:textSize="20dp"
@@ -40,11 +40,10 @@
             android:layout_marginTop="20dp"
             android:paddingLeft="40dp"
             android:paddingRight="40dp"
-            android:text="Alat tidak berfungsi, silakan cek lahan"
+            android:text="id node tidak berfungsi, silakan cek lahan"
             android:textAlignment="center"
             android:textColor="@android:color/white"
             android:textSize="16dp"
-
             android:id="@+id/tvMessage"/>
 
         <Button
@@ -52,10 +51,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text=" Back to dashboard "
-            android:background="#FFFFFF"
+            android:backgroundTint="#FFFFFF"
+            android:background="@drawable/round_shape_btn"
             android:id="@+id/bBackDashboard"/>
-
-
 
     </LinearLayout>
 </RelativeLayout>

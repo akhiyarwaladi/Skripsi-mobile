@@ -27,7 +27,7 @@ public class EndPoint {
 
     public static final String URL_DATA = BASE_URL + "/dataset";
     public static final String URL_LOGIN = BASE_URL + "/signin";
-    public static final String URL_REGISTER = BASE_URL + "/register";
+    public static final String URL_REGISTER = BASE_URL + "/signup";
 
     public static final String URL_PREDICTION = BASE_URL + "/prediction/gets";
     public static final String URL_CONTROL = BASE_URL + "/control";

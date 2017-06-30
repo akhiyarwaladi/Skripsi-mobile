@@ -60,10 +60,11 @@
                 android:layout_height="wrap_content"
                 android:minHeight="30dp"
                 android:minWidth="40dp"
-                android:text="Delete"
+                android:text=" Delete "
                 android:layout_alignParentRight="true"
                 android:id="@+id/bDelete"
-                android:background="#D84315"
+                android:background="@drawable/round_shape_btn"
+                android:backgroundTint="#D84315"
                 android:textColor="#FFFFFF" />
 
 

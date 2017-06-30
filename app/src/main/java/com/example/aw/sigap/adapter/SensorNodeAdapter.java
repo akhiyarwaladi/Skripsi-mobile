@@ -82,11 +82,11 @@ public class SensorNodeAdapter extends RecyclerView.Adapter<SensorNodeAdapter.My
         holder.title.setText(sensorNode.getNama());
         holder.type.setText(sensorNode.getTipe());
         if(sensorNode.getNotification() == 1) {
-            holder.notification.setText("warning");
+            holder.notification.setText(" Warning ");
             holder.notification.setBackgroundColor(Color.parseColor("#9575CD"));
         }
         else {
-            holder.notification.setText("working");
+            holder.notification.setText(" Working ");
             holder.notification.setBackgroundColor(Color.parseColor("#27ae60"));
         }
         //Glide.with(mContext).load(SensorNode.getUrlImage()).into(holder.thumbnail);

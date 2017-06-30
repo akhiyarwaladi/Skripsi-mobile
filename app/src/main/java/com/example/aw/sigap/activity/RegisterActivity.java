@@ -8,6 +8,7 @@ import android.util.Log;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -117,6 +118,13 @@ public class RegisterActivity extends AppCompatActivity {
                 params.put("password", password);
                 params.put("fcmregid", token);
                 return params;
+            }
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map headers = new HashMap();
+                headers.put("x-snow-token", "SECRET_API_KEY");
+
+                return headers;
             }
         };
         MyApplication.getInstance().addToRequestQueue(stringRequest);

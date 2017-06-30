@@ -30,7 +30,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     final private int REQUEST_CODE_ASK_PERMISSIONS = 123;
     Toolbar toolbar;
     double lat, lng;
-    String id_alat, latitude, longitude;
+    String id_alat, name ,latitude, longitude;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,6 +43,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         Intent intent = getIntent();
         id_alat = intent.getStringExtra("id_alat");
+        name = intent.getStringExtra("name");
         latitude = intent.getStringExtra("latitude");
         longitude = intent.getStringExtra("longitude");
 
@@ -82,7 +83,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
         MarkerOptions marker = new MarkerOptions().position(new LatLng(lat, lng)).title(id_alat);
-        marker.snippet(id_alat);
+        marker.snippet(name);
         marker.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
         googleMap.addMarker(marker).showInfoWindow();
     }
