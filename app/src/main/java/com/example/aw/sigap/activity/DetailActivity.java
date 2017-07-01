@@ -55,10 +55,10 @@ import butterknife.ButterKnife;
 public class DetailActivity extends BaseActivity {
 
     private String TAG = DashboardActivity.class.getSimpleName();
-    Button btnHistory, btnMaps, btnSettings, btnON, btnOFF;
+    Button btnHistory, btnSettings, btnON, btnOFF;
     Toolbar toolbar;
-    String Uk, apiKey, id_alat, device, latitude, longitude;
-    String[] mStrings;
+    String Uk, apiKey, id_alat, device;
+    int numkeys;
 
     @Bind(R.id.fb_buddies)
     FlexboxLayout flexboxLayout;
@@ -82,9 +82,8 @@ public class DetailActivity extends BaseActivity {
         id_alat = intent.getStringExtra("id_alat");
         device = intent.getStringExtra("device");
 
-
         allDatas = new ArrayList<AllData>();
-        allsDataList = new ArrayList<AllsData>();
+        allsDataList = new ArrayList<>();
         final SharedPreferences sharedPreferencesApi = getSharedPreferences(Config.SHARED_PREF_API,
                 Context.MODE_PRIVATE);
         apiKey = sharedPreferencesApi.getString(Config.APIKEY_SHARED_PREF, "");
@@ -106,19 +105,6 @@ public class DetailActivity extends BaseActivity {
                 startActivity(intent);
             }
         });
-
-//        btnMaps = (Button) findViewById(R.id.btn_map);
-//        btnMaps.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intent1 = new Intent(DetailActivity.this, MapsActivity.class);
-//                intent1.putExtra("id_alat", id_alat);
-//                intent1.putExtra("latitude", latitude);
-//                intent1.putExtra("longitude", longitude);
-//                startActivity(intent1);
-//
-//            }
-//        });
 
         btnSettings = (Button) findViewById(R.id.btn_settings);
         btnSettings.setOnClickListener(new View.OnClickListener() {
@@ -275,51 +261,78 @@ public class DetailActivity extends BaseActivity {
                     if (obj.getBoolean("error") == false) {
                         //Toast.makeText(DetailActivity.this, "Data dapat"+response, Toast.LENGTH_SHORT).show();
                         JSONArray data = obj.getJSONArray("dataset");
-                        AllsData allsData = new AllsData();
+
                         JSONObject dataObj = (JSONObject) data.get(0);
                         JSONObject setObj = new JSONObject(dataObj.getString("data"));
                         JSONObject setObj2 = new JSONObject(dataObj.getString("sensornode"));
                         //Log.i("dataDapat",""+setObj);
-
+                        //AllsData allsData = new AllsData();
                         Iterator<String> keys= setObj.keys();
-                        int i=1;
-
-                        //String parameter
-                        Class[] paramString = new Class[1];
-                        paramString[0] = String.class;
-                        String className  = "com.example.aw.sigap.model.AllsData";
+                        numkeys=1;
+                        ArrayList<String> valList = new ArrayList<String>();
                         try{
+                            //String parameter
+                            Class[] paramString = new Class[1];
+                            paramString[0] = String.class;
+                            String className  = "com.example.aw.sigap.model.AllsData";
                             Class cls = Class.forName(className);
                             Object obj1 = cls.newInstance();
+
                             while (keys.hasNext())
                             {
                                 String keyValue = (String)keys.next();
                                 //Log.i("dataDapatkey",""+keyValue);
                                 String Value = setObj.getString(keyValue);
                                 Log.i("dataDapatvalue",""+Value);
-                                String methodName = "setSensor" + Integer.toString(i);
+                                valList.add(Value);
+                                String methodName = "setSensor" + Integer.toString(numkeys);
                                 Log.i("dataDapatmethod",""+methodName);
 
                                 Method method = cls.getDeclaredMethod(methodName, paramString);
                                 method.invoke(obj1, new String(Value));
 
-                                i++;
+                                numkeys++;
                             }
+                            for(int i=numkeys; i<=8; i++){
+                                String methodName = "setSensor" + Integer.toString(i);
+                                Log.i("dataDapatmethod",""+methodName);
+
+                                Method method = cls.getDeclaredMethod(methodName, paramString);
+                                method.invoke(obj1, new String("10"));
+                                valList.add("10");
+                            }
+                            Log.i("dataDapatnumkeys",""+numkeys);
+
                         }catch(Exception ex){
                             ex.printStackTrace();
                         }
-                        Log.i("dataDapatList",""+allsData.getSensor1());
 
                         String createdAt = dataObj.getString("created_at");
-
                         DateTime dateTime = DateTime.parse(createdAt);
                         DateTimeFormatter fmt = DateTimeFormat.forPattern("hh:mm:ss a");
                         String strDateOnly = fmt.print(dateTime);
                         long secondsSinceEpoch = dateTime.getMillis() / 1000;
                         Log.d("haha", Long.toString(secondsSinceEpoch));
-                        allsData.setCreatedAt(Long.toString(secondsSinceEpoch));
-                        //addBuddiesView(allDatas.get(allDatas.size()-(allDatas.size())));
+                        //allsData.setCreatedAt(strDateOnly);
+                        //allsData.setTimeStamp(Long.toString(secondsSinceEpoch));
+                        //allsData.setStatus("0");
+                        String satu = valList.get(0);
+                        String dua = valList.get(1);
+                        String tiga = valList.get(2);
+                        String empat = valList.get(3);
+                        String lima = valList.get(4);
+                        String enam = valList.get(5);
+                        String tujuh = valList.get(6);
+                        String lapan = valList.get(7);
+                        Log.i("dataDapatvalList",""+tujuh);
+                        AllsData allsData = new AllsData(satu, dua, tiga, empat, lima, enam, tujuh, lapan, strDateOnly,
+                                Long.toString(secondsSinceEpoch), "0");
+                        allsDataList.add(allsData);
+
                         //TextView header = (TextView) findViewById(R.id.tv_status);
+
+
+                        addBuddiesView2(allsDataList.get(allsDataList.size()-(allsDataList.size())));
 
 
                     } else {
@@ -333,7 +346,6 @@ public class DetailActivity extends BaseActivity {
                     intent3.putExtra("id_alat", id_alat);
                     intent3.putExtra("device", device);
                     startActivity(intent3);
-
                 }
             }
         }, new Response.ErrorListener() {
@@ -358,10 +370,11 @@ public class DetailActivity extends BaseActivity {
                 return super.getParams();
             }
         };
+
         //Adding request to request queue
         MyApplication.getInstance().addToRequestQueue(stringRequest);
-
     }
+
     private void controlNode(final String idalat, final String status){
         StringRequest stringRequest = new StringRequest(Request.Method.POST,
                 EndPoint.URL_CONTROL, new Response.Listener<String>() {
@@ -511,6 +524,42 @@ public class DetailActivity extends BaseActivity {
 
                     break;
             }
+            if (flexboxLayout != null)
+                flexboxLayout.addView(itemView);
+        }
+    }
+
+    private void addBuddiesView2(final AllsData q) {
+        Log.i("dataDapatsensor1",""+q.getCreatedAt());
+        if(flexboxLayout!=null)
+            if(flexboxLayout.getChildCount()>0)
+                flexboxLayout.removeAllViews();
+
+        for(int i=1; i<=numkeys-1; i++) {
+            final View itemView = getLayoutInflater().inflate(R.layout.layout_progress, null);
+
+            ProgressBar progressBar = (ProgressBar) itemView.findViewById(R.id.progressListrik);
+
+            TextView namaSensor = (TextView) itemView.findViewById(R.id.nama_sensor);
+            TextView nilaiSensor = (TextView) itemView.findViewById(R.id.nilai_sensor);
+            TextView statusSensor = (TextView) itemView.findViewById(R.id.status_sensor);
+
+            final int maxValue = 100;
+            ProgressBarAnimation animation;
+            float nilai;
+
+            nilaiSensor.setText(q.getSensor1());
+            namaSensor.setText("HPc (WaterLevel)");
+            statusSensor.setText("ON");
+
+            nilai = Float.parseFloat(q.getSensor1());
+            progressBar.setMax(100);
+            animation =  new ProgressBarAnimation(progressBar,progressBar.getProgress(),nilai);
+            animation.setDuration(500);
+            progressBar.setAnimation(animation);
+            startCountAnimation(nilaiSensor,1500,0, (int) nilai);
+
+
             if (flexboxLayout != null)
                 flexboxLayout.addView(itemView);
         }
