@@ -16,6 +16,8 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -34,6 +36,7 @@ import com.example.aw.sigap.fragment.HumidityFragment;
 import com.example.aw.sigap.fragment.TemperatureFragment;
 import com.example.aw.sigap.fragment.UkFragment;
 import com.example.aw.sigap.model.AllData;
+import com.example.aw.sigap.model.AllsData;
 import com.example.aw.sigap.model.PredictionData;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -44,6 +47,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Method;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -51,6 +55,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
@@ -72,11 +77,15 @@ public class DataHistoryActivity extends BaseActivity implements HumidityFragmen
     TabLayout tabLayout;
     @Bind(R.id.vp_buddy_add)
     ViewPager viewPager;
+    ArrayList<String> valList = new ArrayList<String>();
+    ArrayList<String> keyList = new ArrayList<String>();
 
     private ViewPagerAdapter adapter;
     public static List<AllData> allDatas;
+    public static List<AllsData> allsDataList;
     public static List<PredictionData> predDatas;
-    String id_alat, apiKey;
+    String id_alat, device, apiKey;
+    int numkeys;
     Toolbar toolbar;
     ProgressDialog pDialog;
 
@@ -95,8 +104,10 @@ public class DataHistoryActivity extends BaseActivity implements HumidityFragmen
 
         Intent intent = getIntent();
         id_alat = intent.getStringExtra("id_alat");
+        device = intent.getStringExtra("device");
         idnode = id_alat;
         allDatas = new ArrayList<AllData>();
+        allsDataList = new ArrayList<AllsData>();
         predDatas = new ArrayList<PredictionData>();
 
 //        predDatas.add(new PredictionData(Integer.toString(7), Integer.toString(3)));
@@ -112,11 +123,14 @@ public class DataHistoryActivity extends BaseActivity implements HumidityFragmen
         pDialog.setMessage("Loading...");
         pDialog.setCancelable(true);
 
-
-        getData();
+        if(device.equalsIgnoreCase("590e009c2476bf2dbca3e393")) {
+            getData();
+        }
+        else {
+            Toast.makeText(this, "bukan sigap", Toast.LENGTH_SHORT).show();
+            getOther();
+        }
         //predictData(id_alat);
-
-
     }
     public void getData(){
         showPDialog();
@@ -204,7 +218,124 @@ public class DataHistoryActivity extends BaseActivity implements HumidityFragmen
         MyApplication.getInstance().addToRequestQueue(stringRequest);
         hidePDialog();
     }
+    public void getOther() {
+        StringRequest stringRequest = new StringRequest(Request.Method.GET,
+                EndPoint.URL_DATA+"/"+id_alat, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.e(TAG, "onResponse: " + response);
+                try {
+                    JSONObject obj = new JSONObject(response);
 
+                    if (obj.getBoolean("error") == false) {
+                        //Toast.makeText(DetailActivity.this, "Data dapat"+response, Toast.LENGTH_SHORT).show();
+                        JSONArray data = obj.getJSONArray("dataset");
+
+                        JSONObject dataObj = (JSONObject) data.get(0);
+                        JSONObject setObj = new JSONObject(dataObj.getString("data"));
+                        JSONObject setObj2 = new JSONObject(dataObj.getString("sensornode"));
+                        //Log.i("dataDapat",""+setObj);
+                        //AllsData allsData = new AllsData();
+                        Iterator<String> keys= setObj.keys();
+                        numkeys=1;
+
+                        try{
+                            //String parameter
+                            Class[] paramString = new Class[1];
+                            paramString[0] = String.class;
+                            String className  = "com.example.aw.sigap.model.AllsData";
+                            Class cls = Class.forName(className);
+                            Object obj1 = cls.newInstance();
+
+                            while (keys.hasNext())
+                            {
+                                String keyValue = (String)keys.next();
+                                //Log.i("dataDapatkey",""+keyValue);
+                                keyList.add(keyValue);
+                                String Value = setObj.getString(keyValue);
+                                Log.i("dataDapatvalue",""+Value);
+                                valList.add(Value);
+                                String methodName = "setSensor" + Integer.toString(numkeys);
+                                Log.i("dataDapatmethod",""+methodName);
+
+                                Method method = cls.getDeclaredMethod(methodName, paramString);
+                                method.invoke(obj1, new String(Value));
+
+                                numkeys++;
+                            }
+                            for(int i=numkeys; i<=8; i++){
+                                String methodName = "setSensor" + Integer.toString(i);
+                                Log.i("dataDapatmethod",""+methodName);
+
+                                Method method = cls.getDeclaredMethod(methodName, paramString);
+                                method.invoke(obj1, new String("10"));
+                                valList.add("10");
+                            }
+                            Log.i("dataDapatnumkeys",""+numkeys);
+
+                        }catch(Exception ex){
+                            ex.printStackTrace();
+                        }
+
+                        String createdAt = dataObj.getString("created_at");
+                        DateTime dateTime = DateTime.parse(createdAt);
+                        DateTimeFormatter fmt = DateTimeFormat.forPattern("hh:mm:ss a");
+                        String strDateOnly = fmt.print(dateTime);
+                        long secondsSinceEpoch = dateTime.getMillis() / 1000;
+                        Log.d("haha", Long.toString(secondsSinceEpoch));
+                        //allsData.setCreatedAt(strDateOnly);
+                        //allsData.setTimeStamp(Long.toString(secondsSinceEpoch));
+                        //allsData.setStatus("0");
+                        String satu = valList.get(0);
+                        String dua = valList.get(1);
+                        String tiga = valList.get(2);
+                        String empat = valList.get(3);
+                        String lima = valList.get(4);
+                        String enam = valList.get(5);
+                        String tujuh = valList.get(6);
+                        String lapan = valList.get(7);
+                        Log.i("dataDapatvalList",""+tujuh);
+                        AllsData allsData = new AllsData(satu, dua, tiga, empat, lima, enam, tujuh, lapan, strDateOnly,
+                                Long.toString(secondsSinceEpoch), "0");
+                        allsDataList.add(allsData);
+
+
+                    } else {
+                        // error in fetching data
+                        Toast.makeText(DataHistoryActivity.this, "" + obj.getJSONObject("error").getString("message"), Toast.LENGTH_LONG).show();
+                    }
+                } catch (JSONException e) {
+                    Log.e(TAG, "json parsing error: " + e.getMessage());
+                    //Toast.makeText(DetailActivity.this, "Json parse error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                NetworkResponse networkResponse = error.networkResponse;
+                Log.e(TAG, "Volley error: " + error.getMessage() + ", code: " + networkResponse);
+                Toast.makeText(DataHistoryActivity.this, "Volley errror: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map headers = new HashMap();
+                headers.put("Authorization", apiKey);
+                headers.put("x-snow-token", "SECRET_API_KEY");
+
+                return headers;
+            }
+
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                return super.getParams();
+            }
+        };
+
+        //Adding request to request queue
+        MyApplication.getInstance().addToRequestQueue(stringRequest);
+    }
     public void predictData(final String idalat){
         showPDialog();
         //Toast.makeText(this, "HAHAHAHA", Toast.LENGTH_SHORT).show();

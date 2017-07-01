@@ -97,6 +97,7 @@ public class DetailActivity extends BaseActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(DetailActivity.this, DataHistoryActivity.class);
                 intent.putExtra("id_alat", id_alat);
+                intent.putExtra("device", device);
                 startActivity(intent);
             }
         });
