@@ -89,13 +89,7 @@ public class DetailActivity extends BaseActivity {
                 Context.MODE_PRIVATE);
         apiKey = sharedPreferencesApi.getString(Config.APIKEY_SHARED_PREF, "");
         Log.d("api", apiKey);
-        if(device.equalsIgnoreCase("590e009c2476bf2dbca3e393")) {
-            getData();
-        }
-        else {
-            Toast.makeText(this, "bukan sigap", Toast.LENGTH_SHORT).show();
-            getOther();
-        }
+
 
         btnHistory = (Button) findViewById(R.id.btn_history);
         btnHistory.setOnClickListener(new View.OnClickListener() {
@@ -141,6 +135,16 @@ public class DetailActivity extends BaseActivity {
                 controlNode(id_alat, "0");
             }
         });
+
+        if(device.equalsIgnoreCase("590e009c2476bf2dbca3e393")) {
+            getData();
+        }
+        else {
+            Toast.makeText(this, "bukan sigap", Toast.LENGTH_SHORT).show();
+            btnON.setVisibility(View.GONE);
+            btnOFF.setVisibility(View.GONE);
+            getOther();
+        }
     }
 
     public void getData(){
@@ -335,7 +339,10 @@ public class DetailActivity extends BaseActivity {
 
 
                         addBuddiesView2(allsDataList.get(allsDataList.size()-(allsDataList.size())));
-
+                        TextView header = (TextView) findViewById(R.id.tv_status);
+                        header.setVisibility(View.GONE);
+                        TextView tv2 = (TextView) findViewById(R.id.textView2);
+                        tv2.setVisibility(View.GONE);
 
                     } else {
                         // error in fetching data
