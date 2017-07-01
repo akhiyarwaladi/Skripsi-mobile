@@ -11,7 +11,7 @@ import java.io.Serializable;
 public class AllsData implements Serializable {
     String Sensor1, Sensor2, Sensor3, Sensor4, Sensor5, Sensor6, Sensor7, Sensor8, CreatedAt, TimeStamp, Status;
 
-    protected AllsData(Parcel in) {
+    public AllsData(Parcel in) {
         Sensor1 = in.readString();
         Sensor2 = in.readString();
         Sensor3 = in.readString();
@@ -24,17 +24,6 @@ public class AllsData implements Serializable {
         TimeStamp = in.readString();
         Status = in.readString();
     }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    String id;
-    int unread;
 
     public AllsData() {
 

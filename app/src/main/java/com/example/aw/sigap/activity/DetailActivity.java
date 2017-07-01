@@ -30,6 +30,7 @@ import com.example.aw.sigap.app.MyApplication;
 import com.example.aw.sigap.helper.ProgressBarAnimation;
 import com.example.aw.sigap.model.Alat;
 import com.example.aw.sigap.model.AllData;
+import com.example.aw.sigap.model.AllsData;
 import com.google.android.flexbox.FlexboxLayout;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -40,6 +41,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Method;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -61,6 +63,7 @@ public class DetailActivity extends BaseActivity {
     @Bind(R.id.fb_buddies)
     FlexboxLayout flexboxLayout;
     List<AllData> allDatas;
+    List<AllsData> allsDataList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +84,7 @@ public class DetailActivity extends BaseActivity {
 
 
         allDatas = new ArrayList<AllData>();
+        allsDataList = new ArrayList<AllsData>();
         final SharedPreferences sharedPreferencesApi = getSharedPreferences(Config.SHARED_PREF_API,
                 Context.MODE_PRIVATE);
         apiKey = sharedPreferencesApi.getString(Config.APIKEY_SHARED_PREF, "");
@@ -271,21 +275,40 @@ public class DetailActivity extends BaseActivity {
                     if (obj.getBoolean("error") == false) {
                         //Toast.makeText(DetailActivity.this, "Data dapat"+response, Toast.LENGTH_SHORT).show();
                         JSONArray data = obj.getJSONArray("dataset");
-
+                        AllsData allsData = new AllsData();
                         JSONObject dataObj = (JSONObject) data.get(0);
                         JSONObject setObj = new JSONObject(dataObj.getString("data"));
                         JSONObject setObj2 = new JSONObject(dataObj.getString("sensornode"));
-                        Log.i("dataDapat",""+setObj);
+                        //Log.i("dataDapat",""+setObj);
 
                         Iterator<String> keys= setObj.keys();
-                        int i=0;
-                        while (keys.hasNext())
-                        {
-                            String keyValue = (String)keys.next();
-                            Log.i("dataDapatkey",""+keyValue);
-                            //mStrings[i] = setObj.getString(keyValue);
-                            i++;
+                        int i=1;
+
+                        //String parameter
+                        Class[] paramString = new Class[1];
+                        paramString[0] = String.class;
+                        String className  = "com.example.aw.sigap.model.AllsData";
+                        try{
+                            Class cls = Class.forName(className);
+                            Object obj1 = cls.newInstance();
+                            while (keys.hasNext())
+                            {
+                                String keyValue = (String)keys.next();
+                                //Log.i("dataDapatkey",""+keyValue);
+                                String Value = setObj.getString(keyValue);
+                                Log.i("dataDapatvalue",""+Value);
+                                String methodName = "setSensor" + Integer.toString(i);
+                                Log.i("dataDapatmethod",""+methodName);
+
+                                Method method = cls.getDeclaredMethod(methodName, paramString);
+                                method.invoke(obj1, new String(Value));
+
+                                i++;
+                            }
+                        }catch(Exception ex){
+                            ex.printStackTrace();
                         }
+                        Log.i("dataDapatList",""+allsData.getSensor1());
 
                         String createdAt = dataObj.getString("created_at");
 
@@ -294,7 +317,7 @@ public class DetailActivity extends BaseActivity {
                         String strDateOnly = fmt.print(dateTime);
                         long secondsSinceEpoch = dateTime.getMillis() / 1000;
                         Log.d("haha", Long.toString(secondsSinceEpoch));
-
+                        allsData.setCreatedAt(Long.toString(secondsSinceEpoch));
                         //addBuddiesView(allDatas.get(allDatas.size()-(allDatas.size())));
                         //TextView header = (TextView) findViewById(R.id.tv_status);
 
