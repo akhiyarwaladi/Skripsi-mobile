@@ -59,7 +59,8 @@ public class DetailActivity extends BaseActivity {
     Toolbar toolbar;
     String Uk, apiKey, id_alat, device;
     int numkeys;
-
+    ArrayList<String> valList = new ArrayList<String>();
+    ArrayList<String> keyList = new ArrayList<String>();
     @Bind(R.id.fb_buddies)
     FlexboxLayout flexboxLayout;
     List<AllData> allDatas;
@@ -83,7 +84,7 @@ public class DetailActivity extends BaseActivity {
         device = intent.getStringExtra("device");
 
         allDatas = new ArrayList<AllData>();
-        allsDataList = new ArrayList<>();
+        allsDataList = new ArrayList<AllsData>();
         final SharedPreferences sharedPreferencesApi = getSharedPreferences(Config.SHARED_PREF_API,
                 Context.MODE_PRIVATE);
         apiKey = sharedPreferencesApi.getString(Config.APIKEY_SHARED_PREF, "");
@@ -269,7 +270,7 @@ public class DetailActivity extends BaseActivity {
                         //AllsData allsData = new AllsData();
                         Iterator<String> keys= setObj.keys();
                         numkeys=1;
-                        ArrayList<String> valList = new ArrayList<String>();
+
                         try{
                             //String parameter
                             Class[] paramString = new Class[1];
@@ -282,6 +283,7 @@ public class DetailActivity extends BaseActivity {
                             {
                                 String keyValue = (String)keys.next();
                                 //Log.i("dataDapatkey",""+keyValue);
+                                keyList.add(keyValue);
                                 String Value = setObj.getString(keyValue);
                                 Log.i("dataDapatvalue",""+Value);
                                 valList.add(Value);
@@ -547,12 +549,13 @@ public class DetailActivity extends BaseActivity {
             final int maxValue = 100;
             ProgressBarAnimation animation;
             float nilai;
-
-            nilaiSensor.setText(q.getSensor1());
-            namaSensor.setText("HPc (WaterLevel)");
+            String value = valList.get(i-1);
+            String key = keyList.get(i-1);
+            nilaiSensor.setText(value);
+            namaSensor.setText(key);
             statusSensor.setText("ON");
 
-            nilai = Float.parseFloat(q.getSensor1());
+            nilai = Float.parseFloat(value);
             progressBar.setMax(100);
             animation =  new ProgressBarAnimation(progressBar,progressBar.getProgress(),nilai);
             animation.setDuration(500);
