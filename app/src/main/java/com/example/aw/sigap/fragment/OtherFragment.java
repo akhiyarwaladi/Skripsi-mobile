@@ -1,6 +1,7 @@
 package com.example.aw.sigap.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -27,6 +28,7 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 
 /**
@@ -50,6 +52,7 @@ public class OtherFragment extends Fragment {
     private RecyclerView recyclerView;
     View view;
     LineChart chartSuhu;
+    float dur;
 
     private OnFragmentInteractionListener mListener;
 
@@ -101,12 +104,12 @@ public class OtherFragment extends Fragment {
         return view;
     }
 
-    private void setupChart(){
+    public void setupChart(){
         chartSuhu = (LineChart) view.findViewById(R.id.chart_other);
         updateChart();
     }
 
-    private void updateChart(){
+    public void updateChart(){
 
         ArrayList<Entry> entrySuhu = new ArrayList<>();
         ArrayList<String> labelSuhu = new ArrayList<>();
@@ -116,7 +119,15 @@ public class OtherFragment extends Fragment {
 
         for (int i=0; i< DataHistoryActivity.allsDataList.size(); i++){
             AllsData dat = DataHistoryActivity.allsDataList.get((DataHistoryActivity.allsDataList.size()-1) - i);
-            float dur = Float.parseFloat(dat.getSensor1());
+
+            if(Integer.parseInt(mParam1)+1 == 1) dur = Float.parseFloat(dat.getSensor1());
+            else if(Integer.parseInt(mParam1)+1 == 2) dur = Float.parseFloat(dat.getSensor2());
+            else if(Integer.parseInt(mParam1)+1 == 3) dur = Float.parseFloat(dat.getSensor3());
+            else if(Integer.parseInt(mParam1)+1 == 4) dur = Float.parseFloat(dat.getSensor4());
+            else if(Integer.parseInt(mParam1)+1 == 5) dur = Float.parseFloat(dat.getSensor5());
+            else if(Integer.parseInt(mParam1)+1 == 6) dur = Float.parseFloat(dat.getSensor6());
+            else if(Integer.parseInt(mParam1)+1 == 7) dur = Float.parseFloat(dat.getSensor7());
+
             String timestamp = dat.getTimeStamp();
             long timee = Long.parseLong(timestamp);
             Log.d("timee", Long.toString(timee));
