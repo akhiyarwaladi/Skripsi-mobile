@@ -64,7 +64,7 @@ public class DashboardActivity extends BaseActivity {
 
     private String TAG = DashboardActivity.class.getSimpleName();
     private String userId, apiKey;
-    private Button btnCreate;
+    private Button btnCreate, btnDelete;
     @Bind(R.id.fb_buddies)
     FlexboxLayout flexboxLayout;
     List<Alat> allAlat;
@@ -126,6 +126,8 @@ public class DashboardActivity extends BaseActivity {
                 startActivity(intent2);
             }
         });
+
+
 
     }
 
@@ -246,6 +248,59 @@ public class DashboardActivity extends BaseActivity {
         }
     }
 
+    private void deleteDevice(final String idalat){
+        StringRequest stringRequest = new StringRequest(Request.Method.DELETE,
+                EndPoint.URL_DELETE_ALAT+"/"+idalat+"/remove", new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.e(TAG, "onResponse: " + response);
+                try {
+                    JSONObject obj = new JSONObject(response);
+
+                    if (obj.getBoolean("error") == false) {
+                        Toast.makeText(DashboardActivity.this, "" + obj.getString("message"), Toast.LENGTH_SHORT).show();
+                        Intent intent2 = new Intent(DashboardActivity.this, DashboardActivity.class);
+
+                        startActivity(intent2);
+
+                    } else {
+                        Toast.makeText(DashboardActivity.this, "" + obj.getString("message"), Toast.LENGTH_LONG).show();
+                    }
+                } catch (JSONException e) {
+                    Log.e(TAG, "json parsing error: " + e.getMessage());
+                    Toast.makeText(DashboardActivity.this, "Json parse error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                NetworkResponse networkResponse = error.networkResponse;
+                Log.e(TAG, "Volley error: " + error.getMessage() + ", code: " + networkResponse);
+                Toast.makeText(DashboardActivity.this, "Volley errror: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map headers = new HashMap();
+                headers.put("Authorization", apiKey);
+                headers.put("x-snow-token", "SECRET_API_KEY");
+
+                return headers;
+            }
+
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+
+
+                return params;
+            }
+        };
+        //Adding request to request queue
+        MyApplication.getInstance().addToRequestQueue(stringRequest);
+    }
+
 
     private void addBuddiesView(final Alat p) {
         final View itemView = getLayoutInflater().inflate(R.layout.layout_item_buddy_big_shadow, null);
@@ -271,6 +326,14 @@ public class DashboardActivity extends BaseActivity {
 
         TextView tv = (TextView) itemView.findViewById(R.id.tv_name);
         tv.setText(name);
+
+        btnDelete = (Button) itemView.findViewById(R.id.bDeleteDevice);
+        btnDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                deleteDevice(id_alat);
+            }
+        });
 
         if(flexboxLayout!=null)
             flexboxLayout.addView(itemView);

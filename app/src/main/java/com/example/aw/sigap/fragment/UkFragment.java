@@ -137,6 +137,7 @@ public class UkFragment extends Fragment {
         lineDataSets.add(dataSetSuhu);
         LineData dataSuhu = new LineData(lineDataSets);
 
+
         XAxis xAxis = chartSuhu.getXAxis();
         xAxis.setValueFormatter(new IAxisValueFormatter() {
 
