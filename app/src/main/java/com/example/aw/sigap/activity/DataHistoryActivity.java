@@ -232,89 +232,94 @@ public class DataHistoryActivity extends BaseActivity implements HumidityFragmen
                     if (obj.getBoolean("error") == false) {
                         //Toast.makeText(DetailActivity.this, "Data dapat"+response, Toast.LENGTH_SHORT).show();
                         JSONArray data = obj.getJSONArray("dataset");
+                        for (int count = 0; count < data.length(); count++) {
+                            JSONObject dataObj = (JSONObject) data.get(count);
+                            JSONObject setObj = new JSONObject(dataObj.getString("data"));
+                            JSONObject setObj2 = new JSONObject(dataObj.getString("sensornode"));
+                            //Log.i("dataDapat",""+setObj);
+                            //AllsData allsData = new AllsData();
+                            Iterator<String> keys = setObj.keys();
+                            numkeys = 1;
 
-                        JSONObject dataObj = (JSONObject) data.get(0);
-                        JSONObject setObj = new JSONObject(dataObj.getString("data"));
-                        JSONObject setObj2 = new JSONObject(dataObj.getString("sensornode"));
-                        //Log.i("dataDapat",""+setObj);
-                        //AllsData allsData = new AllsData();
-                        Iterator<String> keys= setObj.keys();
-                        numkeys=1;
+                            try {
+                                //String parameter
+                                Class[] paramString = new Class[1];
+                                paramString[0] = String.class;
+                                String className = "com.example.aw.sigap.model.AllsData";
+                                Class cls = Class.forName(className);
+                                Object obj1 = cls.newInstance();
 
-                        try{
-                            //String parameter
-                            Class[] paramString = new Class[1];
-                            paramString[0] = String.class;
-                            String className  = "com.example.aw.sigap.model.AllsData";
-                            Class cls = Class.forName(className);
-                            Object obj1 = cls.newInstance();
+                                while (keys.hasNext()) {
+                                    String keyValue = (String) keys.next();
+                                    //Log.i("dataDapatkey",""+keyValue);
+                                    keyList.add(keyValue);
+                                    String Value = setObj.getString(keyValue);
+                                    Log.i("dataDapatvalue", "" + Value);
+                                    valList.add(Value);
+                                    String methodName = "setSensor" + Integer.toString(numkeys);
+                                    Log.i("dataDapatmethod", "" + methodName);
 
-                            while (keys.hasNext())
-                            {
-                                String keyValue = (String)keys.next();
-                                //Log.i("dataDapatkey",""+keyValue);
-                                keyList.add(keyValue);
-                                String Value = setObj.getString(keyValue);
-                                Log.i("dataDapatvalue",""+Value);
-                                valList.add(Value);
-                                String methodName = "setSensor" + Integer.toString(numkeys);
-                                Log.i("dataDapatmethod",""+methodName);
+                                    Method method = cls.getDeclaredMethod(methodName, paramString);
+                                    method.invoke(obj1, new String(Value));
 
-                                Method method = cls.getDeclaredMethod(methodName, paramString);
-                                method.invoke(obj1, new String(Value));
+                                    numkeys++;
+                                }
+                                for (int i = numkeys; i <= 8; i++) {
+                                    String methodName = "setSensor" + Integer.toString(i);
+                                    Log.i("dataDapatmethod", "" + methodName);
 
-                                numkeys++;
+                                    Method method = cls.getDeclaredMethod(methodName, paramString);
+                                    method.invoke(obj1, new String("10"));
+                                    valList.add("10");
+                                }
+                                Log.i("dataDapatnumkeys", "" + numkeys);
+
+                            } catch (Exception ex) {
+                                ex.printStackTrace();
                             }
-                            for(int i=numkeys; i<=8; i++){
-                                String methodName = "setSensor" + Integer.toString(i);
-                                Log.i("dataDapatmethod",""+methodName);
 
-                                Method method = cls.getDeclaredMethod(methodName, paramString);
-                                method.invoke(obj1, new String("10"));
-                                valList.add("10");
+                            String createdAt = dataObj.getString("created_at");
+                            DateTime dateTime = DateTime.parse(createdAt);
+                            DateTimeFormatter fmt = DateTimeFormat.forPattern("hh:mm:ss a");
+                            String strDateOnly = fmt.print(dateTime);
+                            long secondsSinceEpoch = dateTime.getMillis() / 1000;
+                            Log.d("haha", Long.toString(secondsSinceEpoch));
+                            //allsData.setCreatedAt(strDateOnly);
+                            //allsData.setTimeStamp(Long.toString(secondsSinceEpoch));
+                            //allsData.setStatus("0");
+                            String satu = valList.get(0);
+                            String dua = valList.get(1);
+                            String tiga = valList.get(2);
+                            String empat = valList.get(3);
+                            String lima = valList.get(4);
+                            String enam = valList.get(5);
+                            String tujuh = valList.get(6);
+                            String lapan = valList.get(7);
+                            Log.i("dataDapatvalList", "" + tujuh);
+                            AllsData allsData = new AllsData(satu, dua, tiga, empat, lima, enam, tujuh, lapan, strDateOnly,
+                                    Long.toString(secondsSinceEpoch), "0");
+                            allsDataList.add(allsData);
+
+                            adapter = new ViewPagerAdapter(getSupportFragmentManager());
+
+
+                            for (int i = 0; i < numkeys - 1; i++) {
+                                String keyy = keyList.get(i);
+                                OtherFragment otherFragment = new OtherFragment();
+                                adapter.addFragment(otherFragment, keyy);
+                                Bundle args = new Bundle();
+                                args.putString("param1", Integer.toString(i));
+                                otherFragment.setArguments(args);
                             }
-                            Log.i("dataDapatnumkeys",""+numkeys);
+                            viewPager.setAdapter(adapter);
 
-                        }catch(Exception ex){
-                            ex.printStackTrace();
+                            tabLayout.setupWithViewPager(viewPager);
+                            for (int i = 0; i < numkeys - 1; i++) {
+                                tabLayout.getTabAt(i).setIcon(R.drawable.thermometer);
+                            }
+                            keyList.clear();
+                            valList.clear();
                         }
-
-                        String createdAt = dataObj.getString("created_at");
-                        DateTime dateTime = DateTime.parse(createdAt);
-                        DateTimeFormatter fmt = DateTimeFormat.forPattern("hh:mm:ss a");
-                        String strDateOnly = fmt.print(dateTime);
-                        long secondsSinceEpoch = dateTime.getMillis() / 1000;
-                        Log.d("haha", Long.toString(secondsSinceEpoch));
-                        //allsData.setCreatedAt(strDateOnly);
-                        //allsData.setTimeStamp(Long.toString(secondsSinceEpoch));
-                        //allsData.setStatus("0");
-                        String satu = valList.get(0);
-                        String dua = valList.get(1);
-                        String tiga = valList.get(2);
-                        String empat = valList.get(3);
-                        String lima = valList.get(4);
-                        String enam = valList.get(5);
-                        String tujuh = valList.get(6);
-                        String lapan = valList.get(7);
-                        Log.i("dataDapatvalList",""+tujuh);
-                        AllsData allsData = new AllsData(satu, dua, tiga, empat, lima, enam, tujuh, lapan, strDateOnly,
-                                Long.toString(secondsSinceEpoch), "0");
-                        allsDataList.add(allsData);
-
-                        adapter = new ViewPagerAdapter(getSupportFragmentManager());
-
-
-                        for(int i = 0; i < numkeys-1; i++){
-                            String keyy = keyList.get(i);
-                            adapter.addFragment(new OtherFragment(), keyy);
-                        }
-                        viewPager.setAdapter(adapter);
-
-                        tabLayout.setupWithViewPager(viewPager);
-                        for(int i = 0; i < numkeys-1; i++){
-                            tabLayout.getTabAt(i).setIcon(R.drawable.thermometer);
-                        }
-
 
 
                     } else {

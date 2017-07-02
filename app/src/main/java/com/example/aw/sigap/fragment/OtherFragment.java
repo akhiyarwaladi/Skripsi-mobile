@@ -4,11 +4,18 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.aw.sigap.R;
+import com.example.aw.sigap.activity.DataHistoryActivity;
+import com.example.aw.sigap.adapter.OtherSensorAdapter;
+import com.example.aw.sigap.adapter.SensorAdapter;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -27,6 +34,9 @@ public class OtherFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    public static OtherSensorAdapter mAdapter;
+    private RecyclerView recyclerView;
+    View view;
 
     private OnFragmentInteractionListener mListener;
 
@@ -59,13 +69,22 @@ public class OtherFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+        Log.i("param1", mParam1);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_other, container, false);
+        view = inflater.inflate(R.layout.fragment_other, container, false);
+        recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view_other);
+        mAdapter = new OtherSensorAdapter(Integer.parseInt(mParam1)+1, DataHistoryActivity.allsDataList);
+
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setAdapter(mAdapter);
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event

@@ -17,7 +17,7 @@
         android:weightSum="4">
 
         <com.github.mikephil.charting.charts.LineChart
-            android:id="@+id/chart_hpc"
+            android:id="@+id/chart_other"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginBottom="18dp"
@@ -61,7 +61,7 @@
 
             </RelativeLayout>
             <android.support.v7.widget.RecyclerView
-                android:id="@+id/recycler_view_hpc"
+                android:id="@+id/recycler_view_other"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:scrollbars="vertical" />
