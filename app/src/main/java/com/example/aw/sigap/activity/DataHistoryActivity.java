@@ -33,6 +33,7 @@ import com.example.aw.sigap.app.MyApplication;
 import com.example.aw.sigap.fragment.DurtimeFragment;
 import com.example.aw.sigap.fragment.HpcFragment;
 import com.example.aw.sigap.fragment.HumidityFragment;
+import com.example.aw.sigap.fragment.OtherFragment;
 import com.example.aw.sigap.fragment.TemperatureFragment;
 import com.example.aw.sigap.fragment.UkFragment;
 import com.example.aw.sigap.model.AllData;
@@ -63,7 +64,8 @@ import java.util.TimeZone;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class DataHistoryActivity extends BaseActivity implements HumidityFragment.OnFragmentInteractionListener, TemperatureFragment.OnFragmentInteractionListener{
+public class DataHistoryActivity extends BaseActivity implements HumidityFragment.OnFragmentInteractionListener, TemperatureFragment.OnFragmentInteractionListener,
+        OtherFragment.OnFragmentInteractionListener{
     private String TAG = DashboardActivity.class.getSimpleName();
     public static int UK = 1;
     public static int HPC = 2;
@@ -299,6 +301,21 @@ public class DataHistoryActivity extends BaseActivity implements HumidityFragmen
                                 Long.toString(secondsSinceEpoch), "0");
                         allsDataList.add(allsData);
 
+                        adapter = new ViewPagerAdapter(getSupportFragmentManager());
+
+
+                        for(int i = 0; i < numkeys-1; i++){
+                            String keyy = keyList.get(i);
+                            adapter.addFragment(new OtherFragment(), keyy);
+                        }
+                        viewPager.setAdapter(adapter);
+
+                        tabLayout.setupWithViewPager(viewPager);
+                        for(int i = 0; i < numkeys-1; i++){
+                            tabLayout.getTabAt(i).setIcon(R.drawable.thermometer);
+                        }
+
+
 
                     } else {
                         // error in fetching data
@@ -413,6 +430,27 @@ public class DataHistoryActivity extends BaseActivity implements HumidityFragmen
     @Override
     public void onFragmentInteraction(Uri uri){
         //you can leave it empty
+    }
+
+    public class TabsPagerAdapter extends FragmentPagerAdapter {
+
+        private ArrayList<Fragment> list;
+
+        public TabsPagerAdapter(FragmentManager fm, ArrayList<Fragment> list) {
+            super(fm);
+            this.list = list;
+        }
+
+        @Override
+        public Fragment getItem(int index) {
+            return list.get(index);
+        }
+
+        @Override
+        public int getCount() {
+            return list.size();
+        }
+
     }
 
     private void setupViewPager(ViewPager viewPager) {
