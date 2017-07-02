@@ -37,6 +37,7 @@ import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 
 import org.json.JSONException;
@@ -120,6 +121,8 @@ public class CreateDevice extends AppCompatActivity implements OnMapReadyCallbac
                 longitude = Double.toString(cameraPosition.target.longitude);
                 Log.i("centerLat", Double.toString(cameraPosition.target.latitude));
                 Log.i("centerLong", Double.toString(cameraPosition.target.longitude));
+                googleMap.clear();
+                googleMap.addMarker(new MarkerOptions().position(cameraPosition.target));
             }
         });
 

@@ -71,6 +71,13 @@
         android:layout_height="match_parent"
         android:layout_below="@+id/tool_bar"/>
 
+    <Button
+        android:layout_width="110dp"
+        android:layout_height="75dp"
+        android:layout_centerInParent="true"
+        android:background="@drawable/pilihlokasi2"
+        android:id="@+id/overMarker"/>
+
     </LinearLayout>
 
 
