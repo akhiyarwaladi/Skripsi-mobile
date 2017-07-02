@@ -1,9 +1,12 @@
 package com.example.aw.sigap.fragment;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,6 +19,15 @@ import com.example.aw.sigap.R;
 import com.example.aw.sigap.activity.DataHistoryActivity;
 import com.example.aw.sigap.adapter.OtherSensorAdapter;
 import com.example.aw.sigap.adapter.SensorAdapter;
+import com.example.aw.sigap.model.AllData;
+import com.example.aw.sigap.model.AllsData;
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
+
+import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -37,6 +49,7 @@ public class OtherFragment extends Fragment {
     public static OtherSensorAdapter mAdapter;
     private RecyclerView recyclerView;
     View view;
+    LineChart chartSuhu;
 
     private OnFragmentInteractionListener mListener;
 
@@ -84,7 +97,49 @@ public class OtherFragment extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(mAdapter);
+        setupChart();
         return view;
+    }
+
+    private void setupChart(){
+        chartSuhu = (LineChart) view.findViewById(R.id.chart_other);
+        updateChart();
+    }
+
+    private void updateChart(){
+
+        ArrayList<Entry> entrySuhu = new ArrayList<>();
+        ArrayList<String> labelSuhu = new ArrayList<>();
+
+        entrySuhu.clear();
+        labelSuhu.clear();
+
+        for (int i=0; i< DataHistoryActivity.allsDataList.size(); i++){
+            AllsData dat = DataHistoryActivity.allsDataList.get((DataHistoryActivity.allsDataList.size()-1) - i);
+            float dur = Float.parseFloat(dat.getSensor1());
+            String timestamp = dat.getTimeStamp();
+            long timee = Long.parseLong(timestamp);
+            Log.d("timee", Long.toString(timee));
+            entrySuhu.add(new Entry(i, dur));
+        }
+        ArrayList<ILineDataSet> lineDataSets = new ArrayList<>();
+
+        LineDataSet dataSetSuhu = new LineDataSet(entrySuhu, "second");
+        dataSetSuhu.setMode(LineDataSet.Mode.CUBIC_BEZIER);
+        dataSetSuhu.setColor(Color.parseColor("#009688"));
+        dataSetSuhu.setCircleColor(Color.parseColor("#ffcdd2"));
+        dataSetSuhu.setCircleColorHole(Color.parseColor("#f44336"));
+        Drawable drawable = ContextCompat.getDrawable(getActivity(), R.drawable.fade_red);
+        dataSetSuhu.setDrawFilled(true);
+        dataSetSuhu.setFillDrawable(drawable);
+
+        lineDataSets.add(dataSetSuhu);
+        LineData dataSuhu = new LineData(lineDataSets);
+        chartSuhu.setData(dataSuhu);
+        chartSuhu.setVisibleXRangeMaximum(10); //set n data only to display
+        chartSuhu.moveViewToX(DataHistoryActivity.allsDataList.size() - 10); //move view to 10 last data
+        chartSuhu.notifyDataSetChanged();
+        chartSuhu.animateY(1000);
     }
 
     // TODO: Rename method, update argument and hook method into UI event
