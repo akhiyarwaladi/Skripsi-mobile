@@ -36,9 +36,12 @@ import com.example.aw.sigap.app.MyApplication;
 import com.example.aw.sigap.model.AllData;
 import com.example.aw.sigap.model.PredictionData;
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.AxisBase;
+import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 
 import org.json.JSONArray;
@@ -80,6 +83,7 @@ public class HumidityFragment extends Fragment {
     private int numData;
     View view;
     LineChart chartSuhu;
+    ArrayList<String> valList = new ArrayList<String>();
     public HumidityFragment() {
         // Required empty public constructor
     }
@@ -239,6 +243,9 @@ public class HumidityFragment extends Fragment {
             //get last data first because api sort by date
             AllData dat = DataHistoryActivity.allDatas.get((DataHistoryActivity.allDatas.size()-1) - i);
             float humid = Float.parseFloat(dat.getHumidity());
+            String createdAt = dat.getCreatedAt();
+            createdAt = createdAt.substring(0, createdAt.length() - 5);
+            valList.add(createdAt);
 
             //String timestamp = dat.getCreatedAt();
             //long timee = Long.parseLong(timestamp);
@@ -261,6 +268,26 @@ public class HumidityFragment extends Fragment {
         lineDataSets.add(dataSetSuhu);
 
         LineData dataSuhu = new LineData(lineDataSets);
+
+        XAxis xAxis = chartSuhu.getXAxis();
+        xAxis.setValueFormatter(new IAxisValueFormatter() {
+
+            @Override
+            public String getFormattedValue(float value, AxisBase axis)
+            {
+                System.out.println(value);
+                if(((int)value)<valList.size())
+                {
+                    return  (valList.get((int)value));
+                }
+                else
+                {
+                    return "";
+                }
+            }
+        });
+
+
         chartSuhu.setData(dataSuhu);
         chartSuhu.setVisibleXRangeMaximum(10); //set n data only to display
         chartSuhu.moveViewToX((numData) - 10); //move view to 10 last data

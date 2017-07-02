@@ -20,9 +20,12 @@ import com.example.aw.sigap.activity.DataHistoryActivity;
 import com.example.aw.sigap.adapter.SensorAdapter;
 import com.example.aw.sigap.model.AllData;
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.AxisBase;
+import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 
 import java.text.SimpleDateFormat;
@@ -48,6 +51,7 @@ public class UkFragment extends Fragment {
     private String mParam2;
     View v;
     LineChart chartSuhu, chartPH, chartDO;
+    ArrayList<String> valList = new ArrayList<String>();
 
     private OnFragmentInteractionListener mListener;
 
@@ -112,6 +116,10 @@ public class UkFragment extends Fragment {
         for(int i = 0; i<DataHistoryActivity.allDatas.size();i++){
             AllData dat = DataHistoryActivity.allDatas.get((DataHistoryActivity.allDatas.size()-1) - i);
             float ukk = Float.parseFloat(dat.getUkk());
+            String createdAt = dat.getCreatedAt();
+            createdAt = createdAt.substring(0, createdAt.length() - 5);
+            valList.add(createdAt);
+
             entrySuhu.add(new Entry(i, ukk));
             //labelSuhu.add(String.valueOf(i+1));
         }
@@ -128,6 +136,25 @@ public class UkFragment extends Fragment {
 
         lineDataSets.add(dataSetSuhu);
         LineData dataSuhu = new LineData(lineDataSets);
+
+        XAxis xAxis = chartSuhu.getXAxis();
+        xAxis.setValueFormatter(new IAxisValueFormatter() {
+
+            @Override
+            public String getFormattedValue(float value, AxisBase axis)
+            {
+                System.out.println(value);
+                if(((int)value)<valList.size())
+                {
+                    return  (valList.get((int)value));
+                }
+                else
+                {
+                    return "";
+                }
+            }
+        });
+
         chartSuhu.setData(dataSuhu);
         chartSuhu.setVisibleXRangeMaximum(10); //set n data only to display
         chartSuhu.moveViewToX(entrySuhu.size() - 10); //move view to 10 last data

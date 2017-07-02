@@ -35,9 +35,12 @@ import com.example.aw.sigap.app.MyApplication;
 import com.example.aw.sigap.model.AllData;
 import com.example.aw.sigap.model.PredictionData;
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.AxisBase;
+import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 
 import org.json.JSONArray;
@@ -82,6 +85,8 @@ public class TemperatureFragment extends Fragment {
     public static List<PredictionData> predDatas;
     View view;
     LineChart chartSuhu;
+
+    ArrayList<String> valList = new ArrayList<String>();
     public TemperatureFragment() {
         // Required empty public constructor
     }
@@ -243,6 +248,10 @@ public class TemperatureFragment extends Fragment {
         for(int i = 0; i<DataHistoryActivity.allDatas.size();i++){
             AllData dat = DataHistoryActivity.allDatas.get((DataHistoryActivity.allDatas.size()-1) - i);
             float temp = Float.parseFloat(dat.getTemperature());
+            String createdAt = dat.getCreatedAt();
+            createdAt = createdAt.substring(0, createdAt.length() - 5);
+            valList.add(createdAt);
+
             entrySuhu.add(new Entry(i, temp));
             //labelSuhu.add(String.valueOf(i+1));
         }
@@ -259,6 +268,25 @@ public class TemperatureFragment extends Fragment {
 
         lineDataSets.add(dataSetSuhu);
         LineData dataSuhu = new LineData(lineDataSets);
+
+        XAxis xAxis = chartSuhu.getXAxis();
+        xAxis.setValueFormatter(new IAxisValueFormatter() {
+
+            @Override
+            public String getFormattedValue(float value, AxisBase axis)
+            {
+                System.out.println(value);
+                if(((int)value)<valList.size())
+                {
+                    return  (valList.get((int)value));
+                }
+                else
+                {
+                    return "";
+                }
+            }
+        });
+
         chartSuhu.setData(dataSuhu);
         chartSuhu.setVisibleXRangeMaximum(10); //set n data only to display
         chartSuhu.moveViewToX(numData - 10); //move view to 10 last data

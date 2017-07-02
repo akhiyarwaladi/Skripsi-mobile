@@ -20,6 +20,7 @@ import com.example.aw.sigap.helper.HourAxisValueFormatter;
 import com.example.aw.sigap.model.AllData;
 import com.example.aw.sigap.model.PredictionData;
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
@@ -45,7 +46,7 @@ public class HpcFragment extends Fragment {
     private int numData;
     View view;
     LineChart chartSuhu, chartPH, chartDO;
-
+    ArrayList<String> valList = new ArrayList<String>();
     public HpcFragment() {
         // Required empty public constructor
     }
@@ -87,6 +88,9 @@ public class HpcFragment extends Fragment {
         for(int i = 0; i<DataHistoryActivity.allDatas.size(); i++){
             AllData dat = DataHistoryActivity.allDatas.get((DataHistoryActivity.allDatas.size()-1) - i);
             float hpc = Float.parseFloat(dat.getHpc());
+            String createdAt = dat.getCreatedAt();
+            createdAt = createdAt.substring(0, createdAt.length() - 5);
+            valList.add(createdAt);
             //String timestamp = dat.getCreatedAt();
             //long timee = Long.parseLong(timestamp);
             entrySuhu.add(new Entry(i, hpc));
@@ -122,6 +126,25 @@ public class HpcFragment extends Fragment {
 
 
         LineData dataSuhu = new LineData(lineDataSets);
+
+        XAxis xAxis = chartSuhu.getXAxis();
+        xAxis.setValueFormatter(new IAxisValueFormatter() {
+
+            @Override
+            public String getFormattedValue(float value, AxisBase axis)
+            {
+                System.out.println(value);
+                if(((int)value)<valList.size())
+                {
+                    return  (valList.get((int)value));
+                }
+                else
+                {
+                    return "";
+                }
+            }
+        });
+
         chartSuhu.setData(dataSuhu);
         chartSuhu.setVisibleXRangeMaximum(10); //set n data only to display
         chartSuhu.moveViewToX((numData+entrySuhuPred.size()) - 10); //move view to 10 last data

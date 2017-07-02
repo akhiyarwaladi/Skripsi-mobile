@@ -20,16 +20,21 @@ import com.example.aw.sigap.R;
 import com.example.aw.sigap.activity.DataHistoryActivity;
 import com.example.aw.sigap.adapter.OtherSensorAdapter;
 import com.example.aw.sigap.adapter.SensorAdapter;
+import com.example.aw.sigap.helper.HourAxisValueFormatter;
 import com.example.aw.sigap.model.AllData;
 import com.example.aw.sigap.model.AllsData;
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.AxisBase;
+import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -53,6 +58,8 @@ public class OtherFragment extends Fragment {
     View view;
     LineChart chartSuhu;
     float dur;
+    long timee, timeeref, ref;
+    ArrayList<String> valList = new ArrayList<String>();
 
     private OnFragmentInteractionListener mListener;
 
@@ -129,9 +136,21 @@ public class OtherFragment extends Fragment {
             else if(Integer.parseInt(mParam1)+1 == 7) dur = Float.parseFloat(dat.getSensor7());
 
             String timestamp = dat.getTimeStamp();
-            long timee = Long.parseLong(timestamp);
+            String createdAt = dat.getCreatedAt();
+            createdAt = createdAt.substring(0, createdAt.length() - 5);
+            timee = Long.parseLong(timestamp);
+            if(i==0) ref= timee;
+            timeeref = timee - ref;
+
+            valList.add(createdAt);
             Log.d("timee", Long.toString(timee));
+            Log.d("timeeref", Long.toString(timeeref));
+
             entrySuhu.add(new Entry(i, dur));
+
+//            HourAxisValueFormatter hourAxisValueFormatter = new HourAxisValueFormatter(timeeref);
+//            XAxis xAxis = chartSuhu.getXAxis();
+//            xAxis.setValueFormatter(hourAxisValueFormatter);
         }
         ArrayList<ILineDataSet> lineDataSets = new ArrayList<>();
 
@@ -146,7 +165,28 @@ public class OtherFragment extends Fragment {
 
         lineDataSets.add(dataSetSuhu);
         LineData dataSuhu = new LineData(lineDataSets);
+
+        XAxis xAxis = chartSuhu.getXAxis();
+        xAxis.setValueFormatter(new IAxisValueFormatter() {
+
+            @Override
+            public String getFormattedValue(float value, AxisBase axis)
+            {
+                System.out.println(value);
+                if(((int)value)<valList.size())
+                {
+                    return  (valList.get((int)value));
+                }
+                else
+                {
+                    return "";
+                }
+            }
+        });
         chartSuhu.setData(dataSuhu);
+
+
+
         chartSuhu.setVisibleXRangeMaximum(10); //set n data only to display
         chartSuhu.moveViewToX(DataHistoryActivity.allsDataList.size() - 10); //move view to 10 last data
         chartSuhu.notifyDataSetChanged();
