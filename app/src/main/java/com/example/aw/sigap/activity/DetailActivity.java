@@ -57,7 +57,7 @@ public class DetailActivity extends BaseActivity {
     private String TAG = DashboardActivity.class.getSimpleName();
     Button btnHistory, btnSettings, btnON, btnOFF;
     Toolbar toolbar;
-    String Uk, apiKey, id_alat, device;
+    String apiKey, id_alat, device, ukk, hpsp, durtime;
     int numkeys;
     ArrayList<String> valList = new ArrayList<String>();
     ArrayList<String> keyList = new ArrayList<String>();
@@ -161,7 +161,7 @@ public class DetailActivity extends BaseActivity {
                         //Toast.makeText(DetailActivity.this, "Data dapat"+response, Toast.LENGTH_SHORT).show();
                         JSONArray data = obj.getJSONArray("dataset");
 
-                        JSONObject dataObj = (JSONObject) data.get(1);
+                        JSONObject dataObj = (JSONObject) data.get(0);
                         JSONObject setObj = new JSONObject(dataObj.getString("data"));
                         JSONObject setObj2 = new JSONObject(dataObj.getString("sensornode"));
                         Log.i("dataDapat",""+dataObj);
@@ -172,9 +172,12 @@ public class DetailActivity extends BaseActivity {
                         String temperature = setObj.getString("temperature");
                         String status = setObj2.getString("status");
 
-                        String ukk = dataObj.getString("uk");
-                        String hpsp = dataObj.getString("setPoint");
-                        String durtime = dataObj.getString("opTime");
+                        if(dataObj.has("uk")) ukk = dataObj.getString("uk");
+                        else ukk = "1";
+                        if(dataObj.has("setPoint")) hpsp = dataObj.getString("setPoint");
+                        else hpsp = "5";
+                        if(dataObj.has("opTime")) durtime = dataObj.getString("opTime");
+                        else durtime = "60";
                         String createdAt = dataObj.getString("created_at");
 
                         DateTime dateTime = DateTime.parse(createdAt);
@@ -185,7 +188,7 @@ public class DetailActivity extends BaseActivity {
                         AllData dataa = new AllData(ukk, hpc, humidity, temperature, hpsp, durtime, strDateOnly,
                                 Long.toString(secondsSinceEpoch), status);
                         allDatas.add(dataa);
-                        Uk = ukk;
+
                         addBuddiesView(allDatas.get(allDatas.size()-(allDatas.size())));
                         TextView header = (TextView) findViewById(R.id.tv_status);
 //                        if(Float.parseFloat(Uk) > 0){

@@ -86,7 +86,7 @@ public class DataHistoryActivity extends BaseActivity implements HumidityFragmen
     public static List<AllData> allDatas;
     public static List<AllsData> allsDataList;
     public static List<PredictionData> predDatas;
-    String id_alat, device, apiKey;
+    String id_alat, device, apiKey, ukk, hpsp, durtime;
     int numkeys;
     Toolbar toolbar;
     ProgressDialog pDialog;
@@ -160,9 +160,12 @@ public class DataHistoryActivity extends BaseActivity implements HumidityFragmen
                             String temperature = setObj.getString("temperature");
                             String status = setObj2.getString("status");
 
-                            String ukk = dataObj.getString("uk");
-                            String hpsp = dataObj.getString("setPoint");
-                            String durtime = dataObj.getString("opTime");
+                            if(dataObj.has("uk")) ukk = dataObj.getString("uk");
+                            else ukk = "1";
+                            if(dataObj.has("setPoint")) hpsp = dataObj.getString("setPoint");
+                            else hpsp = "5";
+                            if(dataObj.has("opTime")) durtime = dataObj.getString("opTime");
+                            else durtime = "60";
                             String createdAt = dataObj.getString("created_at");
 
 //                            long dv = Long.valueOf(createdAt)*1000;// its need to be in milisecond
