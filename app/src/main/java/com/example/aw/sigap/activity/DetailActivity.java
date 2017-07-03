@@ -141,7 +141,7 @@ public class DetailActivity extends BaseActivity {
             getData();
         }
         else {
-            Toast.makeText(this, "bukan sigap", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, "bukan sigap", Toast.LENGTH_SHORT).show();
             btnON.setVisibility(View.GONE);
             btnOFF.setVisibility(View.GONE);
             getOther();

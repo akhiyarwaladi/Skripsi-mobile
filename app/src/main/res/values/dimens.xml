@@ -12,4 +12,8 @@
     <dimen name="margin_large">8dp</dimen>
     <dimen name="text_size_large">16sp</dimen>
     <dimen name="margin_small">0dp</dimen>
+
+    <dimen name="cards_button_width">45dp</dimen>
+    <dimen name="cards_button_height">45dp</dimen>
+    <dimen name="md_keylines">16dp</dimen>
 </resources>
