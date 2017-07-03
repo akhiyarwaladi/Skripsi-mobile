@@ -34,7 +34,8 @@
         <EditText
             android:id="@+id/sname"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:hint="ex: node 1"/>
     </LinearLayout>
 
     <LinearLayout

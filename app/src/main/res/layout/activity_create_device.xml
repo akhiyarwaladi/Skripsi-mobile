@@ -34,7 +34,8 @@
         <EditText
             android:id="@+id/dname"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:hint="ex: station 1"/>
     </LinearLayout>
 
     <LinearLayout
@@ -52,7 +53,8 @@
         <EditText
             android:id="@+id/etwebaddr"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:hint="ex: 192.168.43.44"/>
     </LinearLayout>
 
     <LinearLayout

@@ -34,13 +34,13 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.ToLongBiFunction;
+
 
 public class SettingsActivity extends AppCompatActivity {
 
     private String TAG = DashboardActivity.class.getSimpleName();
     private Toolbar toolbar;
-    private EditText hpsp, optime;
+    private EditText hpsp, optime, intvData;
     private Button changeSettings;
     private String apiKey, id_alat, device;
     @Override
@@ -66,19 +66,21 @@ public class SettingsActivity extends AppCompatActivity {
 
         hpsp = (EditText)findViewById(R.id.hpsp);
         optime = (EditText)findViewById(R.id.optime);
+        intvData = (EditText) findViewById(R.id.intvData);
         changeSettings = (Button)findViewById(R.id.changeSettings);
         changeSettings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String newhpsp = hpsp.getText().toString();
                 String newoptime = optime.getText().toString();
-                updateSettings(newhpsp, newoptime, id_alat);
+                String newintvData = intvData.getText().toString();
+                updateSettings(newhpsp, newoptime, newintvData, id_alat);
             }
         });
 
     }
 
-    public void updateSettings(final String hpsp, final String optime, final String idalat){
+    public void updateSettings(final String hpsp, final String optime, final String intvData, final String idalat){
         //Toast.makeText(this, "HAHAHAHA", Toast.LENGTH_SHORT).show();
         StringRequest stringRequest = new StringRequest(Request.Method.PUT,
                 EndPoint.URL_NODES+"/"+id_alat+"/update", new Response.Listener<String>() {
@@ -122,7 +124,9 @@ public class SettingsActivity extends AppCompatActivity {
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("setPoint", hpsp);
                 params.put("opTime", optime);
+                params.put("intvData", intvData);
                 params.put("device", device);
+
 
                 return params;
             }
