@@ -1,7 +1,9 @@
 package com.example.aw.sigap.activity;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -23,6 +25,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.example.aw.sigap.R;
 import com.example.aw.sigap.adapter.SensorNodeAdapter;
+import com.example.aw.sigap.app.Config;
 import com.example.aw.sigap.app.EndPoint;
 import com.example.aw.sigap.app.MyApplication;
 import com.example.aw.sigap.model.Alat;
@@ -48,7 +51,7 @@ public class SensorNodes extends AppCompatActivity {
     private TextView tvdevDetail, tvWebAddr;
     private Button bdelDevice, bshowmap;
     private String TAG = DashboardActivity.class.getSimpleName();
-    String Uk, apiKey, id_alat, name , webaddr, latitude, longitude;
+    String Uk, userId, apiKey, id_alat, name , webaddr, latitude, longitude;
     int notification;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,6 +101,13 @@ public class SensorNodes extends AppCompatActivity {
         LinearLayoutManager llm = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(llm);
         recyclerView.setAdapter(adapter);
+
+        final SharedPreferences sharedPreferencesUid= getSharedPreferences(Config.SHARED_PREF_NAME,
+                Context.MODE_PRIVATE);
+        final SharedPreferences sharedPreferencesApi = getSharedPreferences(Config.SHARED_PREF_API,
+                Context.MODE_PRIVATE);
+        userId = sharedPreferencesUid.getString(Config.USERNAME_SHARED_PREF, "");
+        apiKey = sharedPreferencesApi.getString(Config.APIKEY_SHARED_PREF, "");
 
         prepareNodes();
 //        bdelDevice = (Button)findViewById(R.id.bDeleteDevice);

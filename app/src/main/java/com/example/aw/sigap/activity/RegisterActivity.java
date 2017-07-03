@@ -3,6 +3,7 @@ package com.example.aw.sigap.activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.BinderThread;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.EditText;
@@ -47,6 +48,9 @@ public class RegisterActivity extends AppCompatActivity {
     @Bind(R.id.password)
     EditText etPassword;
 
+    @Bind(R.id.phone)
+    EditText etPhone;
+
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -77,6 +81,7 @@ public class RegisterActivity extends AppCompatActivity {
         final String name = etName.getText().toString();
         final String email = etEmail.getText().toString();
         final String password = etPassword.getText().toString();
+        final String phone = etPhone.getText().toString();
         final String token = FirebaseInstanceId.getInstance().getToken();
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, EndPoint.URL_REGISTER,
@@ -116,6 +121,7 @@ public class RegisterActivity extends AppCompatActivity {
                 params.put("name", name);
                 params.put("email", email);
                 params.put("password", password);
+                params.put("phone", phone);
                 params.put("fcmregid", token);
                 return params;
             }
