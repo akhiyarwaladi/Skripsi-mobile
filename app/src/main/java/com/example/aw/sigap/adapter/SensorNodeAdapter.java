@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -49,7 +50,7 @@ public class SensorNodeAdapter extends RecyclerView.Adapter<SensorNodeAdapter.My
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView title, type, count, notification;
         public ImageView thumbnail;
-        public Button bDelete;
+        public ImageButton bDelete;
         public CardView cv;
 
         public MyViewHolder(View view) {
@@ -58,7 +59,7 @@ public class SensorNodeAdapter extends RecyclerView.Adapter<SensorNodeAdapter.My
             type = (TextView) view.findViewById(R.id.type);
             notification = (TextView) view.findViewById(R.id.notification);
             thumbnail = (ImageView) view.findViewById(R.id.thumbnail);
-            bDelete = (Button) view.findViewById(R.id.bDelete);
+            bDelete = (ImageButton) view.findViewById(R.id.bDelete);
             cv = (CardView) view.findViewById(R.id.cv);
         }
     }
