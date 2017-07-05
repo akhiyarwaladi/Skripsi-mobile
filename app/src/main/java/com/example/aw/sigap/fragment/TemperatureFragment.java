@@ -43,6 +43,9 @@ import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -87,6 +90,7 @@ public class TemperatureFragment extends Fragment {
     LineChart chartSuhu;
 
     ArrayList<String> valList = new ArrayList<String>();
+    ArrayList<String> valPredList = new ArrayList<String>();
     public TemperatureFragment() {
         // Required empty public constructor
     }
@@ -177,8 +181,13 @@ public class TemperatureFragment extends Fragment {
                             JSONObject dataObj = (JSONObject) data.get(i);
                             Log.i("prediksiDapat", "" + dataObj);
                             String senval = dataObj.getString("senVal");
+                            String createdAt = dataObj.getString("time");
 
-                            PredictionData pred = new PredictionData(senval, senval);
+                            DateTime dateTime = DateTime.parse(createdAt);
+                            DateTimeFormatter fmt = DateTimeFormat.forPattern("hh:mm:ss a");
+                            String strDateOnly = fmt.print(dateTime);
+
+                            PredictionData pred = new PredictionData(senval, senval, strDateOnly);
                             predDatas.add(pred);
                         }
                         chartSuhu = (LineChart) view.findViewById(R.id.chart_temperature);
@@ -276,9 +285,9 @@ public class TemperatureFragment extends Fragment {
             public String getFormattedValue(float value, AxisBase axis)
             {
                 System.out.println(value);
-                if(((int)value)<valList.size())
+                if(((int)value)<valPredList.size())
                 {
-                    return  (valList.get((int)value));
+                    return  (valPredList.get((int)value));
                 }
                 else
                 {
@@ -310,7 +319,9 @@ public class TemperatureFragment extends Fragment {
             //get last data first because api sort by date
             AllData dat = DataHistoryActivity.allDatas.get((DataHistoryActivity.allDatas.size()-1) - i);
             float temp = Float.parseFloat(dat.getTemperature());
-
+            String createdAt = dat.getCreatedAt();
+            createdAt = createdAt.substring(0, createdAt.length() - 5);
+            valPredList.add(createdAt);
             //String timestamp = dat.getCreatedAt();
             //long timee = Long.parseLong(timestamp);
             entrySuhu.add(new Entry(i, temp));
@@ -321,11 +332,17 @@ public class TemperatureFragment extends Fragment {
             if (i == 0){
                 AllData dat = DataHistoryActivity.allDatas.get(i);
                 float humid = Float.parseFloat(dat.getTemperature());
+                String createdAt = dat.getCreatedAt();
+                createdAt = createdAt.substring(0, createdAt.length() - 5);
+                valPredList.add(createdAt);
                 entrySuhuPred.add(new Entry((i - 1 + numData), humid));
             }
             else {
                 PredictionData pred = predDatas.get(i);
                 float suhuu = Float.parseFloat(pred.getSuhu());
+                String createdAt = pred.getCreatedAt();
+                createdAt = createdAt.substring(0, createdAt.length() - 5);
+                valPredList.add(createdAt);
                 entrySuhuPred.add(new Entry((i - 1 + numData), suhuu));
             }
         }

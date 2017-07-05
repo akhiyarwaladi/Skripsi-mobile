@@ -376,8 +376,9 @@ public class DataHistoryActivity extends BaseActivity implements HumidityFragmen
                         JSONObject dataObj = (JSONObject) data.get(i);
                         Log.i("prediksiDapat", "" + dataObj);
                         String senval = dataObj.getString("senVal");
+                        String createdAt = dataObj.getString("time");
 
-                        PredictionData pred = new PredictionData(senval, senval);
+                        PredictionData pred = new PredictionData(senval, senval, createdAt);
                         predDatas.add(pred);
                     }
                 } catch (JSONException e) {
