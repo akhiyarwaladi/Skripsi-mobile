@@ -432,7 +432,7 @@ public class DetailActivity extends BaseActivity {
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("idnode", idalat);
                 params.put("status", status);
-                params.put("device", "590e009c2476bf2dbca3e393");
+                params.put("deviceid", "590e009c2476bf2dbca3e393");
 
                 return params;
             }
