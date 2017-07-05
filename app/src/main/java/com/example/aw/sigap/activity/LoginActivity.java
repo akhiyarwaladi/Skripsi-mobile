@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -29,6 +30,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -186,6 +188,8 @@ public class LoginActivity extends AppCompatActivity {
                                 Log.d("user", username);
                                 Log.d("api", apikey);
 
+                                String fcmregid = FirebaseInstanceId.getInstance().getToken();
+                                updateUser(userid, fcmregid, apikey);
                                 Intent i = new Intent(LoginActivity.this, DashboardActivity.class);
                                 startActivity(i);
                                 Toast.makeText(LoginActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
@@ -224,6 +228,57 @@ public class LoginActivity extends AppCompatActivity {
         };
         MyApplication.getInstance().addToRequestQueue(stringRequest);
     }
+
+    public void updateUser(final String id_user, final String fcmregid, final String api_key){
+        //Toast.makeText(this, "HAHAHAHA", Toast.LENGTH_SHORT).show();
+        StringRequest stringRequest = new StringRequest(Request.Method.PUT,
+                EndPoint.URL_USER+"/"+id_user+"/update", new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.e(TAG, "onResponse: " + response);
+                try {
+                    JSONObject obj = new JSONObject(response);
+
+                    if (obj.getBoolean("error") == false) {
+                        Toast.makeText(LoginActivity.this, "" + obj.getString("message"), Toast.LENGTH_SHORT).show();
+
+                    } else {
+                        Toast.makeText(LoginActivity.this, "" + obj.getString("message"), Toast.LENGTH_LONG).show();
+                    }
+                } catch (JSONException e) {
+                    Log.e(TAG, "json parsing error: " + e.getMessage());
+                    Toast.makeText(LoginActivity.this, "Json parse error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                NetworkResponse networkResponse = error.networkResponse;
+                Log.e(TAG, "Volley error: " + error.getMessage() + ", code: " + networkResponse);
+                Toast.makeText(LoginActivity.this, "Volley errror: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map headers = new HashMap();
+                headers.put("Authorization", api_key);
+
+                return headers;
+            }
+
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("fcmregid", fcmregid);
+
+                return params;
+            }
+        };
+        //Adding request to request queue
+        MyApplication.getInstance().addToRequestQueue(stringRequest);
+    }
+
 
 
     private void showPDialog(){

@@ -151,12 +151,12 @@ public class DashboardActivity extends BaseActivity {
                             String namaAlat = dataObj.getString("name");
                             String webAddr = dataObj.getString("webaddr");
                             String kodeAlat = dataObj.getString("_id");
-                            String apayangPenting = dataObj.getString("created_at");
+                            String createdAt = dataObj.getString("created_at");
                             //int rssi = dataObj.getInt("rssi");
                             //int battery = dataObj.getInt("battery");
                             String latitude = dataObj.isNull("latitude") ? null : dataObj.getString("latitude");
                             String longitude = dataObj.isNull("longitude") ? null : dataObj.getString("longitude");
-                            Alat alat = new Alat( idAlat, namaAlat, webAddr, kodeAlat, apayangPenting, latitude, longitude, 14, 14 );
+                            Alat alat = new Alat( idAlat, namaAlat, webAddr, kodeAlat, createdAt, latitude, longitude, 14, 14 );
                             allAlat.add(alat);
                         }
                         renderBuddies();
