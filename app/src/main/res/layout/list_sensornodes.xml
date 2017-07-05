@@ -60,7 +60,6 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
 
-
                 app:srcCompat="@drawable/ic_delete_forever_black_48dp"
                 android:layout_alignParentRight="true"
                 android:text="copy"
@@ -68,9 +67,7 @@
                 style="?android:attr/borderlessButtonStyle"
                 android:tint="#D84315"/>
 
-
-
-
         </RelativeLayout>
     </android.support.v7.widget.CardView>
+
 </LinearLayout>

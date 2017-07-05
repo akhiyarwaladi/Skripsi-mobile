@@ -28,11 +28,17 @@ public class Config {
 
     public static final String SHARED_PREF = "ah_firebase";
     //This would be the name of our shared preferences
+    public static final String SHARED_PREF_ID = "id";
     public static final String SHARED_PREF_NAME = "user";
+    public static final String SHARED_PREF_PHONE = "phone";
+    public static final String SHARED_PREF_EMAIL = "email";
     public static final String SHARED_PREF_API = "api";
 
     //This would be used to store the username of current logged in user
+    public static final String USERID_SHARED_PREF = "userid";
     public static final String USERNAME_SHARED_PREF = "username";
+    public static final String PHONENUMBER_SHARED_PREF = "phoneNumber";
+    public static final String EMAILADDRESS_SHARED_PREF = "emailAddress";
     public static final String APIKEY_SHARED_PREF = "apiKey";
 
     //We will use this to store the boolean in sharedpreference to track user is loggedin or not

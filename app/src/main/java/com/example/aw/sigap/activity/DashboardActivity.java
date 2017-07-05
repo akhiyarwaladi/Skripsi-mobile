@@ -105,11 +105,11 @@ public class DashboardActivity extends BaseActivity {
         pDialog.setCancelable(true);
 
         allAlat = new ArrayList<Alat>();
-        final SharedPreferences sharedPreferencesUid= getSharedPreferences(Config.SHARED_PREF_NAME,
+        final SharedPreferences sharedPreferencesUid= getSharedPreferences(Config.SHARED_PREF_ID,
                 Context.MODE_PRIVATE);
         final SharedPreferences sharedPreferencesApi = getSharedPreferences(Config.SHARED_PREF_API,
                 Context.MODE_PRIVATE);
-        userId = sharedPreferencesUid.getString(Config.USERNAME_SHARED_PREF, "");
+        userId = sharedPreferencesUid.getString(Config.USERID_SHARED_PREF, "");
         apiKey = sharedPreferencesApi.getString(Config.APIKEY_SHARED_PREF, "");
 
         Log.d("uid", userId);
@@ -434,6 +434,10 @@ public class DashboardActivity extends BaseActivity {
         else if(id == R.id.action_refresh){
             Intent intent = new Intent(DashboardActivity.this, DashboardActivity.class);
             startActivity(intent);
+        }
+        else if(id == R.id.action_profile){
+            Intent intent1 = new Intent(DashboardActivity.this, ProfileActivity.class);
+            startActivity(intent1);
         }
         return super.onOptionsItemSelected(item);
     }

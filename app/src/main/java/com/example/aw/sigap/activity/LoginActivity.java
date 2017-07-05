@@ -30,6 +30,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -137,31 +138,50 @@ public class LoginActivity extends AppCompatActivity {
 
                         try {
                             JSONObject obj = new JSONObject(response);
+                            JSONObject setObj = new JSONObject(obj.getString("username"));
                             //boolean a = (boolean) obj.get("apiKey");
                             boolean b = (boolean) obj.get("error");
                             if (b){
                                 Toast.makeText(LoginActivity.this, "Invalid Username or Password", Toast.LENGTH_SHORT).show();
                             }
                             else {
-
-                                String username = String.valueOf(obj.get("userId"));
+                                String userid = String.valueOf(obj.get("userId"));
+                                String username = String.valueOf(setObj.get("first"));
                                 String apikey = String.valueOf(obj.get("apiKey"));
+                                String phonenumber = String.valueOf(obj.get("phone"));
+                                String emailaddress = String.valueOf(obj.get("email"));
+
+                                SharedPreferences id = LoginActivity.this.getSharedPreferences(Config.SHARED_PREF_ID,
+                                        Context.MODE_PRIVATE);
                                 SharedPreferences user = LoginActivity.this.getSharedPreferences(Config.SHARED_PREF_NAME,
                                         Context.MODE_PRIVATE);
                                 SharedPreferences apiKey = LoginActivity.this.getSharedPreferences(Config.SHARED_PREF_API,
                                         Context.MODE_PRIVATE);
+                                SharedPreferences phone = LoginActivity.this.getSharedPreferences(Config.SHARED_PREF_PHONE,
+                                        Context.MODE_PRIVATE);
+                                SharedPreferences email = LoginActivity.this.getSharedPreferences(Config.SHARED_PREF_EMAIL,
+                                        Context.MODE_PRIVATE);
 
                                 SharedPreferences.Editor editor = user.edit();
                                 SharedPreferences.Editor editor1 = apiKey.edit();
+                                SharedPreferences.Editor editor2 = phone.edit();
+                                SharedPreferences.Editor editor3 = email.edit();
+                                SharedPreferences.Editor editor4 = id.edit();
 
                                 editor.putBoolean(Config.LOGGEDIN_SHARED_PREF, true);
                                 editor1.putBoolean(Config.API_SHARED_PREF, true);
 
                                 editor.putString(Config.USERNAME_SHARED_PREF, username);
                                 editor1.putString(Config.APIKEY_SHARED_PREF, apikey);
+                                editor2.putString(Config.PHONENUMBER_SHARED_PREF, phonenumber);
+                                editor3.putString(Config.EMAILADDRESS_SHARED_PREF, emailaddress);
+                                editor4.putString(Config.USERID_SHARED_PREF, userid);
 
                                 editor.commit();
                                 editor1.commit();
+                                editor2.commit();
+                                editor3.commit();
+                                editor4.commit();
 
                                 Log.d("user", username);
                                 Log.d("api", apikey);
