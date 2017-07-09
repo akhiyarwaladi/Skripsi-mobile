@@ -70,11 +70,11 @@ public class CreateDevice extends AppCompatActivity implements OnMapReadyCallbac
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        final SharedPreferences sharedPreferencesUid= getSharedPreferences(Config.SHARED_PREF_NAME,
+        final SharedPreferences sharedPreferencesUid= getSharedPreferences(Config.SHARED_PREF_ID,
                 Context.MODE_PRIVATE);
         final SharedPreferences sharedPreferencesApi = getSharedPreferences(Config.SHARED_PREF_API,
                 Context.MODE_PRIVATE);
-        userId = sharedPreferencesUid.getString(Config.USERNAME_SHARED_PREF, "");
+        userId = sharedPreferencesUid.getString(Config.USERID_SHARED_PREF, "");
         apiKey = sharedPreferencesApi.getString(Config.APIKEY_SHARED_PREF, "");
 
         nama = (EditText)findViewById(R.id.dname);
