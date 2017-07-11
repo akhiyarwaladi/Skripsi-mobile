@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Sigap.iml" filepath="$PROJECT_DIR$/Sigap.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/libspin/libspin.iml" filepath="$PROJECT_DIR$/libspin/libspin.iml" />
     </modules>
   </component>
 </project>
