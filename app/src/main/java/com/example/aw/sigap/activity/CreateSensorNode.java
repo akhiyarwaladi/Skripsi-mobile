@@ -33,9 +33,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-public class CreateSensorNode extends AppCompatActivity {
+import com.example.libspin.MultiSelectionSpinner;
+
+public class CreateSensorNode extends AppCompatActivity implements MultiSelectionSpinner.OnMultipleItemsSelectedListener{
 
     private String TAG = DashboardActivity.class.getSimpleName();
     private Toolbar toolbar;
@@ -83,6 +86,16 @@ public class CreateSensorNode extends AppCompatActivity {
         adapterMiconType.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spMiconType.setAdapter(adapterMiconType);
         ///////////////////////////////////////////////////////////////////////////
+
+        //////////////////////////////////////////////////////////////////////////
+
+        String[] array = {"one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten"};
+        MultiSelectionSpinner multiSelectionSpinner = (MultiSelectionSpinner) findViewById(R.id.mySpinner);
+        multiSelectionSpinner.setItems(array);
+        multiSelectionSpinner.setSelection(new int[]{2, 6});
+        multiSelectionSpinner.setListener(this);
+
+        /////////////////////////////////////////////////////////////////////////
 
         createNode = (Button)findViewById(R.id.createNode);
         createNode.setOnClickListener(new View.OnClickListener() {
@@ -168,5 +181,15 @@ public class CreateSensorNode extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void selectedIndices(List<Integer> indices) {
+
+    }
+
+    @Override
+    public void selectedStrings(List<String> strings) {
+        Toast.makeText(this, strings.toString(), Toast.LENGTH_LONG).show();
     }
 }

@@ -47,6 +47,7 @@ dependencies {
     compile 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.1.0'
     compile 'org.eclipse.paho:org.eclipse.paho.android.service:1.1.1'
     compile 'joda-time:joda-time:2.9.4'
+    compile project(':libspin')
     testCompile 'junit:junit:4.12'
 }
 apply plugin: 'com.google.gms.google-services'
