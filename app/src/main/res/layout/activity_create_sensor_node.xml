@@ -72,7 +72,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="device"
+            android:text="Device"
             android:layout_margin="5dp"/>
 
         <TextView
@@ -91,7 +91,13 @@
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp">
 
-        <com.example.aw.libmultispinner.MultiSelectionSpinner
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Sensortype"
+            android:layout_margin="5dp"/>
+
+        <com.example.libspin.MultiSelectionSpinner
             android:id="@+id/mySpinner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
