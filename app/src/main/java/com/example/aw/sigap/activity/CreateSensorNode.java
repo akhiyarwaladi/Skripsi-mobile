@@ -27,11 +27,14 @@ import com.example.aw.sigap.R;
 import com.example.aw.sigap.app.Config;
 import com.example.aw.sigap.app.EndPoint;
 import com.example.aw.sigap.app.MyApplication;
+import com.example.aw.sigap.model.SensorNode;
 import com.google.firebase.auth.FirebaseAuth;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -48,7 +51,8 @@ public class CreateSensorNode extends AppCompatActivity implements MultiSelectio
     private Button createNode;
     private String userId, apiKey, id_alat, device;
 
-
+    List<String> where = new ArrayList<String>();
+    List<String> selected = new ArrayList<String>();
     String miconType[] = { "Arduino Uno", "Arduino Leonardo" , "Arduino Mega" };
     ArrayAdapter<String> adapterMiconType;
 
@@ -88,12 +92,10 @@ public class CreateSensorNode extends AppCompatActivity implements MultiSelectio
         ///////////////////////////////////////////////////////////////////////////
 
         //////////////////////////////////////////////////////////////////////////
-
-        String[] array = {"one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten"};
-        MultiSelectionSpinner multiSelectionSpinner = (MultiSelectionSpinner) findViewById(R.id.mySpinner);
-        multiSelectionSpinner.setItems(array);
-        multiSelectionSpinner.setSelection(new int[]{2, 6});
-        multiSelectionSpinner.setListener(this);
+        getSensorNode();
+        //String[] array = {"one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten"};
+        selected.add("590f9508d71b1b270c77dfe4");
+        selected.add("590f9523d71b1b270c77dfe5");
 
         /////////////////////////////////////////////////////////////////////////
 
@@ -106,6 +108,75 @@ public class CreateSensorNode extends AppCompatActivity implements MultiSelectio
                 createSensorNode(newnama, newtype);
             }
         });
+    }
+    public void getSensorNode(){
+        StringRequest stringRequest = new StringRequest(Request.Method.GET,
+                EndPoint.URL_TYPES+"/list", new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.e(TAG, "onResponse: " + response);
+                try {
+                    JSONObject obj = new JSONObject(response);
+
+                    if (obj.getBoolean("error") == false) {
+                        //Toast.makeText(CreateSensorNode.this, "Data dapat"+response, Toast.LENGTH_SHORT).show();
+                        JSONArray data = obj.getJSONArray("sensortype");
+
+                        for (int i = 0; i < data.length(); i++) {
+                            JSONObject dataObj = (JSONObject) data.get(i);
+                            Log.i("dataDapat",""+dataObj);
+                            String name = dataObj.getString("name");
+                            Log.d("namasensor", name);
+                            where.add(name);
+                        }
+
+//                        String[] simpleArray = new String[ where.size() ];
+//                        where.toArray( simpleArray );
+                        MultiSelectionSpinner multiSelectionSpinner = (MultiSelectionSpinner) findViewById(R.id.mySpinner);
+                        multiSelectionSpinner.setItems(where);
+                        multiSelectionSpinner.setSelection(new int[]{2, 2});
+                        multiSelectionSpinner.setListener(CreateSensorNode.this);
+
+
+
+
+                    } else {
+                        // error in fetching data
+                        Toast.makeText(CreateSensorNode.this, "" + obj.getJSONObject("error").getString("message"), Toast.LENGTH_LONG).show();
+
+                    }
+                } catch (JSONException e) {
+                    Log.e(TAG, "json parsing error: " + e.getMessage());
+                    Toast.makeText(CreateSensorNode.this, "Json parse error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                NetworkResponse networkResponse = error.networkResponse;
+                Log.e(TAG, "Volley error: " + error.getMessage() + ", code: " + networkResponse);
+                Toast.makeText(CreateSensorNode.this, "Volley errror: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map headers = new HashMap();
+                headers.put("Authorization", apiKey);
+                headers.put("x-snow-token", "SECRET_API_KEY");
+
+                return headers;
+            }
+
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                return super.getParams();
+            }
+        };
+        //Adding request to request queue
+        MyApplication.getInstance().addToRequestQueue(stringRequest);
+
+
     }
     public void createSensorNode(final String nama, final String type){
         //Toast.makeText(this, "HAHAHAHA", Toast.LENGTH_SHORT).show();
@@ -155,6 +226,10 @@ public class CreateSensorNode extends AppCompatActivity implements MultiSelectio
                 params.put("name", nama);
                 params.put("miconType", type);
                 params.put("device", id_alat);
+                for(int i=0; i< selected.size(); i++){
+                    params.put("sensortype["+i+"]", selected.get(i));
+                }
+
 
                 return params;
             }
