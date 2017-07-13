@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -16,6 +17,7 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.example.aw.sigap.R;
 import com.example.aw.sigap.app.Config;
@@ -27,13 +29,13 @@ import java.util.List;
 
 public class StartActivity extends AppCompatActivity implements DashboardFragment.OnFragmentInteractionListener,
     ProfileFragment.OnFragmentInteractionListener{
-
+    FloatingActionButton fab;
     Toolbar toolbar;
     TabLayout tablayout;
     ViewPager viewpager;
     private int[] tabIcons = {
-            R.drawable.ic_battery_alert_white_48dp,
-            R.drawable.ic_battery_alert_white_48dp,
+            R.drawable.ic_settings_input_hdmi_white_48dp,
+            R.drawable.ic_account_circle_white_48dp,
     };
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,12 +50,22 @@ public class StartActivity extends AppCompatActivity implements DashboardFragmen
 
         tablayout = (TabLayout) findViewById(R.id.tabs);
         tablayout.setupWithViewPager(viewpager);
+        fab = (FloatingActionButton)findViewById(R.id.fabReport);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent2 = new Intent(StartActivity.this, CreateDevice.class);
+
+                startActivity(intent2);
+            }
+        });
+
         setupTabIcons();
     }
     private void setupTabIcons() {
 
-        tablayout.getTabAt(0).setIcon(R.drawable.ic_battery_alert_white_48dp);
-        tablayout.getTabAt(1).setIcon(R.drawable.ic_battery_alert_white_48dp);
+        tablayout.getTabAt(0).setIcon(R.drawable.ic_settings_input_hdmi_white_48dp);
+        tablayout.getTabAt(1).setIcon(R.drawable.ic_account_circle_white_48dp);
 
     }
 

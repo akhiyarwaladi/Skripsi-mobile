@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,6 +33,7 @@ public class ProfileFragment extends Fragment {
     private String mParam2;
     String username, phonenumber, emailaddress;
     TextView name, phone, email;
+
     View view;
     private OnFragmentInteractionListener mListener;
 
@@ -71,9 +73,11 @@ public class ProfileFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_profile, container, false);
+
         name = (TextView) view.findViewById(R.id.usernameTxtVw);
         phone = (TextView) view.findViewById(R.id.phoneTxtVw);
         email = (TextView) view.findViewById(R.id.emailTxtVw);
+
 
         final SharedPreferences sharedPreferencesName= this.getActivity().getSharedPreferences(Config.SHARED_PREF_NAME,
                 Context.MODE_PRIVATE);
