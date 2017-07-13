@@ -229,6 +229,12 @@
             android:text="http://[hostname]/dataset/create"
             android:textSize="15dp"/>
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tvKeyData"
+            android:text="keydata"/>
+
         <ImageView
             android:layout_width="300dp"
             android:layout_height="250dp"
