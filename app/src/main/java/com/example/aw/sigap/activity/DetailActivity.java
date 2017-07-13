@@ -137,7 +137,7 @@ public class DetailActivity extends BaseActivity {
             }
         });
 
-        if(device.equalsIgnoreCase("590e009c2476bf2dbca3e393")) {
+        if(device.equalsIgnoreCase("59677346b89f4c3ec40c6d3a")) {
             getData();
         }
         else {

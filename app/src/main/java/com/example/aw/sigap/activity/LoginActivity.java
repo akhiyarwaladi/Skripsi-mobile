@@ -82,7 +82,7 @@ public class LoginActivity extends AppCompatActivity {
         //If we will get true
         if (loggedIn) {
             //We will start the Profile Activity
-            Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
+            Intent intent = new Intent(LoginActivity.this, StartActivity.class);
             startActivity(intent);
         }
     }
@@ -190,7 +190,7 @@ public class LoginActivity extends AppCompatActivity {
 
                                 String fcmregid = FirebaseInstanceId.getInstance().getToken();
                                 updateUser(userid, fcmregid, apikey);
-                                Intent i = new Intent(LoginActivity.this, DashboardActivity.class);
+                                Intent i = new Intent(LoginActivity.this, StartActivity.class);
                                 startActivity(i);
                                 Toast.makeText(LoginActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
                                 hidePDialog();

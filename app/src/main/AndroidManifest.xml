@@ -50,7 +50,7 @@
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
-        <service android:name="org.eclipse.paho.android.service.MqttService"></service>
+        <service android:name="org.eclipse.paho.android.service.MqttService" />
         <!-- ./Firebase Notifications -->
         <activity android:name=".activity.DataHistoryActivity" />
         <activity android:name=".activity.BatteryLowActivity" />
@@ -61,7 +61,8 @@
         <activity android:name=".activity.CreateDevice" />
         <activity android:name=".activity.CreateSensorNode" />
         <activity android:name=".activity.EmptyData" />
-        <activity android:name=".activity.ProfileActivity"></activity>
+        <activity android:name=".activity.ProfileActivity" />
+        <activity android:name=".activity.StartActivity"></activity>
     </application>
 
 </manifest>
