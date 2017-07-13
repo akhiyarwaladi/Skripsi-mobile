@@ -55,6 +55,7 @@ public class CreateSensorNode extends AppCompatActivity implements MultiSelectio
     List<String> selected = new ArrayList<String>();
     String miconType[] = { "Arduino Uno", "Arduino Leonardo" , "Arduino Mega" };
     ArrayAdapter<String> adapterMiconType;
+    JSONObject sentype = new JSONObject();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,9 +126,12 @@ public class CreateSensorNode extends AppCompatActivity implements MultiSelectio
                         for (int i = 0; i < data.length(); i++) {
                             JSONObject dataObj = (JSONObject) data.get(i);
                             Log.i("dataDapat",""+dataObj);
+                            String _id = dataObj.getString("_id");
                             String name = dataObj.getString("name");
                             Log.d("namasensor", name);
                             where.add(name);
+                            sentype.put(name, _id);
+                            //Toast.makeText(CreateSensorNode.this, sentype.toString(), Toast.LENGTH_SHORT).show();
                         }
 
 //                        String[] simpleArray = new String[ where.size() ];
@@ -266,5 +270,21 @@ public class CreateSensorNode extends AppCompatActivity implements MultiSelectio
     @Override
     public void selectedStrings(List<String> strings) {
         Toast.makeText(this, strings.toString(), Toast.LENGTH_LONG).show();
+        selected.clear();
+        for(int i=0; i< strings.size(); i++){
+            String keyy = strings.get(i);
+
+            //Toast.makeText(this, keyy, Toast.LENGTH_SHORT).show();
+            try{
+                String idd = sentype.getString(keyy);
+                //Toast.makeText(this, idd, Toast.LENGTH_SHORT).show();
+                selected.add(idd);
+            }catch (JSONException e){
+
+            }
+
+        }
+
+
     }
 }
