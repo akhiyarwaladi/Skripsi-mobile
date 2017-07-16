@@ -128,7 +128,7 @@ public class EmptyData extends AppCompatActivity {
 //                        Toast.makeText(DashboardActivity.this, "Data dapat"+response, Toast.LENGTH_SHORT).show();
                         //JSONArray data = obj.getJSONArray("sensornode");
                         JSONObject dataObj = new JSONObject(obj.getString("sensornode"));
-                        Toast.makeText(EmptyData.this, dataObj.toString(), Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(EmptyData.this, dataObj.toString(), Toast.LENGTH_SHORT).show();
                         //for (int i = 0; i < data.length(); i++) {
                             //JSONObject dataObj = (JSONObject) data.get(i);
                         Log.i("dataDapat",""+dataObj);

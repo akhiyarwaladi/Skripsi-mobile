@@ -31,6 +31,7 @@
             android:layout_height="wrap_content"
             android:text="Device Name"
             android:layout_margin="5dp"/>
+        
         <EditText
             android:id="@+id/dname"
             android:layout_width="match_parent"
