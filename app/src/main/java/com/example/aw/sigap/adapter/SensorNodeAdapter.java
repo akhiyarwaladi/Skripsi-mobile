@@ -3,6 +3,7 @@ package com.example.aw.sigap.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.provider.ContactsContract;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -10,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -26,6 +28,7 @@ import com.example.aw.sigap.R;
 import com.example.aw.sigap.activity.CreateSensorNode;
 import com.example.aw.sigap.activity.DashboardActivity;
 import com.example.aw.sigap.activity.DetailActivity;
+import com.example.aw.sigap.activity.EditSensorNode;
 import com.example.aw.sigap.activity.SensorNodes;
 import com.example.aw.sigap.app.EndPoint;
 import com.example.aw.sigap.app.MyApplication;
@@ -50,7 +53,7 @@ public class SensorNodeAdapter extends RecyclerView.Adapter<SensorNodeAdapter.My
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView title, type, count, notification;
         public ImageView thumbnail;
-        public ImageButton bDelete;
+        public ImageButton bDelete, bEdit;
         public CardView cv;
 
         public MyViewHolder(View view) {
@@ -60,6 +63,7 @@ public class SensorNodeAdapter extends RecyclerView.Adapter<SensorNodeAdapter.My
             notification = (TextView) view.findViewById(R.id.notification);
             thumbnail = (ImageView) view.findViewById(R.id.thumbnail);
             bDelete = (ImageButton) view.findViewById(R.id.bDelete);
+            bEdit = (ImageButton) view.findViewById(R.id.bEdit);
             cv = (CardView) view.findViewById(R.id.cv);
         }
     }
@@ -110,6 +114,16 @@ public class SensorNodeAdapter extends RecyclerView.Adapter<SensorNodeAdapter.My
                 String idnode = sensorNode.getId();
                 String iddevice = sensorNode.getDevice();
                 deleteSensorNode(idnode, iddevice);
+            }
+        });
+        holder.bEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(mContext, EditSensorNode.class);
+                intent.putExtra("id_node", sensorNode.getId());
+                intent.putExtra("name", sensorNode.getNama());
+                intent.putExtra("device", sensorNode.getDevice());
+                mContext.startActivity(intent);
             }
         });
     }

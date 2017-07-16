@@ -62,7 +62,9 @@
         <activity android:name=".activity.CreateSensorNode" />
         <activity android:name=".activity.EmptyData" />
         <activity android:name=".activity.ProfileActivity" />
-        <activity android:name=".activity.StartActivity"></activity>
+        <activity android:name=".activity.StartActivity" />
+        <activity android:name=".activity.EditDevice" />
+        <activity android:name=".activity.EditSensorNode"></activity>
     </application>
 
 </manifest>

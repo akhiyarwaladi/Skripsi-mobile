@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/tool_bar"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#FFFFFF"
+        android:elevation="7dp"
+        android:theme="@style/ThemeOverlay.AppCompat.Light">
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="40dp"
+            android:src="@drawable/sigap1"/>
+    </android.support.v7.widget.Toolbar>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Sensor Node Name"
+            android:layout_margin="5dp"/>
+
+        <EditText
+            android:id="@+id/sname"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="ex: node 1"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Micon Type"
+            android:layout_margin="5dp"/>
+
+        <Spinner
+            android:id="@+id/spinnerMiconType"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:prompt="@string/spinner_title"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Device"
+            android:layout_margin="5dp"/>
+
+        <TextView
+            android:id="@+id/deviceName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="device"
+            android:layout_margin="5dp"/>
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Sensortype"
+            android:layout_margin="5dp"/>
+
+        <com.example.libspin.MultiSelectionSpinner
+            android:id="@+id/mySpinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/editNode"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Edit Node"
+        android:layout_margin="20dp"
+        android:backgroundTint="@color/colorPrimary"
+        android:textColor="#FFFFFF"/>
+
+</LinearLayout>

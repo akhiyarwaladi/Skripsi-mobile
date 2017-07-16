@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/tool_bar"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#FFFFFF"
+        android:elevation="7dp"
+        android:theme="@style/ThemeOverlay.AppCompat.Light">
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="40dp"
+            android:src="@drawable/sigap1"/>
+    </android.support.v7.widget.Toolbar>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Device Name"
+            android:layout_margin="5dp"/>
+
+        <EditText
+            android:id="@+id/dname"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="ex: station 1"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Website Address"
+            android:layout_margin="5dp"/>
+        <EditText
+            android:id="@+id/etwebaddr"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="ex: 192.168.43.44"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:orientation="vertical"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp">
+
+        <fragment
+            android:id="@+id/map"
+            tools:context=".Konten.MapsActivity"
+            android:name="com.google.android.gms.maps.MapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/tool_bar"/>
+
+        <Button
+            android:layout_width="110dp"
+            android:layout_height="75dp"
+            android:layout_centerInParent="true"
+            android:background="@drawable/pilihlokasi2"
+            android:id="@+id/overMarker"/>
+
+    </LinearLayout>
+
+
+    <Button
+        android:id="@+id/createDevice"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="EDIT DEVICE"
+        android:layout_margin="20dp"
+        android:backgroundTint="@color/colorPrimary"
+        android:textColor="#FFFFFF"/>
+
+</LinearLayout>

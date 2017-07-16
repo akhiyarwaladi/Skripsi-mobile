@@ -25,6 +25,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.example.aw.sigap.R;
 import com.example.aw.sigap.activity.CreateDevice;
 import com.example.aw.sigap.activity.DashboardActivity;
+import com.example.aw.sigap.activity.EditDevice;
 import com.example.aw.sigap.activity.SensorNodes;
 import com.example.aw.sigap.activity.StartActivity;
 import com.example.aw.sigap.app.Config;
@@ -64,7 +65,7 @@ public class DashboardFragment extends Fragment {
     private String mParam2;
     private String TAG = DashboardActivity.class.getSimpleName();
     private String userId, apiKey;
-    private Button btnCreate, btnDelete;
+    private Button btnCreate, btnDelete, btnEdit;
     @Bind(R.id.fb_buddies)
     FlexboxLayout flexboxLayout;
     List<Alat> allAlat;
@@ -294,6 +295,18 @@ public class DashboardFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 deleteDevice(id_alat);
+            }
+        });
+        btnEdit = (Button) itemView.findViewById(R.id.bEditDevice);
+        btnEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), EditDevice.class);
+                intent.putExtra("name", name);
+                intent.putExtra("webaddr", webaddr);
+                intent.putExtra("latitude", latitude);
+                intent.putExtra("longitude", longitude);
+                startActivity(intent);
             }
         });
 
