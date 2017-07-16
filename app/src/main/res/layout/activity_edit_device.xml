@@ -85,7 +85,7 @@
 
 
     <Button
-        android:id="@+id/createDevice"
+        android:id="@+id/editDevice"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="EDIT DEVICE"

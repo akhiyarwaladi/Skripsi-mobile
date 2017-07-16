@@ -15,6 +15,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -35,7 +36,7 @@ public class EditDevice extends AppCompatActivity implements OnMapReadyCallback 
     private String TAG = DashboardActivity.class.getSimpleName();
     private Toolbar toolbar;
     private EditText nama, webaddr;
-    private Button createDevice;
+    private Button editDevice;
     private String userId, apiKey, name, web, lati, longi;
     String latitude, longitude;
     private GoogleMap googleMap;
@@ -71,6 +72,19 @@ public class EditDevice extends AppCompatActivity implements OnMapReadyCallback 
         nama.setText(name);
         webaddr.setText(web);
         insertDummyContactWrapper();
+
+        editDevice = (Button) findViewById(R.id.editDevice);
+        editDevice.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String newnama = nama.getText().toString();
+                String newaddr = webaddr.getText().toString();
+                editDeviceNow(newnama, newaddr, userId);
+            }
+        });
+    }
+    public void editDeviceNow(final String nama, final String webaddr,final String user){
+
     }
 
     @Override
