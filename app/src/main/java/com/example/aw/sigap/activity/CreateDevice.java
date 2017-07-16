@@ -202,7 +202,7 @@ public class CreateDevice extends AppCompatActivity implements OnMapReadyCallbac
 
                     if (obj.getBoolean("error") == false) {
                         Toast.makeText(CreateDevice.this, "" + obj.getString("message"), Toast.LENGTH_SHORT).show();
-                        Intent intent2 = new Intent(CreateDevice.this, DashboardActivity.class);
+                        Intent intent2 = new Intent(CreateDevice.this, StartActivity.class);
 
                         startActivity(intent2);
 

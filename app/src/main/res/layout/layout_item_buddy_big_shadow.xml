@@ -51,21 +51,46 @@
             android:layout_below="@+id/civ_photo"
             android:textColor="@color/colorPrimary"
             android:layout_marginTop="5dp" />
-
-        <Button
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="DELETE"
-            android:background="@drawable/round_shape_btn"
-            android:backgroundTint="#D84315"
-            android:textColor="#FFFFFF"
-            android:id="@+id/bDeleteDevice"
-            android:minHeight="40dp"
-            android:minWidth="70dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="5dp"
-            android:layout_below="@+id/tv_name"/>
+            android:orientation="horizontal"
+            android:layout_below="@+id/tv_name"
+            android:padding="7dp">
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="DELETE"
+                android:background="@drawable/round_shape_btn"
+                android:backgroundTint="#D84315"
+                android:textColor="#FFFFFF"
+                android:id="@+id/bDeleteDevice"
+                android:minHeight="40dp"
+                android:minWidth="70dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+
+                />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="EDIT"
+                android:background="@drawable/round_shape_btn"
+                android:backgroundTint="@color/colorPrimaryDark"
+                android:textColor="#FFFFFF"
+                android:id="@+id/bEditDevice"
+                android:minHeight="40dp"
+                android:minWidth="70dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp" />
+
+        </LinearLayout>
+
+
     </LinearLayout>
 
     </android.support.v7.widget.CardView>
