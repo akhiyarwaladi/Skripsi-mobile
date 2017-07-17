@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -65,7 +66,7 @@ public class DashboardFragment extends Fragment {
     private String mParam2;
     private String TAG = DashboardActivity.class.getSimpleName();
     private String userId, apiKey;
-    private Button btnCreate, btnDelete, btnEdit;
+    private ImageButton btnCreate, btnDelete, btnEdit;
     @Bind(R.id.fb_buddies)
     FlexboxLayout flexboxLayout;
     List<Alat> allAlat;
@@ -290,14 +291,14 @@ public class DashboardFragment extends Fragment {
         TextView tv = (TextView) itemView.findViewById(R.id.tv_name);
         tv.setText(name);
 
-        btnDelete = (Button) itemView.findViewById(R.id.bDeleteDevice);
+        btnDelete = (ImageButton) itemView.findViewById(R.id.bDeleteDevice);
         btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 deleteDevice(id_alat);
             }
         });
-        btnEdit = (Button) itemView.findViewById(R.id.bEditDevice);
+        btnEdit = (ImageButton) itemView.findViewById(R.id.bEditDevice);
         btnEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

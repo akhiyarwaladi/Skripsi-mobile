@@ -51,6 +51,7 @@
             android:layout_below="@+id/civ_photo"
             android:textColor="@color/colorPrimary"
             android:layout_marginTop="5dp" />
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -58,35 +59,29 @@
             android:layout_below="@+id/tv_name"
             android:padding="7dp">
 
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="DELETE"
-                android:background="@drawable/round_shape_btn"
-                android:backgroundTint="#D84315"
-                android:textColor="#FFFFFF"
+            <ImageButton
+                android:layout_width="50dip"
+                android:layout_height="50dip"
+
+
+                app:srcCompat="@drawable/ic_delete_forever_black_48dp"
+
                 android:id="@+id/bDeleteDevice"
-                android:minHeight="40dp"
-                android:minWidth="70dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="5dp"
+                style="?android:attr/borderlessButtonStyle"
 
-                />
+                android:tint="#D84315"/>
 
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="EDIT"
-                android:background="@drawable/round_shape_btn"
-                android:backgroundTint="@color/colorPrimaryDark"
-                android:textColor="#FFFFFF"
+            <ImageButton
+                android:layout_width="50dip"
+                android:layout_height="50dip"
+
+                android:layout_toRightOf="@+id/bDeleteDevice"
+
+                app:srcCompat="@drawable/ic_create_white_48dp"
+
                 android:id="@+id/bEditDevice"
-                android:minHeight="40dp"
-                android:minWidth="70dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="5dp" />
+                style="?android:attr/borderlessButtonStyle"
+                android:tint="@color/colorPrimaryDark"/>
 
         </LinearLayout>
 
