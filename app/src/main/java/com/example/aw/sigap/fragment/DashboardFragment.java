@@ -303,6 +303,7 @@ public class DashboardFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), EditDevice.class);
+                intent.putExtra("deviceid", id_alat);
                 intent.putExtra("name", name);
                 intent.putExtra("webaddr", webaddr);
                 intent.putExtra("latitude", latitude);

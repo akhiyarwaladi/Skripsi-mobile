@@ -183,7 +183,7 @@ public class StartActivity extends AppCompatActivity implements DashboardFragmen
             return true;
         }
         else if(id == R.id.action_refresh){
-            Intent intent = new Intent(StartActivity.this, DashboardActivity.class);
+            Intent intent = new Intent(StartActivity.this, StartActivity.class);
             startActivity(intent);
         }
         else if(id == R.id.action_profile){

@@ -20,8 +20,16 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkResponse;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
 import com.example.aw.sigap.R;
 import com.example.aw.sigap.app.Config;
+import com.example.aw.sigap.app.EndPoint;
+import com.example.aw.sigap.app.MyApplication;
 import com.example.aw.sigap.helper.GPSTracker;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -32,12 +40,18 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
+
 public class EditDevice extends AppCompatActivity implements OnMapReadyCallback {
     private String TAG = DashboardActivity.class.getSimpleName();
     private Toolbar toolbar;
     private EditText nama, webaddr;
     private Button editDevice;
-    private String userId, apiKey, name, web, lati, longi;
+    private String userId, deviceId, apiKey, name, web, lati, longi;
     String latitude, longitude;
     private GoogleMap googleMap;
     final private int REQUEST_CODE_ASK_PERMISSIONS = 123;
@@ -61,6 +75,7 @@ public class EditDevice extends AppCompatActivity implements OnMapReadyCallback 
         apiKey = sharedPreferencesApi.getString(Config.APIKEY_SHARED_PREF, "");
 
         final Intent intent = getIntent();
+        deviceId = intent.getStringExtra("deviceid");
         name = intent.getStringExtra("name");
         web = intent.getStringExtra("webaddr");
         lati = intent.getStringExtra("latitude");
@@ -84,7 +99,60 @@ public class EditDevice extends AppCompatActivity implements OnMapReadyCallback 
         });
     }
     public void editDeviceNow(final String nama, final String webaddr,final String user){
+        StringRequest stringRequest = new StringRequest(Request.Method.PUT,
+                EndPoint.URL_DEVICES+"/"+deviceId+"/update", new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.e(TAG, "onResponse: " + response);
+                try {
+                    JSONObject obj = new JSONObject(response);
 
+                    if (obj.getBoolean("error") == false) {
+                        Toast.makeText(EditDevice.this, "" + obj.getString("message"), Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(EditDevice.this, StartActivity.class);
+                        startActivity(intent);
+
+                    } else {
+                        Toast.makeText(EditDevice.this, "" + obj.getString("message"), Toast.LENGTH_LONG).show();
+                    }
+                } catch (JSONException e) {
+                    Log.e(TAG, "json parsing error: " + e.getMessage());
+                    Toast.makeText(EditDevice.this, "Json parse error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                NetworkResponse networkResponse = error.networkResponse;
+                Log.e(TAG, "Volley error: " + error.getMessage() + ", code: " + networkResponse);
+                Toast.makeText(EditDevice.this, "Volley errror: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map headers = new HashMap();
+                headers.put("Authorization", apiKey);
+                headers.put("x-snow-token", "SECRET_API_KEY");
+
+                return headers;
+            }
+
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("name", nama);
+                params.put("webaddr", webaddr);
+                params.put("latitude", latitude);
+                params.put("longitude", longitude);
+                params.put("user", userId);
+
+
+                return params;
+            }
+        };
+        //Adding request to request queue
+        MyApplication.getInstance().addToRequestQueue(stringRequest);
     }
 
     @Override

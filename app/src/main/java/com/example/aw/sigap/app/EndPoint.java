@@ -20,6 +20,7 @@ public class EndPoint {
     public static final String URL_CREATE_ALAT = BASE_URL + "/device/create";
     public static final String URL_DELETE_ALAT = BASE_URL + "/device";
 
+    public static final String URL_DEVICES = BASE_URL + "/device";
     public static final String URL_NODES = BASE_URL + "/sensornode";
     public static final String URL_NODES2 = BASE_URL + "/sensornodes";
     public static final String URL_CREATE_NODE = BASE_URL + "/sensornode/create";
