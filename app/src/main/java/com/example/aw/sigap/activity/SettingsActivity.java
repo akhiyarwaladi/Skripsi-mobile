@@ -83,7 +83,7 @@ public class SettingsActivity extends AppCompatActivity {
     public void updateSettings(final String hpsp, final String optime, final String intvData, final String idalat){
         //Toast.makeText(this, "HAHAHAHA", Toast.LENGTH_SHORT).show();
         StringRequest stringRequest = new StringRequest(Request.Method.PUT,
-                EndPoint.URL_NODES+"/"+id_alat+"/update", new Response.Listener<String>() {
+                EndPoint.URL_NODES+"/"+id_alat+"/updates", new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 Log.e(TAG, "onResponse: " + response);

@@ -142,8 +142,11 @@ public class DetailActivity extends BaseActivity {
         }
         else {
             //Toast.makeText(this, "bukan sigap", Toast.LENGTH_SHORT).show();
+            btnSettings.setAlpha(.5f);
+            btnSettings.setClickable(false);
             btnON.setVisibility(View.GONE);
             btnOFF.setVisibility(View.GONE);
+
             getOther();
         }
     }
