@@ -31,7 +31,7 @@ public class DeviceNotWorking extends AppCompatActivity {
         bBackDashboard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(DeviceNotWorking.this, DashboardActivity.class);
+                Intent intent = new Intent(DeviceNotWorking.this, StartActivity.class);
                 startActivity(intent);
             }
         });

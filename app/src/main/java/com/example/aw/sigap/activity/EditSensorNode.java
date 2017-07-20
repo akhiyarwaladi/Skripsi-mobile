@@ -9,6 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -44,7 +45,7 @@ public class EditSensorNode extends AppCompatActivity implements MultiSelectionS
     private EditText nama;
     private Spinner spMiconType;
     private TextView deviceName;
-    private Button createNode;
+    private Button editNode;
     private String userId, apiKey, id_node, device, name;
 
     List<String> where = new ArrayList<String>();
@@ -95,6 +96,16 @@ public class EditSensorNode extends AppCompatActivity implements MultiSelectionS
         //String[] array = {"one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten"};
         selected.add("590f9508d71b1b270c77dfe4");
         selected.add("590f9523d71b1b270c77dfe5");
+
+        editNode = (Button)findViewById(R.id.editNode);
+        editNode.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String newnama = nama.getText().toString();
+                String newtype = spMiconType.getSelectedItem().toString();
+                editNodeNow(newnama, newtype);
+            }
+        });
     }
 
     public void getSensorNode(){
@@ -167,6 +178,63 @@ public class EditSensorNode extends AppCompatActivity implements MultiSelectionS
 
     }
 
+    public void editNodeNow(final String nama, final String type){
+        StringRequest stringRequest = new StringRequest(Request.Method.PUT,
+                EndPoint.URL_NODES+"/"+id_node+"/update", new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.e(TAG, "onResponse: " + response);
+                try {
+                    JSONObject obj = new JSONObject(response);
+
+                    if (obj.getBoolean("error") == false) {
+                        Toast.makeText(EditSensorNode.this, "" + obj.getString("message"), Toast.LENGTH_SHORT).show();
+                        Intent intent2 = new Intent(EditSensorNode.this, StartActivity.class);
+                        intent2.putExtra("id_alat", device);
+                        startActivity(intent2);
+
+                    } else {
+                        Toast.makeText(EditSensorNode.this, "" + obj.getString("message"), Toast.LENGTH_LONG).show();
+                    }
+                } catch (JSONException e) {
+                    Log.e(TAG, "json parsing error: " + e.getMessage());
+                    Toast.makeText(EditSensorNode.this, "Json parse error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                NetworkResponse networkResponse = error.networkResponse;
+                Log.e(TAG, "Volley error: " + error.getMessage() + ", code: " + networkResponse);
+                Toast.makeText(EditSensorNode.this, "Volley errror: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map headers = new HashMap();
+                headers.put("Authorization", apiKey);
+                headers.put("x-snow-token", "SECRET_API_KEY");
+
+                return headers;
+            }
+
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("name", nama);
+                params.put("miconType", type);
+                params.put("device", device);
+                for(int i=0; i< selected.size(); i++){
+                    params.put("sensortype["+i+"]", selected.get(i));
+                }
+
+                return params;
+            }
+        };
+        //Adding request to request queue
+        MyApplication.getInstance().addToRequestQueue(stringRequest);
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.dashboard, menu);
