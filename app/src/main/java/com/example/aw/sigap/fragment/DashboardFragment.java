@@ -1,7 +1,9 @@
 package com.example.aw.sigap.fragment;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -27,6 +29,7 @@ import com.example.aw.sigap.R;
 import com.example.aw.sigap.activity.CreateDevice;
 import com.example.aw.sigap.activity.DashboardActivity;
 import com.example.aw.sigap.activity.EditDevice;
+import com.example.aw.sigap.activity.LoginActivity;
 import com.example.aw.sigap.activity.SensorNodes;
 import com.example.aw.sigap.activity.StartActivity;
 import com.example.aw.sigap.app.Config;
@@ -295,7 +298,30 @@ public class DashboardFragment extends Fragment {
         btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                deleteDevice(id_alat);
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getContext());
+                alertDialogBuilder.setMessage("Sure want to delete?");
+                alertDialogBuilder.setPositiveButton("Yes",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface arg0, int arg1) {
+                                deleteDevice(id_alat);
+
+                            }
+                        });
+
+                alertDialogBuilder.setNegativeButton("No",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface arg0, int arg1) {
+
+                            }
+                        });
+
+                //Showing the alert dialog
+                AlertDialog alertDialog = alertDialogBuilder.create();
+                alertDialog.show();
+
+
             }
         });
         btnEdit = (ImageButton) itemView.findViewById(R.id.bEditDevice);

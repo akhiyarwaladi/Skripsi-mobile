@@ -1,6 +1,8 @@
 package com.example.aw.sigap.adapter;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.provider.ContactsContract;
@@ -30,6 +32,7 @@ import com.example.aw.sigap.activity.DashboardActivity;
 import com.example.aw.sigap.activity.DetailActivity;
 import com.example.aw.sigap.activity.EditSensorNode;
 import com.example.aw.sigap.activity.SensorNodes;
+import com.example.aw.sigap.activity.StartActivity;
 import com.example.aw.sigap.app.EndPoint;
 import com.example.aw.sigap.app.MyApplication;
 import com.example.aw.sigap.model.SensorNode;
@@ -49,6 +52,7 @@ public class SensorNodeAdapter extends RecyclerView.Adapter<SensorNodeAdapter.My
 
     private Context mContext;
     private List<SensorNode> sensorNodeList;
+    private View itemView;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView title, type, count, notification;
@@ -75,7 +79,7 @@ public class SensorNodeAdapter extends RecyclerView.Adapter<SensorNodeAdapter.My
 
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext())
+        itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.list_sensornodes, parent, false);
 
         return new MyViewHolder(itemView);
@@ -111,9 +115,31 @@ public class SensorNodeAdapter extends RecyclerView.Adapter<SensorNodeAdapter.My
             @Override
             public void onClick(View view) {
                 //Toast.makeText(mContext, "pilih "+sensorNode.getNama(), Toast.LENGTH_SHORT).show();
-                String idnode = sensorNode.getId();
-                String iddevice = sensorNode.getDevice();
-                deleteSensorNode(idnode, iddevice);
+
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(itemView.getContext());
+                alertDialogBuilder.setMessage("Sure want to delete?");
+                alertDialogBuilder.setPositiveButton("Yes",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface arg0, int arg1) {
+                                String idnode = sensorNode.getId();
+                                String iddevice = sensorNode.getDevice();
+                                deleteSensorNode(idnode, iddevice);
+
+                            }
+                        });
+
+                alertDialogBuilder.setNegativeButton("No",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface arg0, int arg1) {
+
+                            }
+                        });
+
+                //Showing the alert dialog
+                AlertDialog alertDialog = alertDialogBuilder.create();
+                alertDialog.show();
             }
         });
         holder.bEdit.setOnClickListener(new View.OnClickListener() {
@@ -144,7 +170,7 @@ public class SensorNodeAdapter extends RecyclerView.Adapter<SensorNodeAdapter.My
 
                     if (obj.getBoolean("error") == false) {
                         Toast.makeText(mContext, "" + obj.getString("message"), Toast.LENGTH_SHORT).show();
-                        Intent intent2 = new Intent(mContext, DashboardActivity.class);
+                        Intent intent2 = new Intent(mContext, StartActivity.class);
                         intent2.putExtra("id_alat", iddevice);
                         mContext.startActivity(intent2);
 
