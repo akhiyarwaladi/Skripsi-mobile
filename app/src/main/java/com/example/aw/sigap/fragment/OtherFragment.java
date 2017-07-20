@@ -137,7 +137,7 @@ public class OtherFragment extends Fragment {
 
             String timestamp = dat.getTimeStamp();
             String createdAt = dat.getCreatedAt();
-            createdAt = createdAt.substring(0, createdAt.length() - 5);
+            createdAt = createdAt.substring(0, createdAt.length() - 6);
             timee = Long.parseLong(timestamp);
             if(i==0) ref= timee;
             timeeref = timee - ref;
