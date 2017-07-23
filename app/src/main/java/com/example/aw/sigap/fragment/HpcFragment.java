@@ -89,7 +89,7 @@ public class HpcFragment extends Fragment {
             AllData dat = DataHistoryActivity.allDatas.get((DataHistoryActivity.allDatas.size()-1) - i);
             float hpc = Float.parseFloat(dat.getHpc());
             String createdAt = dat.getCreatedAt();
-            createdAt = createdAt.substring(0, createdAt.length() - 5);
+            createdAt = createdAt.substring(0, createdAt.length() - 6);
             valList.add(createdAt);
             //String timestamp = dat.getCreatedAt();
             //long timee = Long.parseLong(timestamp);

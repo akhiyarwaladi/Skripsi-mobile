@@ -258,7 +258,7 @@ public class TemperatureFragment extends Fragment {
             AllData dat = DataHistoryActivity.allDatas.get((DataHistoryActivity.allDatas.size()-1) - i);
             float temp = Float.parseFloat(dat.getTemperature());
             String createdAt = dat.getCreatedAt();
-            createdAt = createdAt.substring(0, createdAt.length() - 5);
+            createdAt = createdAt.substring(0, createdAt.length() - 6);
             valList.add(createdAt);
 
             entrySuhu.add(new Entry(i, temp));

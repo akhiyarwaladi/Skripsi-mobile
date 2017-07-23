@@ -253,7 +253,7 @@ public class HumidityFragment extends Fragment {
             AllData dat = DataHistoryActivity.allDatas.get((DataHistoryActivity.allDatas.size()-1) - i);
             float humid = Float.parseFloat(dat.getHumidity());
             String createdAt = dat.getCreatedAt();
-            createdAt = createdAt.substring(0, createdAt.length() - 5);
+            createdAt = createdAt.substring(0, createdAt.length() - 6);
             valList.add(createdAt);
 
             //String timestamp = dat.getCreatedAt();

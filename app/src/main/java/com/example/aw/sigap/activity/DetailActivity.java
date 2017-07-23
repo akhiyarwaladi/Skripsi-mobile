@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.icu.text.DateFormat;
+import android.icu.text.SimpleDateFormat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -37,6 +39,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
+import org.joda.time.format.ISODateTimeFormat;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -44,6 +47,7 @@ import org.json.JSONObject;
 import java.lang.reflect.Method;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -137,7 +141,7 @@ public class DetailActivity extends BaseActivity {
             }
         });
 
-        if(device.equalsIgnoreCase("59677346b89f4c3ec40c6d3a")) {
+        if(device.equalsIgnoreCase("597206a1487a43110490c0b0")) {
             getData();
         }
         else {
@@ -184,8 +188,16 @@ public class DetailActivity extends BaseActivity {
                         String createdAt = dataObj.getString("created_at");
 
                         DateTime dateTime = DateTime.parse(createdAt);
+
                         DateTimeFormatter fmt = DateTimeFormat.forPattern("hh:mm:ss a");
-                        String strDateOnly = fmt.print(dateTime);
+
+                        String strDateOnly = fmt.print(dateTime.plusHours(7));
+
+
+
+                        Log.d("dateonlybefore", createdAt);
+                        Log.d("dateonlyafter", strDateOnly);
+
                         long secondsSinceEpoch = dateTime.getMillis() / 1000;
                         Log.d("haha", Long.toString(secondsSinceEpoch));
                         AllData dataa = new AllData(ukk, hpc, humidity, temperature, hpsp, durtime, strDateOnly,
@@ -435,7 +447,7 @@ public class DetailActivity extends BaseActivity {
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("idnode", idalat);
                 params.put("status", status);
-                params.put("deviceid", "59677346b89f4c3ec40c6d3a");
+                params.put("deviceid", "597206a1487a43110490c0b0");
 
                 return params;
             }

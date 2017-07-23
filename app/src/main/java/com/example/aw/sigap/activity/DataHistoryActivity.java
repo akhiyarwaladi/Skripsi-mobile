@@ -125,7 +125,7 @@ public class DataHistoryActivity extends BaseActivity implements HumidityFragmen
         pDialog.setMessage("Loading...");
         pDialog.setCancelable(true);
 
-        if(device.equalsIgnoreCase("59677346b89f4c3ec40c6d3a")) {
+        if(device.equalsIgnoreCase("597206a1487a43110490c0b0")) {
             getData();
         }
         else {
@@ -173,7 +173,7 @@ public class DataHistoryActivity extends BaseActivity implements HumidityFragmen
 //                            String vv = new SimpleDateFormat("MM dd, yyyy hh:mma").format(df);
                             DateTime dateTime = DateTime.parse(createdAt);
                             DateTimeFormatter fmt = DateTimeFormat.forPattern("hh:mm:ss a");
-                            String strDateOnly = fmt.print(dateTime);
+                            String strDateOnly = fmt.print(dateTime.plusHours(7));
                             long secondsSinceEpoch = dateTime.getMillis() / 1000;
                             Log.d("haha", Long.toString(secondsSinceEpoch));
                             AllData dataa = new AllData(ukk, hpc, humidity, temperature, hpsp, durtime, strDateOnly,

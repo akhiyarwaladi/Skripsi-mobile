@@ -118,7 +118,7 @@ public class DurtimeFragment extends Fragment {
             float dur = Float.parseFloat(dat.getDurtime());
             String timestamp = dat.getTimeStamp();
             String createdAt = dat.getCreatedAt();
-            createdAt = createdAt.substring(0, createdAt.length() - 5);
+            createdAt = createdAt.substring(0, createdAt.length() - 6);
             valList.add(createdAt);
 
             long timee = Long.parseLong(timestamp);
