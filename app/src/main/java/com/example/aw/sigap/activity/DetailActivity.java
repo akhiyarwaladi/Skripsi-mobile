@@ -1,12 +1,15 @@
 package com.example.aw.sigap.activity;
 
 import android.animation.ValueAnimator;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.icu.text.DateFormat;
 import android.icu.text.SimpleDateFormat;
+import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -29,6 +32,7 @@ import com.example.aw.sigap.R;
 import com.example.aw.sigap.app.Config;
 import com.example.aw.sigap.app.EndPoint;
 import com.example.aw.sigap.app.MyApplication;
+import com.example.aw.sigap.helper.AlarmReceiver;
 import com.example.aw.sigap.helper.ProgressBarAnimation;
 import com.example.aw.sigap.model.Alat;
 import com.example.aw.sigap.model.AllData;
@@ -59,6 +63,7 @@ import butterknife.ButterKnife;
 public class DetailActivity extends BaseActivity {
 
     private String TAG = DashboardActivity.class.getSimpleName();
+    private Context context;
     Button btnHistory, btnSettings, btnON, btnOFF;
     Toolbar toolbar;
     String apiKey, id_alat, device, ukk, hpsp, durtime;
@@ -152,6 +157,14 @@ public class DetailActivity extends BaseActivity {
             btnOFF.setVisibility(View.GONE);
 
             getOther();
+        }
+        this.context = this;
+        Intent alarm = new Intent(this.context, AlarmReceiver.class);
+        boolean alarmRunning = (PendingIntent.getBroadcast(this.context, 0, alarm, PendingIntent.FLAG_NO_CREATE) != null);
+        if(alarmRunning == false) {
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(this.context, 0, alarm, 0);
+            AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+            alarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime(), 100, pendingIntent); //in milisecond
         }
     }
 
