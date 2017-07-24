@@ -76,6 +76,7 @@ public class DetailActivity extends BaseActivity {
     FlexboxLayout flexboxLayout;
     List<AllData> allDatas;
     List<AllsData> allsDataList;
+    private String lastDataDate;
 
     Handler handler = new Handler();
     private boolean stop = false;
@@ -195,11 +196,11 @@ public class DetailActivity extends BaseActivity {
     }
     private void callAysncTask()
     {
-        getData();
+        //getData();
+        checkLastData();
     }
 
-
-    public void getData(){
+    public void checkLastData(){
         StringRequest stringRequest = new StringRequest(Request.Method.GET,
                 EndPoint.URL_DATA+"/"+id_alat, new Response.Listener<String>() {
             @Override
@@ -237,6 +238,96 @@ public class DetailActivity extends BaseActivity {
 
                         String strDateOnly = fmt.print(dateTime.plusHours(7));
 
+                        Log.d("dateonlybefore", createdAt);
+                        Log.d("dateonlyafter", strDateOnly);
+
+                        long secondsSinceEpoch = dateTime.getMillis() / 1000;
+                        Log.d("haha", Long.toString(secondsSinceEpoch));
+
+                        if(strDateOnly.equals(lastDataDate)){
+
+                        }
+                        else {
+                            getData();
+                        }
+                    } else {
+                        // error in fetching data
+                        Toast.makeText(DetailActivity.this, "" + obj.getJSONObject("error").getString("message"), Toast.LENGTH_LONG).show();
+                    }
+                } catch (JSONException e) {
+                    Log.e(TAG, "json parsing error: " + e.getMessage());
+                    //Toast.makeText(DetailActivity.this, "Json parse error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                    Intent intent3 = new Intent(DetailActivity.this, EmptyData.class);
+                    intent3.putExtra("id_alat", id_alat);
+                    intent3.putExtra("device", device);
+                    startActivity(intent3);
+
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                NetworkResponse networkResponse = error.networkResponse;
+                Log.e(TAG, "Volley error: " + error.getMessage() + ", code: " + networkResponse);
+                Toast.makeText(DetailActivity.this, "Volley errror: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map headers = new HashMap();
+                headers.put("Authorization", apiKey);
+                headers.put("x-snow-token", "SECRET_API_KEY");
+
+                return headers;
+            }
+
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                return super.getParams();
+            }
+        };
+        //Adding request to request queue
+        MyApplication.getInstance().addToRequestQueue(stringRequest);
+    }
+    public void getData(){
+        StringRequest stringRequest = new StringRequest(Request.Method.GET,
+                EndPoint.URL_DATA+"/"+id_alat, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.e(TAG, "onResponse: " + response);
+                try {
+                    JSONObject obj = new JSONObject(response);
+
+                    if (obj.getBoolean("error") == false) {
+                        //Toast.makeText(DetailActivity.this, "Data dapat"+response, Toast.LENGTH_SHORT).show();
+                        JSONArray data = obj.getJSONArray("dataset");
+
+                        JSONObject dataObj = (JSONObject) data.get(0);
+                        JSONObject setObj = new JSONObject(dataObj.getString("data"));
+                        JSONObject setObj2 = new JSONObject(dataObj.getString("sensornode"));
+                        Log.i("dataDapat",""+dataObj);
+
+
+                        String hpc = setObj.getString("waterlevel");
+                        String humidity = setObj.getString("humidity");
+                        String temperature = setObj.getString("temperature");
+                        String status = setObj2.getString("status");
+
+                        if(dataObj.has("uk")) ukk = dataObj.getString("uk");
+                        else ukk = "1";
+                        if(dataObj.has("setPoint")) hpsp = dataObj.getString("setPoint");
+                        else hpsp = "5";
+                        if(dataObj.has("opTime")) durtime = dataObj.getString("opTime");
+                        else durtime = "60";
+                        String createdAt = dataObj.getString("created_at");
+
+                        DateTime dateTime = DateTime.parse(createdAt);
+
+                        DateTimeFormatter fmt = DateTimeFormat.forPattern("hh:mm:ss a");
+
+                        String strDateOnly = fmt.print(dateTime.plusHours(7));
+                        lastDataDate = strDateOnly;
 
 
                         Log.d("dateonlybefore", createdAt);
@@ -379,7 +470,8 @@ public class DetailActivity extends BaseActivity {
                         String createdAt = dataObj.getString("created_at");
                         DateTime dateTime = DateTime.parse(createdAt);
                         DateTimeFormatter fmt = DateTimeFormat.forPattern("hh:mm:ss a");
-                        String strDateOnly = fmt.print(dateTime);
+                        String strDateOnly = fmt.print(dateTime.plusHours(7));
+                        lastDataDate = strDateOnly;
                         long secondsSinceEpoch = dateTime.getMillis() / 1000;
                         Log.d("haha", Long.toString(secondsSinceEpoch));
                         //allsData.setCreatedAt(strDateOnly);
