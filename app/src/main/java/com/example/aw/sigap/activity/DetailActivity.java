@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.icu.text.DateFormat;
 import android.icu.text.SimpleDateFormat;
+import android.os.Handler;
 import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -63,6 +64,7 @@ import butterknife.ButterKnife;
 public class DetailActivity extends BaseActivity {
 
     private String TAG = DashboardActivity.class.getSimpleName();
+    private final static int INTERVAL = 1000 * 10 * 1; //2 minutes
     private Context context;
     Button btnHistory, btnSettings, btnON, btnOFF;
     Toolbar toolbar;
@@ -74,6 +76,11 @@ public class DetailActivity extends BaseActivity {
     FlexboxLayout flexboxLayout;
     List<AllData> allDatas;
     List<AllsData> allsDataList;
+
+    Handler handler = new Handler();
+    private boolean stop = false;
+    private boolean isBusy = false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -158,15 +165,39 @@ public class DetailActivity extends BaseActivity {
 
             getOther();
         }
-        this.context = this;
-        Intent alarm = new Intent(this.context, AlarmReceiver.class);
-        boolean alarmRunning = (PendingIntent.getBroadcast(this.context, 0, alarm, PendingIntent.FLAG_NO_CREATE) != null);
-        if(alarmRunning == false) {
-            PendingIntent pendingIntent = PendingIntent.getBroadcast(this.context, 0, alarm, 0);
-            AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-            alarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime(), 100, pendingIntent); //in milisecond
-        }
+//        this.context = this;
+//        Intent alarm = new Intent(this.context, AlarmReceiver.class);
+//        boolean alarmRunning = (PendingIntent.getBroadcast(this.context, 0, alarm, PendingIntent.FLAG_NO_CREATE) != null);
+//        if(alarmRunning == false) {
+//            PendingIntent pendingIntent = PendingIntent.getBroadcast(this.context, 0, alarm, 0);
+//            AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+//            alarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime(), 100, pendingIntent); //in milisecond
+//        }
+
+
+
+        startHandler();
     }
+
+    public void startHandler()
+    {
+        handler.postDelayed(new Runnable()
+        {
+
+            @Override
+            public void run()
+            {
+                if(!isBusy) callAysncTask();
+
+                if(!stop) startHandler();
+            }
+        }, 1000);
+    }
+    private void callAysncTask()
+    {
+        getData();
+    }
+
 
     public void getData(){
         StringRequest stringRequest = new StringRequest(Request.Method.GET,
