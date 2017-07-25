@@ -248,7 +248,25 @@ public class DetailActivity extends BaseActivity {
 
                         }
                         else {
-                            getData();
+                            AllData dataa = new AllData(ukk, hpc, humidity, temperature, hpsp, durtime, strDateOnly,
+                                    Long.toString(secondsSinceEpoch), status);
+                            allDatas.add(dataa);
+
+                            addBuddiesView(allDatas.get(allDatas.size()-(allDatas.size())));
+                            TextView header = (TextView) findViewById(R.id.tv_status);
+
+                            if(status.equals("1")){
+                                header.setText(" IRIGASI ON ");
+                                header.setTextColor(Color.WHITE);
+                                header.setBackgroundColor(Color.parseColor("#1BBC9B"));
+                            }
+
+                            else {
+                                header.setText(" IRIGASI OFF ");
+                                header.setTextColor(Color.WHITE);
+                                header.setBackgroundColor(Color.RED);
+                            }
+                            lastDataDate = strDateOnly;
                         }
                     } else {
                         // error in fetching data
