@@ -143,6 +143,7 @@ public class DetailActivity extends BaseActivity {
                 header.setBackgroundColor(Color.parseColor("#1BBC9B"));
 
                 controlNode(id_alat, "1");
+                lastStatus = "1";
             }
         });
         btnOFF = (Button) findViewById(R.id.bOFF);
@@ -154,6 +155,7 @@ public class DetailActivity extends BaseActivity {
                 header.setTextColor(Color.WHITE);
                 header.setBackgroundColor(Color.RED);
                 controlNode(id_alat, "0");
+                lastStatus = "0";
             }
         });
 

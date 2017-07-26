@@ -102,7 +102,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             //Log.e(TAG, "imageUrl: " + imageUrl);
             //Log.e(TAG, "timestamp: " + timestamp);
 
-
+            Log.e(TAG, "push masuk: sampai sini");
             if (!NotificationUtils.isAppIsInBackground(getApplicationContext())) {
                 Log.e("push masuk sini", "tidak di background");
                 // app is in foreground, broadcast the push message
