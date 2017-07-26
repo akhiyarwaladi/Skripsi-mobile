@@ -48,7 +48,7 @@ public class EmptyData extends AppCompatActivity {
     private TextView tvToken;
     private TextView tvKeyData;
     private Toolbar toolbar;
-    private String id_alat, id_device, apiKey;
+    private String id_alat, id_device, apiKey, emailaddress;
     private ImageButton copy_deviceid, copy_sensornodeid, copy_authorization;
     ArrayList<String> keyData = new ArrayList<String>();
     @Override
@@ -70,7 +70,10 @@ public class EmptyData extends AppCompatActivity {
 
         final SharedPreferences sharedPreferencesApi = getSharedPreferences(Config.SHARED_PREF_API,
                 Context.MODE_PRIVATE);
+        final SharedPreferences sharedPreferencesEmail = getSharedPreferences(Config.SHARED_PREF_EMAIL,
+                Context.MODE_PRIVATE);
         apiKey = sharedPreferencesApi.getString(Config.APIKEY_SHARED_PREF, "");
+        emailaddress = sharedPreferencesEmail.getString(Config.EMAILADDRESS_SHARED_PREF, "");
         Log.d("api", apiKey);
 
         tvDevice = (TextView) findViewById(R.id.devID);
@@ -85,34 +88,31 @@ public class EmptyData extends AppCompatActivity {
         copy_deviceid.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-                ClipData clip = ClipData.newPlainText("simple text", tvDevice.getText());
-                clipboard.setPrimaryClip(clip);
-                Toast.makeText(EmptyData.this, "copied deviceid to clipboard", Toast.LENGTH_SHORT).show();
+                sendEmail(emailaddress, id_device, id_alat, apiKey);
             }
         });
 
-        copy_sensornodeid = (ImageButton) findViewById(R.id.btn_copy_sensornodeid);
-        copy_sensornodeid.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-                ClipData clip = ClipData.newPlainText("simple text", tvNode.getText());
-                clipboard.setPrimaryClip(clip);
-                Toast.makeText(EmptyData.this, "copied sensornodeid to clipboard", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        copy_authorization = (ImageButton) findViewById(R.id.btn_copy_authorization);
-        copy_authorization.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-                ClipData clip = ClipData.newPlainText("simple text", tvToken.getText());
-                clipboard.setPrimaryClip(clip);
-                Toast.makeText(EmptyData.this, "copied authorization to clipboard", Toast.LENGTH_SHORT).show();
-            }
-        });
+//        copy_sensornodeid = (ImageButton) findViewById(R.id.btn_copy_sensornodeid);
+//        copy_sensornodeid.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+//                ClipData clip = ClipData.newPlainText("simple text", tvNode.getText());
+//                clipboard.setPrimaryClip(clip);
+//                Toast.makeText(EmptyData.this, "copied sensornodeid to clipboard", Toast.LENGTH_SHORT).show();
+//            }
+//        });
+//
+//        copy_authorization = (ImageButton) findViewById(R.id.btn_copy_authorization);
+//        copy_authorization.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+//                ClipData clip = ClipData.newPlainText("simple text", tvToken.getText());
+//                clipboard.setPrimaryClip(clip);
+//                Toast.makeText(EmptyData.this, "copied authorization to clipboard", Toast.LENGTH_SHORT).show();
+//            }
+//        });
         getNodes();
     }
     public void getNodes(){
@@ -140,7 +140,7 @@ public class EmptyData extends AppCompatActivity {
                         for (int j = 0; j < sentype.length(); j++){
                             JSONObject dataObj2 = (JSONObject) sentype.get(j);
                             String senName = dataObj2.getString("dataKey");
-                            Toast.makeText(EmptyData.this, senName, Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(EmptyData.this, senName, Toast.LENGTH_SHORT).show();
                             keyData.add(senName);
                         }
                         tvKeyData.setText("Your Key: "+ keyData.toString());
@@ -184,6 +184,59 @@ public class EmptyData extends AppCompatActivity {
         //Adding request to request queue
         MyApplication.getInstance().addToRequestQueue(stringRequest);
 
+    }
+
+    public void sendEmail(final String emailaddress, final String id_device, final String id_alat, final String apiKey){
+        //Toast.makeText(this, "HAHAHAHA", Toast.LENGTH_SHORT).show();
+        StringRequest stringRequest = new StringRequest(Request.Method.POST,
+                EndPoint.URL_EMAIL, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.e(TAG, "onResponse: " + response);
+                try {
+                    JSONObject obj = new JSONObject(response);
+
+                    if (obj.getBoolean("error") == false) {
+                        Toast.makeText(EmptyData.this, "" + obj.getString("message"), Toast.LENGTH_SHORT).show();
+
+                    } else {
+                        Toast.makeText(EmptyData.this, "" + obj.getString("message"), Toast.LENGTH_LONG).show();
+                    }
+                } catch (JSONException e) {
+                    Log.e(TAG, "json parsing error: " + e.getMessage());
+                    Toast.makeText(EmptyData.this, "Json parse error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                NetworkResponse networkResponse = error.networkResponse;
+                Log.e(TAG, "Volley error: " + error.getMessage() + ", code: " + networkResponse);
+                Toast.makeText(EmptyData.this, "Volley errror: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map headers = new HashMap();
+                headers.put("Authorization", apiKey);
+                headers.put("x-snow-token", "SECRET_API_KEY");
+
+                return headers;
+            }
+
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("email", emailaddress);
+                params.put("deviceid", id_device);
+                params.put("nodeid", id_alat);
+                params.put("auth", apiKey);
+
+                return params;
+            }
+        };
+        //Adding request to request queue
+        MyApplication.getInstance().addToRequestQueue(stringRequest);
     }
 
     @Override

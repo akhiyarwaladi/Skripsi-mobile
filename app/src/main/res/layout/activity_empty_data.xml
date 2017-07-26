@@ -114,17 +114,17 @@
             android:layout_gravity="center"
             android:orientation="horizontal" >
 
-            <ImageButton
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+            <!--<ImageButton-->
+                <!--android:layout_width="30dp"-->
+                <!--android:layout_height="30dp"-->
 
-                android:layout_marginRight="@dimen/md_keylines"
-                app:srcCompat="@drawable/ic_message_black_48dp"
-                android:layout_gravity="right"
-                android:text="copy"
-                android:id="@+id/btn_copy_sensornodeid"
-                style="?android:attr/borderlessButtonStyle"
-                android:tint="@color/textColorSecondary"/>
+                <!--android:layout_marginRight="@dimen/md_keylines"-->
+                <!--app:srcCompat="@drawable/ic_message_black_48dp"-->
+                <!--android:layout_gravity="right"-->
+                <!--android:text="copy"-->
+                <!--android:id="@+id/btn_copy_sensornodeid"-->
+                <!--style="?android:attr/borderlessButtonStyle"-->
+                <!--android:tint="@color/textColorSecondary"/>-->
 
         </LinearLayout>
 
@@ -171,17 +171,17 @@
             android:layout_gravity="center"
             android:orientation="horizontal" >
 
-            <ImageButton
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+            <!--<ImageButton-->
+                <!--android:layout_width="30dp"-->
+                <!--android:layout_height="30dp"-->
 
-                android:layout_marginRight="@dimen/md_keylines"
-                app:srcCompat="@drawable/ic_message_black_48dp"
-                android:layout_gravity="right"
-                android:text="copy"
-                android:id="@+id/btn_copy_authorization"
-                style="?android:attr/borderlessButtonStyle"
-                android:tint="@color/textColorSecondary"/>
+                <!--android:layout_marginRight="@dimen/md_keylines"-->
+                <!--app:srcCompat="@drawable/ic_message_black_48dp"-->
+                <!--android:layout_gravity="right"-->
+                <!--android:text="copy"-->
+                <!--android:id="@+id/btn_copy_authorization"-->
+                <!--style="?android:attr/borderlessButtonStyle"-->
+                <!--android:tint="@color/textColorSecondary"/>-->
 
         </LinearLayout>
     </LinearLayout>

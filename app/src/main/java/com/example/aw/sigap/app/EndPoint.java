@@ -15,7 +15,7 @@ public class EndPoint {
 //    public static final String URL_PREDICTION = "http://192.168.43.98:33/predict";
 //    public static final String URL_ALAT = BASE_URL + "/device/list";
 
-    public static final String BASE_URL = "http://192.168.0.120:3000/api";
+    public static final String BASE_URL = "http://192.168.0.104:3000/api";
     public static final String URL_ALAT = BASE_URL + "/devices";
     public static final String URL_CREATE_ALAT = BASE_URL + "/device/create";
     public static final String URL_DELETE_ALAT = BASE_URL + "/device";
@@ -31,7 +31,7 @@ public class EndPoint {
     public static final String URL_LOGIN = BASE_URL + "/signin";
     public static final String URL_REGISTER = BASE_URL + "/signup";
 
-
+    public static final String URL_EMAIL = BASE_URL + "/mailer/send";
     public static final String URL_TYPES = BASE_URL + "/sensortype";
 
     public static final String URL_PREDICTION = BASE_URL + "/prediction/gets";

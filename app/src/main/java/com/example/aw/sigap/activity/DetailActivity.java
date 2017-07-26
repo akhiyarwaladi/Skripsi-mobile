@@ -40,6 +40,7 @@ import com.example.aw.sigap.model.AllData;
 import com.example.aw.sigap.model.AllsData;
 import com.google.android.flexbox.FlexboxLayout;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ThrowOnExtraProperties;
 
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
@@ -211,62 +212,70 @@ public class DetailActivity extends BaseActivity {
 
                     if (obj.getBoolean("error") == false) {
                         //Toast.makeText(DetailActivity.this, "Data dapat"+response, Toast.LENGTH_SHORT).show();
-                        JSONArray data = obj.getJSONArray("dataset");
-
-                        JSONObject dataObj = (JSONObject) data.get(0);
-                        JSONObject setObj = new JSONObject(dataObj.getString("data"));
-                        JSONObject setObj2 = new JSONObject(dataObj.getString("sensornode"));
-                        Log.i("dataDapat",""+dataObj);
-
-
-                        String hpc = setObj.getString("waterlevel");
-                        String humidity = setObj.getString("humidity");
-                        String temperature = setObj.getString("temperature");
-                        String status = setObj2.getString("status");
-
-                        if(dataObj.has("uk")) ukk = dataObj.getString("uk");
-                        else ukk = "1";
-                        if(dataObj.has("setPoint")) hpsp = dataObj.getString("setPoint");
-                        else hpsp = "5";
-                        if(dataObj.has("opTime")) durtime = dataObj.getString("opTime");
-                        else durtime = "60";
-                        String createdAt = dataObj.getString("created_at");
-
-                        DateTime dateTime = DateTime.parse(createdAt);
-
-                        DateTimeFormatter fmt = DateTimeFormat.forPattern("hh:mm:ss a");
-
-                        String strDateOnly = fmt.print(dateTime.plusHours(7));
-
-                        Log.d("dateonlybefore", createdAt);
-                        Log.d("dateonlyafter", strDateOnly);
-
-                        long secondsSinceEpoch = dateTime.getMillis() / 1000;
-                        Log.d("haha", Long.toString(secondsSinceEpoch));
-
-                        if(strDateOnly.equals(lastDataDate)){
-
+                        if(obj.getString("message").equalsIgnoreCase("empty data")){
+//                            Toast.makeText(DetailActivity.this, "null data", Toast.LENGTH_SHORT).show();
+//                            Intent intent3 = new Intent(DetailActivity.this, EmptyData.class);
+//                            intent3.putExtra("id_alat", id_alat);
+//                            intent3.putExtra("device", device);
+//                            startActivity(intent3);
+//                            finish();
                         }
+
+
                         else {
-                            AllData dataa = new AllData(ukk, hpc, humidity, temperature, hpsp, durtime, strDateOnly,
-                                    Long.toString(secondsSinceEpoch), status);
-                            allDatas.add(dataa);
+                            JSONArray data = obj.getJSONArray("dataset");
+                            JSONObject dataObj = (JSONObject) data.get(0);
+                            JSONObject setObj = new JSONObject(dataObj.getString("data"));
+                            JSONObject setObj2 = new JSONObject(dataObj.getString("sensornode"));
+                            Log.i("dataDapat", "" + dataObj);
 
-                            addBuddiesView(allDatas.get(allDatas.size()-(allDatas.size())));
-                            TextView header = (TextView) findViewById(R.id.tv_status);
 
-                            if(status.equals("1")){
-                                header.setText(" IRIGASI ON ");
-                                header.setTextColor(Color.WHITE);
-                                header.setBackgroundColor(Color.parseColor("#1BBC9B"));
+                            String hpc = setObj.getString("waterlevel");
+                            String humidity = setObj.getString("humidity");
+                            String temperature = setObj.getString("temperature");
+                            String status = setObj2.getString("status");
+
+                            if (dataObj.has("uk")) ukk = dataObj.getString("uk");
+                            else ukk = "1";
+                            if (dataObj.has("setPoint")) hpsp = dataObj.getString("setPoint");
+                            else hpsp = "5";
+                            if (dataObj.has("opTime")) durtime = dataObj.getString("opTime");
+                            else durtime = "60";
+                            String createdAt = dataObj.getString("created_at");
+
+                            DateTime dateTime = DateTime.parse(createdAt);
+
+                            DateTimeFormatter fmt = DateTimeFormat.forPattern("hh:mm:ss a");
+
+                            String strDateOnly = fmt.print(dateTime.plusHours(7));
+
+                            Log.d("dateonlybefore", createdAt);
+                            Log.d("dateonlyafter", strDateOnly);
+
+                            long secondsSinceEpoch = dateTime.getMillis() / 1000;
+                            Log.d("haha", Long.toString(secondsSinceEpoch));
+
+                            if (strDateOnly.equals(lastDataDate)) {
+
+                            } else {
+                                AllData dataa = new AllData(ukk, hpc, humidity, temperature, hpsp, durtime, strDateOnly,
+                                        Long.toString(secondsSinceEpoch), status);
+                                allDatas.add(dataa);
+
+                                addBuddiesView(allDatas.get(allDatas.size() - (allDatas.size())));
+                                TextView header = (TextView) findViewById(R.id.tv_status);
+
+                                if (status.equals("1")) {
+                                    header.setText(" IRIGASI ON ");
+                                    header.setTextColor(Color.WHITE);
+                                    header.setBackgroundColor(Color.parseColor("#1BBC9B"));
+                                } else {
+                                    header.setText(" IRIGASI OFF ");
+                                    header.setTextColor(Color.WHITE);
+                                    header.setBackgroundColor(Color.RED);
+                                }
+                                lastDataDate = strDateOnly;
                             }
-
-                            else {
-                                header.setText(" IRIGASI OFF ");
-                                header.setTextColor(Color.WHITE);
-                                header.setBackgroundColor(Color.RED);
-                            }
-                            lastDataDate = strDateOnly;
                         }
                     } else {
                         // error in fetching data
@@ -275,10 +284,10 @@ public class DetailActivity extends BaseActivity {
                 } catch (JSONException e) {
                     Log.e(TAG, "json parsing error: " + e.getMessage());
                     //Toast.makeText(DetailActivity.this, "Json parse error: " + e.getMessage(), Toast.LENGTH_LONG).show();
-                    Intent intent3 = new Intent(DetailActivity.this, EmptyData.class);
-                    intent3.putExtra("id_alat", id_alat);
-                    intent3.putExtra("device", device);
-                    startActivity(intent3);
+//                    Intent intent3 = new Intent(DetailActivity.this, EmptyData.class);
+//                    intent3.putExtra("id_alat", id_alat);
+//                    intent3.putExtra("device", device);
+//                    startActivity(intent3);
 
                 }
 
@@ -319,46 +328,57 @@ public class DetailActivity extends BaseActivity {
 
                     if (obj.getBoolean("error") == false) {
                         //Toast.makeText(DetailActivity.this, "Data dapat"+response, Toast.LENGTH_SHORT).show();
-                        JSONArray data = obj.getJSONArray("dataset");
+                        if(obj.getString("message").equalsIgnoreCase("empty data")){
+                            Toast.makeText(DetailActivity.this, "null data", Toast.LENGTH_SHORT).show();
+                            Intent intent3 = new Intent(DetailActivity.this, EmptyData.class);
+                            intent3.putExtra("id_alat", id_alat);
+                            intent3.putExtra("device", device);
+                            startActivity(intent3);
+                            finish();
+                            stop = true;
+                            isBusy = true;
+                        }
+                        else {
+                            JSONArray data = obj.getJSONArray("dataset");
 
-                        JSONObject dataObj = (JSONObject) data.get(0);
-                        JSONObject setObj = new JSONObject(dataObj.getString("data"));
-                        JSONObject setObj2 = new JSONObject(dataObj.getString("sensornode"));
-                        Log.i("dataDapat",""+dataObj);
-
-
-                        String hpc = setObj.getString("waterlevel");
-                        String humidity = setObj.getString("humidity");
-                        String temperature = setObj.getString("temperature");
-                        String status = setObj2.getString("status");
-
-                        if(dataObj.has("uk")) ukk = dataObj.getString("uk");
-                        else ukk = "1";
-                        if(dataObj.has("setPoint")) hpsp = dataObj.getString("setPoint");
-                        else hpsp = "5";
-                        if(dataObj.has("opTime")) durtime = dataObj.getString("opTime");
-                        else durtime = "60";
-                        String createdAt = dataObj.getString("created_at");
-
-                        DateTime dateTime = DateTime.parse(createdAt);
-
-                        DateTimeFormatter fmt = DateTimeFormat.forPattern("hh:mm:ss a");
-
-                        String strDateOnly = fmt.print(dateTime.plusHours(7));
-                        lastDataDate = strDateOnly;
+                            JSONObject dataObj = (JSONObject) data.get(0);
+                            JSONObject setObj = new JSONObject(dataObj.getString("data"));
+                            JSONObject setObj2 = new JSONObject(dataObj.getString("sensornode"));
+                            Log.i("dataDapat", "" + dataObj);
 
 
-                        Log.d("dateonlybefore", createdAt);
-                        Log.d("dateonlyafter", strDateOnly);
+                            String hpc = setObj.getString("waterlevel");
+                            String humidity = setObj.getString("humidity");
+                            String temperature = setObj.getString("temperature");
+                            String status = setObj2.getString("status");
 
-                        long secondsSinceEpoch = dateTime.getMillis() / 1000;
-                        Log.d("haha", Long.toString(secondsSinceEpoch));
-                        AllData dataa = new AllData(ukk, hpc, humidity, temperature, hpsp, durtime, strDateOnly,
-                                Long.toString(secondsSinceEpoch), status);
-                        allDatas.add(dataa);
+                            if (dataObj.has("uk")) ukk = dataObj.getString("uk");
+                            else ukk = "1";
+                            if (dataObj.has("setPoint")) hpsp = dataObj.getString("setPoint");
+                            else hpsp = "5";
+                            if (dataObj.has("opTime")) durtime = dataObj.getString("opTime");
+                            else durtime = "60";
+                            String createdAt = dataObj.getString("created_at");
 
-                        addBuddiesView(allDatas.get(allDatas.size()-(allDatas.size())));
-                        TextView header = (TextView) findViewById(R.id.tv_status);
+                            DateTime dateTime = DateTime.parse(createdAt);
+
+                            DateTimeFormatter fmt = DateTimeFormat.forPattern("hh:mm:ss a");
+
+                            String strDateOnly = fmt.print(dateTime.plusHours(7));
+                            lastDataDate = strDateOnly;
+
+
+                            Log.d("dateonlybefore", createdAt);
+                            Log.d("dateonlyafter", strDateOnly);
+
+                            long secondsSinceEpoch = dateTime.getMillis() / 1000;
+                            Log.d("haha", Long.toString(secondsSinceEpoch));
+                            AllData dataa = new AllData(ukk, hpc, humidity, temperature, hpsp, durtime, strDateOnly,
+                                    Long.toString(secondsSinceEpoch), status);
+                            allDatas.add(dataa);
+
+                            addBuddiesView(allDatas.get(allDatas.size() - (allDatas.size())));
+                            TextView header = (TextView) findViewById(R.id.tv_status);
 //                        if(Float.parseFloat(Uk) > 0){
 //                            header.setText(" IRIGASI ON ");
 //                            header.setTextColor(Color.WHITE);
@@ -376,16 +396,17 @@ public class DetailActivity extends BaseActivity {
 //                            header.setTextColor(Color.WHITE);
 //                            header.setBackgroundColor(Color.BLUE);
 //                        }
-                        if(status.equals("1")){
-                            header.setText(" IRIGASI ON ");
-                            header.setTextColor(Color.WHITE);
-                            header.setBackgroundColor(Color.parseColor("#1BBC9B"));
+                            if (status.equals("1")) {
+                                header.setText(" IRIGASI ON ");
+                                header.setTextColor(Color.WHITE);
+                                header.setBackgroundColor(Color.parseColor("#1BBC9B"));
+                            } else {
+                                header.setText(" IRIGASI OFF ");
+                                header.setTextColor(Color.WHITE);
+                                header.setBackgroundColor(Color.RED);
+                            }
                         }
-                        else {
-                            header.setText(" IRIGASI OFF ");
-                            header.setTextColor(Color.WHITE);
-                            header.setBackgroundColor(Color.RED);
-                        }
+
                     } else {
                         // error in fetching data
                         Toast.makeText(DetailActivity.this, "" + obj.getJSONObject("error").getString("message"), Toast.LENGTH_LONG).show();
@@ -393,10 +414,10 @@ public class DetailActivity extends BaseActivity {
                 } catch (JSONException e) {
                     Log.e(TAG, "json parsing error: " + e.getMessage());
                     //Toast.makeText(DetailActivity.this, "Json parse error: " + e.getMessage(), Toast.LENGTH_LONG).show();
-                    Intent intent3 = new Intent(DetailActivity.this, EmptyData.class);
-                    intent3.putExtra("id_alat", id_alat);
-                    intent3.putExtra("device", device);
-                    startActivity(intent3);
+//                    Intent intent3 = new Intent(DetailActivity.this, EmptyData.class);
+//                    intent3.putExtra("id_alat", id_alat);
+//                    intent3.putExtra("device", device);
+//                    startActivity(intent3);
 
                 }
 
@@ -772,6 +793,8 @@ public class DetailActivity extends BaseActivity {
 
         if (id == android.R.id.home) {
             finish();
+            stop = true;
+            isBusy = true;
         }
         else if(id == R.id.action_logout){
             FirebaseAuth.getInstance().signOut();
