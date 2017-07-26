@@ -38,6 +38,7 @@ import com.example.aw.sigap.helper.ProgressBarAnimation;
 import com.example.aw.sigap.model.Alat;
 import com.example.aw.sigap.model.AllData;
 import com.example.aw.sigap.model.AllsData;
+import com.example.aw.sigap.model.SensorNode;
 import com.google.android.flexbox.FlexboxLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ThrowOnExtraProperties;
@@ -78,6 +79,7 @@ public class DetailActivity extends BaseActivity {
     List<AllData> allDatas;
     List<AllsData> allsDataList;
     private String lastDataDate;
+    private String lastStatus;
 
     Handler handler = new Handler();
     private boolean stop = false;
@@ -198,7 +200,8 @@ public class DetailActivity extends BaseActivity {
     private void callAysncTask()
     {
         //getData();
-        checkLastData();
+        //checkLastData();
+        checkStatus();
     }
 
     public void checkLastData(){
@@ -317,6 +320,69 @@ public class DetailActivity extends BaseActivity {
         //Adding request to request queue
         MyApplication.getInstance().addToRequestQueue(stringRequest);
     }
+
+    public void checkStatus(){
+        StringRequest stringRequest = new StringRequest(Request.Method.GET,
+                EndPoint.URL_NODES2+"/"+id_alat, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.e(TAG, "onResponse: " + response);
+                try {
+                    JSONObject obj = new JSONObject(response);
+
+                    if (obj.getBoolean("error") == false) {
+//                        Toast.makeText(DashboardActivity.this, "Data dapat"+response, Toast.LENGTH_SHORT).show();
+                        JSONObject halo = obj.getJSONObject("sensornode");
+
+
+                        String status = halo.getString("status");
+                        if (status.equalsIgnoreCase(lastStatus)){
+
+                        }
+                        else {
+                            getData();
+                            lastStatus = status;
+                        }
+
+
+
+                    } else {
+                        // error in fetching data
+                        Toast.makeText(DetailActivity.this, "" + obj.getJSONObject("error").getString("message"), Toast.LENGTH_LONG).show();
+
+                    }
+                } catch (JSONException e) {
+                    Log.e(TAG, "json parsing error: " + e.getMessage());
+                    Toast.makeText(DetailActivity.this, "Json parse error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                NetworkResponse networkResponse = error.networkResponse;
+                Log.e(TAG, "Volley error: " + error.getMessage() + ", code: " + networkResponse);
+                Toast.makeText(DetailActivity.this, "Volley errror: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map headers = new HashMap();
+                headers.put("Authorization", apiKey);
+                headers.put("x-snow-token", "SECRET_API_KEY");
+
+                return headers;
+            }
+
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                return super.getParams();
+            }
+        };
+        //Adding request to request queue
+        MyApplication.getInstance().addToRequestQueue(stringRequest);
+
+    }
     public void getData(){
         StringRequest stringRequest = new StringRequest(Request.Method.GET,
                 EndPoint.URL_DATA+"/"+id_alat, new Response.Listener<String>() {
@@ -351,7 +417,7 @@ public class DetailActivity extends BaseActivity {
                             String humidity = setObj.getString("humidity");
                             String temperature = setObj.getString("temperature");
                             String status = setObj2.getString("status");
-
+                            lastStatus = status;
                             if (dataObj.has("uk")) ukk = dataObj.getString("uk");
                             else ukk = "1";
                             if (dataObj.has("setPoint")) hpsp = dataObj.getString("setPoint");

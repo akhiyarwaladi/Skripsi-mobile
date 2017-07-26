@@ -88,7 +88,7 @@ public class EmptyData extends AppCompatActivity {
         copy_deviceid.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                sendEmail(emailaddress, id_device, id_alat, apiKey);
+                sendEmail(emailaddress, id_device, id_alat, apiKey, keyData.toString());
             }
         });
 
@@ -186,7 +186,7 @@ public class EmptyData extends AppCompatActivity {
 
     }
 
-    public void sendEmail(final String emailaddress, final String id_device, final String id_alat, final String apiKey){
+    public void sendEmail(final String emailaddress, final String id_device, final String id_alat, final String apiKey, final String keyData){
         //Toast.makeText(this, "HAHAHAHA", Toast.LENGTH_SHORT).show();
         StringRequest stringRequest = new StringRequest(Request.Method.POST,
                 EndPoint.URL_EMAIL, new Response.Listener<String>() {
@@ -231,6 +231,7 @@ public class EmptyData extends AppCompatActivity {
                 params.put("deviceid", id_device);
                 params.put("nodeid", id_alat);
                 params.put("auth", apiKey);
+                params.put("keyData", keyData);
 
                 return params;
             }
